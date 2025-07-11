@@ -10,6 +10,7 @@ class Page extends Component<object, MainState> {
     this.state = {
       data: [],
       query: '',
+      isLoading: false,
     };
   }
 
@@ -18,16 +19,21 @@ class Page extends Component<object, MainState> {
   }
 
   queryChange = async (query: string) => {
-    const response = await fetch(
-      `https://zelda.fanapis.com/api/characters?name=${query.toLowerCase()}`
-    );
-    if (!response.ok) {
-      throw new Error('Monster not found');
-    }
-    const result = await response.json();
-    console.log(result);
+    this.setState({ isLoading: true });
+    try {
+      const response = await fetch(
+        `https://zelda.fanapis.com/api/characters?name=${query.toLowerCase()}`
+      );
+      if (!response.ok) {
+        throw new Error('Monster not found');
+      }
+      const result = await response.json();
+      console.log(result);
 
-    this.setState({ data: result.data });
+      this.setState({ data: result.data, isLoading: false });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   render(): ReactNode {
@@ -35,7 +41,10 @@ class Page extends Component<object, MainState> {
       <>
         <Header title="Zelda monsters store" />
         <Search onQueryChange={this.queryChange} />
-        <CardList data={this.state.data}></CardList>
+        <CardList
+          data={this.state.data}
+          isLoading={this.state.isLoading}
+        ></CardList>
       </>
     );
   }
