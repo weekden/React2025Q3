@@ -18,9 +18,9 @@ class Search extends Component<SearchProps, SearchState> {
 
   handleClick = async () => {
     const query = this.state.query.trim();
-    if (!query) {
-      return;
-    }
+    // if (!query) {
+    //   return;
+    // }
     this.props.onQueryChange(query);
   };
 
