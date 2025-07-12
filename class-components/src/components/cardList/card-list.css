@@ -1,0 +1,35 @@
+.main-container {
+  min-height: 600px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  width: 100%;
+}
+
+.card-column {
+  column-count: 3;
+  column-gap: 12px;
+}
+
+@media (width <= 1000px) {
+  .card-column {
+    column-count: 2;
+  }
+}
+
+@media (width <= 678px) {
+  .card-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

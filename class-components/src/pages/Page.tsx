@@ -4,6 +4,7 @@ import Search from '../components/search/Search';
 import type { MainState } from '../types/data';
 import CardList from '../components/cardList/CardList';
 import ErrorButton from '../components/errorButton/ErrorButton';
+import './page.css';
 
 class Page extends Component<object, MainState> {
   constructor(props: object) {
@@ -45,6 +46,7 @@ class Page extends Component<object, MainState> {
 
       this.setState({ data: result.data, isLoading: false });
     } catch {
+      this.setState({ isLoading: true });
       // if (error) this.setState({ isError: true });
     }
   };
@@ -58,7 +60,7 @@ class Page extends Component<object, MainState> {
       throw new Error('This is mock');
     }
     return (
-      <>
+      <div className="page-wrapper">
         <Header title="Zelda monsters store" />
         <Search onQueryChange={this.queryChange} />
 
@@ -70,7 +72,7 @@ class Page extends Component<object, MainState> {
         ></CardList>
 
         <ErrorButton onErrorGenerate={this.errorGenerate} />
-      </>
+      </div>
     );
   }
 }

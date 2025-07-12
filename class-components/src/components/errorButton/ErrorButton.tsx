@@ -1,5 +1,6 @@
 import { Component, type ReactNode } from 'react';
 import type { ErrorProps } from '../../types/error';
+import './error.css';
 
 class ErrorButton extends Component<ErrorProps> {
   handleClick = () => {
@@ -7,7 +8,7 @@ class ErrorButton extends Component<ErrorProps> {
   };
   render(): ReactNode {
     return (
-      <div>
+      <div className="error-mock-container">
         <button onClick={this.handleClick}>Error Button</button>
       </div>
     );

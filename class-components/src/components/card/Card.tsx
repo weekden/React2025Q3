@@ -1,14 +1,18 @@
 import { Component, type ReactNode } from 'react';
 import type { CardProps } from '../../types/card';
+import './card.css';
 
 class Card extends Component<CardProps> {
   render(): ReactNode {
     return (
       <>
         <div className="card">
-          <h4>{this.props.name}</h4>
-          <p>Race: {this.props.race || 'Unknow race'}</p>
-          <p>{this.props.description}</p>
+          <h4 className="card__name">{this.props.name}</h4>
+          <p className="card__race">
+            <span className="card__pretitle">Race:</span>{' '}
+            {this.props.race || 'Unknow race'}
+          </p>
+          <p className="card__desc">{this.props.description}</p>
         </div>
       </>
     );

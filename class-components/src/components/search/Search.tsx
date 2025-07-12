@@ -1,5 +1,6 @@
 import { Component, type ChangeEvent, type ReactNode } from 'react';
 import type { SearchProps, SearchState } from '../../types/search';
+import './search.css';
 
 class Search extends Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
@@ -21,20 +22,23 @@ class Search extends Component<SearchProps, SearchState> {
 
   handleClick = () => {
     const query = this.state.query.trim();
+    if (!query) return;
     this.props.onQueryChange(query);
   };
 
   render(): ReactNode {
     return (
       <>
-        <input
-          type="search"
-          className="input-search"
-          placeholder="Enter Name"
-          value={this.state.query}
-          onChange={this.handleChange}
-        />
-        <button onClick={this.handleClick}>Search</button>
+        <div className="search-container">
+          <input
+            type="search"
+            className="input-search"
+            placeholder="Enter Name"
+            value={this.state.query}
+            onChange={this.handleChange}
+          />
+          <button onClick={this.handleClick}>Search</button>
+        </div>
       </>
     );
   }
