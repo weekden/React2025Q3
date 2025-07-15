@@ -47,7 +47,6 @@ class Page extends Component<object, MainState> {
       this.setState({ data: result.data, isLoading: false });
     } catch {
       this.setState({ isLoading: true });
-      // if (error) this.setState({ isError: true });
     }
   };
 
