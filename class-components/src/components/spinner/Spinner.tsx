@@ -3,7 +3,7 @@ import spinner from '../../assets/spinner.png';
 import './spinner.css';
 
 class Spinner extends Component {
-  render(): ReactNode {
+  public render(): ReactNode {
     return (
       <div className="spinner-container">
         <img className="spinner-img" src={spinner} alt="Loading..." />

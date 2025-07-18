@@ -11,22 +11,7 @@ class Search extends Component<SearchProps, SearchState> {
     };
   }
 
-  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ query: event.target.value }, () => {
-      localStorage.setItem('search', this.state.query);
-      if (this.state.query.trim().length === 0) {
-        this.props.onQueryChange('');
-      }
-    });
-  };
-
-  handleClick = () => {
-    const query = this.state.query.trim();
-    if (!query) return;
-    this.props.onQueryChange(query);
-  };
-
-  render(): ReactNode {
+  public render(): ReactNode {
     return (
       <>
         <div className="search-container">
@@ -42,5 +27,20 @@ class Search extends Component<SearchProps, SearchState> {
       </>
     );
   }
+
+  private handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    this.setState({ query: event.target.value }, () => {
+      localStorage.setItem('search', this.state.query);
+      if (this.state.query.trim().length === 0) {
+        this.props.onQueryChange('');
+      }
+    });
+  };
+
+  private handleClick = (): void => {
+    const query = this.state.query.trim();
+    if (!query) return;
+    this.props.onQueryChange(query);
+  };
 }
 export default Search;

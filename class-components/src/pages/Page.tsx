@@ -19,42 +19,11 @@ class Page extends Component<object, MainState> {
     };
   }
 
-  componentDidMount(): void {
+  public componentDidMount(): void {
     this.queryChange('');
   }
 
-  queryChange = async (query: string) => {
-    this.setState({ isLoading: true });
-    try {
-      const response = await fetch(
-        `https://zelda.fanapis.com/api/characters?name=${encodeURIComponent(query)}`
-      );
-      if (!response.ok) {
-        if (response.status >= 400 && response.status < 500) {
-          this.setState({
-            errorMessage: `Client error ${response.status} - ${response.statusText}`,
-          });
-        } else if (response.status >= 500) {
-          this.setState({
-            errorMessage: `Server error ${response.status} - ${response.statusText}`,
-          });
-        }
-        this.setState({ isLoading: false, isError: true });
-      }
-      const result = await response.json();
-      console.log(result);
-
-      this.setState({ data: result.data, isLoading: false });
-    } catch {
-      this.setState({ isLoading: true });
-    }
-  };
-
-  errorGenerate = (): void => {
-    this.setState({ isMockError: true });
-  };
-
-  render(): ReactNode {
+  public render(): ReactNode {
     if (this.state.isMockError) {
       throw new Error('This is mock');
     }
@@ -74,5 +43,35 @@ class Page extends Component<object, MainState> {
       </div>
     );
   }
+
+  private queryChange = async (query: string): Promise<void> => {
+    this.setState({ isLoading: true });
+    try {
+      const response = await fetch(
+        `https://zelda.fanapis.com/api/characters?name=${encodeURIComponent(query)}`
+      );
+      if (!response.ok) {
+        if (response.status >= 400 && response.status < 500) {
+          this.setState({
+            errorMessage: `Client error ${response.status} - ${response.statusText}`,
+          });
+        } else if (response.status >= 500) {
+          this.setState({
+            errorMessage: `Server error ${response.status} - ${response.statusText}`,
+          });
+        }
+        this.setState({ isLoading: false, isError: true });
+      }
+      const result = await response.json();
+
+      this.setState({ data: result.data, isLoading: false });
+    } catch {
+      this.setState({ isLoading: true });
+    }
+  };
+
+  private errorGenerate = (): void => {
+    this.setState({ isMockError: true });
+  };
 }
 export default Page;

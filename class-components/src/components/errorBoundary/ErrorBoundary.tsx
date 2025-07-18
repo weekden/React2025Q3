@@ -1,4 +1,4 @@
-import { Component, type ErrorInfo } from 'react';
+import { Component, type ErrorInfo, type ReactNode } from 'react';
 import type { ErrorBoundaryProps, ErrorBoundaryState } from '../../types/error';
 import './error-boundary.css';
 
@@ -8,22 +8,22 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     this.state = { hasError: false, errorMessage: '' };
   }
 
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+  public static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return {
       hasError: true,
       errorMessage: error.message,
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.error('ErrorBoundary', error, errorInfo);
   }
 
-  handleClick = () => {
+  public handleClick = (): void => {
     this.setState({ hasError: false, errorMessage: '' });
   };
 
-  render() {
+  public render(): ReactNode {
     if (this.state.hasError) {
       return (
         <div className="error error-container">

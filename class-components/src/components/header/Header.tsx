@@ -3,7 +3,7 @@ import type { HeaderProps } from '../../types/header';
 import './header.css';
 
 class Header extends Component<HeaderProps> {
-  render(): ReactNode {
+  public render(): ReactNode {
     const { title } = this.props;
     return (
       <>

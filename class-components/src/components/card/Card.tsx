@@ -3,7 +3,7 @@ import type { CardProps } from '../../types/card';
 import './card.css';
 
 class Card extends Component<CardProps> {
-  render(): ReactNode {
+  public render(): ReactNode {
     return (
       <>
         <div className="card">

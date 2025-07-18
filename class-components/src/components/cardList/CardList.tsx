@@ -1,14 +1,14 @@
-import { Component } from 'react';
-
-import type { CardListProps } from '../../types/cardList';
+import { Component, type ReactNode } from 'react';
 import Card from '../card/Card';
-import type { CardProps } from '../../types/card';
 import Spinner from '../spinner/Spinner';
 import Message from '../message/Message';
+
+import type { CardListProps } from '../../types/cardList';
+import type { CardProps } from '../../types/card';
 import './card-list.css';
 
 class CardList extends Component<CardListProps> {
-  render() {
+  public render(): ReactNode {
     return (
       <main className="main-container">
         {this.props.isLoading && (
