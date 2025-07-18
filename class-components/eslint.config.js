@@ -85,7 +85,6 @@ export default tseslint.config(
 
       'prettier/prettier': 'error',
       'import/extensions': 'off',
-      'max-lines-per-function': ['error', 50],
       'import/prefer-default-export': 'off',
       'no-debugger': 'off',
       'no-console': 'off',

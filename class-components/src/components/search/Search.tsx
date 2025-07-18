@@ -29,7 +29,7 @@ class Search extends Component<SearchProps, SearchState> {
   }
 
   private handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ query: event.target.value }, () => {
+    this.setState({ query: event.target.value.trim() }, () => {
       localStorage.setItem('search', this.state.query);
       if (this.state.query.trim().length === 0) {
         this.props.onQueryChange('');
