@@ -1,5 +1,5 @@
 .error-mock-container {
-  width: 100%;
   display: flex;
   justify-content: end;
+  width: 100%;
 }

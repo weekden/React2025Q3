@@ -1,9 +1,11 @@
 .spinner-container {
   display: flex;
-  justify-content: center;
   align-items: start;
+  justify-content: center;
+
   width: 240px;
   margin: 0 auto;
+
   animation: spin 1s linear infinite;
 }
 
