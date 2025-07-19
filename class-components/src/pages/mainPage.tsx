@@ -6,7 +6,7 @@ import CardList from '../components/cardList/CardList';
 import ErrorButton from '../components/errorButton/ErrorButton';
 import './page.css';
 
-class Page extends Component<object, MainState> {
+class MainPage extends Component<object, MainState> {
   constructor(props: object) {
     super(props);
     this.state = {
@@ -48,7 +48,7 @@ class Page extends Component<object, MainState> {
     this.setState({ isLoading: true });
     try {
       const response = await fetch(
-        `https://zelda.fanapis.com/api/charactersname=${encodeURIComponent(query)}`
+        `https://zelda.fanapis.com/api/characters?name=${encodeURIComponent(query)}`
       );
       if (!response.ok) {
         if (response.status >= 400 && response.status < 500) {
@@ -63,6 +63,7 @@ class Page extends Component<object, MainState> {
         this.setState({ isLoading: false, isError: true });
       }
       const result = await response.json();
+      console.log(result);
 
       this.setState({ data: result.data, isLoading: false });
     } catch {
@@ -74,4 +75,4 @@ class Page extends Component<object, MainState> {
     this.setState({ isMockError: true });
   };
 }
-export default Page;
+export default MainPage;

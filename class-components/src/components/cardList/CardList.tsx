@@ -10,7 +10,7 @@ import './card-list.css';
 class CardList extends Component<CardListProps> {
   public render(): ReactNode {
     return (
-      <main className="main-container">
+      <main className="main-container" data-testid="card-list">
         {this.props.isLoading && (
           <div className="center-conten">
             <Spinner />

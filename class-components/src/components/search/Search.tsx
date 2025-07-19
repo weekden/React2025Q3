@@ -14,7 +14,7 @@ class Search extends Component<SearchProps, SearchState> {
   public render(): ReactNode {
     return (
       <>
-        <div className="search-container">
+        <div className="search-container" data-testid="search">
           <input
             type="search"
             className="input-search"

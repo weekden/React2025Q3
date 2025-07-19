@@ -7,7 +7,9 @@ class Header extends Component<HeaderProps> {
     const { title } = this.props;
     return (
       <>
-        <h1 className="header">{title || 'Default title'}</h1>
+        <h1 className="header" data-testid="header">
+          {title || 'Default title'}
+        </h1>
       </>
     );
   }

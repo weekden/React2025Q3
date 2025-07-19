@@ -5,7 +5,7 @@ import './error.css';
 class ErrorButton extends Component<ErrorProps> {
   public render(): ReactNode {
     return (
-      <div className="error-mock-container">
+      <div className="error-mock-container" data-testid="error-button">
         <button onClick={this.handleClick}>Error Button</button>
       </div>
     );
