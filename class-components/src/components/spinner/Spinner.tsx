@@ -6,7 +6,12 @@ class Spinner extends Component {
   public render(): ReactNode {
     return (
       <div className="spinner-container">
-        <img className="spinner-img" src={spinner} alt="Loading..." />
+        <img
+          className="spinner-img"
+          src={spinner}
+          alt="Loading..."
+          role="loading"
+        />
       </div>
     );
   }

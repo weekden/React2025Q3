@@ -48,7 +48,7 @@ class Page extends Component<object, MainState> {
     this.setState({ isLoading: true });
     try {
       const response = await fetch(
-        `https://zelda.fanapis.com/api/characters?name=${encodeURIComponent(query)}`
+        `https://zelda.fanapis.com/api/charactersname=${encodeURIComponent(query)}`
       );
       if (!response.ok) {
         if (response.status >= 400 && response.status < 500) {
