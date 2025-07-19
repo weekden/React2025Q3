@@ -10,7 +10,7 @@ class Spinner extends Component {
           className="spinner-img"
           src={spinner}
           alt="Loading..."
-          role="loading"
+          aria-label="Loading..."
         />
       </div>
     );
