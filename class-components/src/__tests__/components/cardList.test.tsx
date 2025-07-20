@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 const mockData: CardProps[] = [
   {
     name: 'Anche',
-    race: 'Gerudo',
+    race: null,
     description: 'Anche is a character in Breath of the Wild.',
   },
   {
@@ -18,6 +18,28 @@ const mockData: CardProps[] = [
 ];
 
 describe('CardList component', () => {
+  it('should render all card data fields correctly', () => {
+    render(
+      <CardList
+        data={mockData}
+        isLoading={false}
+        isError={false}
+        errorMessage=""
+      />
+    );
+
+    mockData.forEach(({ name, race, description }) => {
+      expect(screen.getByText(name)).toBeInTheDocument();
+
+      expect(screen.getByText(description)).toBeInTheDocument();
+      if (race !== null) {
+        expect(screen.getByText(race)).toBeInTheDocument();
+      } else {
+        expect(screen.getByText('Unknow race')).toBeInTheDocument();
+      }
+    });
+  });
+
   it('should render spinner element', () => {
     render(
       <CardList data={[]} isLoading={true} isError={false} errorMessage="" />

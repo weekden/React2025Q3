@@ -19,6 +19,7 @@ describe('Card component', () => {
     render(
       <Card
         name={cardDefaultprops.name}
+        race={null}
         description={cardDefaultprops.description}
       />
     );

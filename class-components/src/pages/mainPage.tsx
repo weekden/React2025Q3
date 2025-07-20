@@ -65,6 +65,7 @@ class MainPage extends Component<object, MainState> {
       }
 
       const result = await response.json();
+      console.log(result);
       this.setState({ data: result.data, isLoading: false, isError: false });
     } catch {
       this.setState({
