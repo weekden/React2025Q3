@@ -24,6 +24,14 @@ export default defineConfig({
         'node_modules',
         'dist',
       ],
+      thresholds: {
+        global: {
+          statements: 80,
+          branches: 50,
+          functions: 50,
+          lines: 50,
+        },
+      },
     },
     watch: false,
     reporters: ['default'],

@@ -25,7 +25,7 @@ class MainPage extends Component<object, MainState> {
 
   public render(): ReactNode {
     if (this.state.isMockError) {
-      throw new Error('This is mock');
+      throw new Error('This is mock error');
     }
     return (
       <div className="page-wrapper">
@@ -60,14 +60,19 @@ class MainPage extends Component<object, MainState> {
             errorMessage: `Server error ${response.status} - ${response.statusText}`,
           });
         }
-        this.setState({ isLoading: false, isError: true });
-      }
-      const result = await response.json();
-      console.log(result);
 
-      this.setState({ data: result.data, isLoading: false });
+        return this.setState({ data: [], isLoading: false, isError: true });
+      }
+
+      const result = await response.json();
+      this.setState({ data: result.data, isLoading: false, isError: false });
     } catch {
-      this.setState({ isLoading: true });
+      this.setState({
+        data: [],
+        isLoading: false,
+        isError: true,
+        errorMessage: 'Unexpected error',
+      });
     }
   };
 
