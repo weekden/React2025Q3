@@ -60,7 +60,6 @@ describe('MainPage API integration', () => {
     render(<MainPage />);
 
     await waitFor(() => {
-      screen.debug();
       expect(
         screen.getByText('Client error 404 - Not found')
       ).toBeInTheDocument();
@@ -83,7 +82,6 @@ describe('MainPage API integration', () => {
     render(<MainPage />);
 
     await waitFor(() => {
-      screen.debug();
       expect(
         screen.getByText('Server error 500 - Server Error')
       ).toBeInTheDocument();
