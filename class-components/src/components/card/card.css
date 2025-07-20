@@ -1,0 +1,28 @@
+.card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  width: 320px;
+  margin-bottom: 12px;
+  padding: 1rem;
+  border-radius: 12px;
+
+  background: #e7e5e5;
+}
+
+.card__name {
+  font-size: 18px;
+}
+
+.card__pretitle {
+  margin-right: 12px;
+  font-weight: bold;
+}
+
+@media (width <= 678px) {
+  .card {
+    width: 100%;
+  }
+}

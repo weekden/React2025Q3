@@ -1,0 +1,11 @@
+.error-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.error__btn {
+  align-self: flex-end;
+}
