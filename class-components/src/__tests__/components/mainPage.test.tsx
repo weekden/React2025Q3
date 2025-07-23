@@ -89,18 +89,4 @@ describe('MainPage API integration', () => {
 
     expect(screen.queryByLabelText('Loading...')).not.toBeInTheDocument();
   });
-
-  it('should throw error when isMockError is true', () => {
-    class MockMainPage extends MainPage {
-      constructor(props: object) {
-        super(props);
-        this.state = {
-          ...this.state,
-          isMockError: true,
-        };
-      }
-    }
-
-    expect(() => render(<MockMainPage />)).toThrow('This is mock error');
-  });
 });

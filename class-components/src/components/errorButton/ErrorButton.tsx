@@ -1,17 +1,17 @@
-import { Component, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { ErrorProps } from '../../types/error';
 import './error.css';
 
-class ErrorButton extends Component<ErrorProps> {
-  public render(): ReactNode {
-    return (
-      <div className="error-mock-container" data-testid="error-button">
-        <button onClick={this.handleClick}>Error Button</button>
-      </div>
-    );
-  }
-  private handleClick = (): void => {
-    this.props.onErrorGenerate();
+function ErrorButton({ onErrorGenerate }: ErrorProps): ReactNode {
+  const handleClick = (): void => {
+    onErrorGenerate();
   };
+
+  return (
+    <div className="error-mock-container" data-testid="error-button">
+      <button onClick={handleClick}>Error Button</button>
+    </div>
+  );
 }
+
 export default ErrorButton;

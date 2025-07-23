@@ -1,84 +1,83 @@
-import { Component, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import Header from '../components/header/Header';
 import Search from '../components/search/Search';
-import type { MainState } from '../types/data';
 import CardList from '../components/cardList/CardList';
 import ErrorButton from '../components/errorButton/ErrorButton';
 import './page.css';
+import type { CardProps } from '../types/card';
 
-class MainPage extends Component<object, MainState> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      data: [],
-      query: '',
-      isLoading: false,
-      isError: false,
-      errorMessage: '',
-      isMockError: false,
-    };
-  }
+function MainPage(): ReactNode {
+  const [data, setData] = useState<CardProps[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isMockError, setIsMockError] = useState(false);
 
-  public componentDidMount(): void {
-    this.queryChange('');
-  }
+  useEffect(() => {
+    queryChange('');
+  }, []);
 
-  public render(): ReactNode {
-    if (this.state.isMockError) {
-      throw new Error('This is mock error');
-    }
-    return (
-      <div className="page-wrapper">
-        <Header title="Zelda monsters store" />
-        <Search onQueryChange={this.queryChange} />
+  const queryChange = async (query: string): Promise<void> => {
+    setIsLoading(true);
 
-        <CardList
-          data={this.state.data}
-          isLoading={this.state.isLoading}
-          isError={this.state.isError}
-          errorMessage={this.state.errorMessage}
-        ></CardList>
-
-        <ErrorButton onErrorGenerate={this.errorGenerate} />
-      </div>
-    );
-  }
-
-  private queryChange = async (query: string): Promise<void> => {
-    this.setState({ isLoading: true });
     try {
       const response = await fetch(
         `https://zelda.fanapis.com/api/characters?name=${encodeURIComponent(query)}`
       );
       if (!response.ok) {
         if (response.status >= 400 && response.status < 500) {
-          this.setState({
-            errorMessage: `Client error ${response.status} - ${response.statusText}`,
-          });
+          setErrorMessage(
+            `Client error ${response.status} - ${response.statusText}`
+          );
         } else if (response.status >= 500) {
-          this.setState({
-            errorMessage: `Server error ${response.status} - ${response.statusText}`,
-          });
+          setErrorMessage(
+            `Server error ${response.status} - ${response.statusText}`
+          );
         }
 
-        return this.setState({ data: [], isLoading: false, isError: true });
+        setData([]);
+        setIsLoading(false);
+        setIsError(true);
+        return;
       }
 
       const result = await response.json();
-      console.log(result);
-      this.setState({ data: result.data, isLoading: false, isError: false });
+      setData(result);
+
+      setData(result.data);
+      setIsLoading(false);
+      setIsError(false);
     } catch {
-      this.setState({
-        data: [],
-        isLoading: false,
-        isError: true,
-        errorMessage: 'Unexpected error',
-      });
+      setData([]);
+      setIsLoading(false);
+      setIsError(true);
+      setErrorMessage('Unexpected error');
     }
   };
 
-  private errorGenerate = (): void => {
-    this.setState({ isMockError: true });
+  const errorGenerate = (): void => {
+    setIsMockError(true);
   };
+
+  if (isMockError) {
+    throw new Error('This is mock error');
+  }
+
+  return (
+    <div className="page-wrapper">
+      <Header title="Zelda monsters store" />
+      <Search onQueryChange={queryChange} />
+
+      <CardList
+        data={data}
+        isLoading={isLoading}
+        isError={isError}
+        errorMessage={errorMessage}
+      ></CardList>
+
+      <ErrorButton onErrorGenerate={errorGenerate} />
+    </div>
+  );
 }
+
 export default MainPage;
