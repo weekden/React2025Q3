@@ -14,7 +14,7 @@ class Search extends Component<SearchProps, SearchState> {
   public render(): ReactNode {
     return (
       <>
-        <div className="search-container">
+        <div className="search-container" data-testid="search">
           <input
             type="search"
             className="input-search"
@@ -29,7 +29,7 @@ class Search extends Component<SearchProps, SearchState> {
   }
 
   private handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ query: event.target.value }, () => {
+    this.setState({ query: event.target.value.trim() }, () => {
       localStorage.setItem('search', this.state.query);
       if (this.state.query.trim().length === 0) {
         this.props.onQueryChange('');

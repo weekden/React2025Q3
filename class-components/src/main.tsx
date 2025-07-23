@@ -2,15 +2,15 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 
-import Page from './pages/Page.tsx';
-import ErrorBoundary from './components/errorBoundary/ErrorBoundary.tsx';
+import MainPage from './pages/mainPage';
+import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
 
 const root = document.getElementById('root');
 if (root) {
   createRoot(root).render(
     <StrictMode>
       <ErrorBoundary>
-        <Page></Page>
+        <MainPage></MainPage>
       </ErrorBoundary>
     </StrictMode>
   );
