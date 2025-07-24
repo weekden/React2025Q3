@@ -4,8 +4,8 @@ import Spinner from '../spinner/Spinner';
 import Message from '../message/Message';
 
 import type { CardListProps } from '../../types/cardList';
-import type { CardProps } from '../../types/card';
 import './card-list.css';
+import type { Character } from '../../types/api';
 
 function CardList({
   data,
@@ -35,7 +35,7 @@ function CardList({
 
       {!isLoading && (
         <div className="card-column">
-          {data.map((card: CardProps, index) => (
+          {data.map((card: Character, index) => (
             <Card
               name={card.name}
               description={card.description}

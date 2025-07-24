@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format:fix": "prettier --write . --ignore-unknown",
-    "lint:css": "stylelint --fix **/*.css",
+    "lint:css": "stylelint --fix \"src/**/*.css\"",
     "preview": "vite preview",
     "prepare": "cd .. && husky class-components/.husky",
     "test": "vitest",

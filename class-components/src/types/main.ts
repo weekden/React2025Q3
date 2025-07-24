@@ -1,7 +1,7 @@
-import type { CardProps } from './card';
+import type { Character } from './api';
 
 export type MainState = {
-  data: CardProps[];
+  data: Character[];
   query: string;
   isLoading: boolean;
   isError: boolean;
