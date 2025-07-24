@@ -1,6 +1,6 @@
 export type Character = {
   appearances?: string[];
-  description: string;
+  description?: string;
   gender?: string;
   id?: string;
   name: string;

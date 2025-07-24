@@ -1,10 +1,13 @@
 import type { CharacterApiResponse } from '../types/api';
 
 export const fetchCharacters = async (
-  query: string
+  query: string,
+  limit: number,
+  page: number
 ): Promise<CharacterApiResponse> => {
+  const activePage = page - 1;
   const response = await fetch(
-    `https://zelda.fanapis.com/api/characters?name=${encodeURIComponent(query)}`
+    `https://zelda.fanapis.com/api/characters?name=${encodeURIComponent(query)}&limit=${limit}&page=${activePage}`
   );
   if (!response.ok) {
     if (response.status >= 400 && response.status < 500) {
