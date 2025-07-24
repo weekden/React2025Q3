@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { HeaderProps } from '../../types/header';
-import './header.css';
+import './title.css';
 
 function Header({ title }: HeaderProps): ReactNode {
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import Header from '../components/header/Header';
+import Header from '../components/title/Title';
 import Search from '../components/search/Search';
 import CardList from '../components/cardList/CardList';
 import { fetchCharacters } from '../api/getData';
