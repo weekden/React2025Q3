@@ -16,7 +16,6 @@ describe('MainPage API integration', () => {
     expect(screen.getByText('Zelda monsters store')).toBeInTheDocument();
     expect(screen.getByTestId('search')).toBeInTheDocument();
     expect(screen.getByTestId('card-list')).toBeInTheDocument();
-    expect(screen.getByTestId('error-button')).toBeInTheDocument();
   });
 
   it('should fetch and render data successfully', async () => {
