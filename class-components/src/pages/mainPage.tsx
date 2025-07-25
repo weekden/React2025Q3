@@ -7,6 +7,7 @@ import { fetchCharacters } from '../api/getData';
 import './page.css';
 import type { Character } from '../types/api';
 import Pagination from '../components/pagination/Pagination';
+import { useSearchParams } from 'react-router-dom';
 
 function MainPage(): ReactNode {
   const limit = 20;
@@ -14,13 +15,19 @@ function MainPage(): ReactNode {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [page, setPage] = useState(1);
-  const [query, setQuery] = useState('');
+
   const [isLastPage, setIsLastPage] = useState(false);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const pageParam = +(searchParams.get('page') || 1);
+  const [page, setPage] = useState(pageParam);
+  const [query, setQuery] = useState('');
+
   useEffect(() => {
+    setSearchParams({ page: page.toString() });
     queryChange(query, limit, page);
-  }, [query, page]);
+  }, [query, page, setSearchParams]);
 
   const queryChange = async (
     query: string,
@@ -74,7 +81,6 @@ function MainPage(): ReactNode {
           setPage(1);
         }}
       />
-
       <CardList
         data={data}
         isLoading={isLoading}
