@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import MainPage from '../../pages/mainPage';
+import { MemoryRouter } from 'react-router-dom';
 
 type PartialResponse = Pick<Response, 'ok' | 'status' | 'json'> &
   Partial<Pick<Response, 'statusText'>>;
@@ -10,12 +11,17 @@ describe('MainPage API integration', () => {
     vi.clearAllMocks();
   });
 
-  it('should render header, search, card list, and error button', () => {
-    render(<MainPage />);
+  it('should render header, search, card list', () => {
+    render(
+      <MemoryRouter>
+        <MainPage />
+      </MemoryRouter>
+    );
 
     expect(screen.getByTestId('title')).toBeInTheDocument();
     expect(screen.getByTestId('search')).toBeInTheDocument();
     expect(screen.getByTestId('card-list')).toBeInTheDocument();
+    expect(screen.getByTestId('pagination')).toBeInTheDocument();
   });
 
   it('should fetch and render data successfully', async () => {
@@ -35,7 +41,11 @@ describe('MainPage API integration', () => {
         }) as Promise<Response>
     );
 
-    render(<MainPage />);
+    render(
+      <MemoryRouter>
+        <MainPage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(screen.getByText('Link')).toBeInTheDocument();
@@ -56,7 +66,11 @@ describe('MainPage API integration', () => {
         }) as Promise<Response>
     );
 
-    render(<MainPage />);
+    render(
+      <MemoryRouter>
+        <MainPage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(
@@ -78,7 +92,11 @@ describe('MainPage API integration', () => {
         }) as Promise<Response>
     );
 
-    render(<MainPage />);
+    render(
+      <MemoryRouter>
+        <MainPage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(

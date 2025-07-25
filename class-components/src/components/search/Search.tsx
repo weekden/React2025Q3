@@ -1,19 +1,13 @@
-import { useEffect, useState, type ChangeEvent, type ReactNode } from 'react';
+import { type ChangeEvent, type ReactNode } from 'react';
 import type { SearchProps } from '../../types/search';
 import './search.css';
+import useLocaleStorage from '../../hooks/localeStorage';
 
 function Search({ onQueryChange }: SearchProps): ReactNode {
-  const getValueFromLocalStorage = (): string =>
-    localStorage.getItem('search') || '';
-
-  const [query, setQuery] = useState(getValueFromLocalStorage);
-
-  useEffect(() => {
-    localStorage.setItem('search', query);
-  }, [query]);
+  const [query, setQuery] = useLocaleStorage('search', '');
 
   const handleClick = (): void => {
-    const trimmedQuery = query.trim();
+    const trimmedQuery: string = query.trim();
     if (!trimmedQuery) {
       return;
     }
