@@ -6,7 +6,7 @@ import Title from '../../components/title/Title';
 describe('Header component', () => {
   it('should render header element', () => {
     render(<Title title="Test render" />);
-    expect(screen.getByRole('heading')).toBeInTheDocument();
+    expect(screen.getByTestId('title')).toBeInTheDocument();
   });
 
   it('should display the default title if no title is specified', () => {
@@ -16,7 +16,7 @@ describe('Header component', () => {
 
   it('should display the title', () => {
     render(<Title title="Zelda monsters store" />);
-    expect(screen.getByRole('heading')).toHaveTextContent(
+    expect(screen.getByTestId('title')).toHaveTextContent(
       'Zelda monsters store'
     );
   });

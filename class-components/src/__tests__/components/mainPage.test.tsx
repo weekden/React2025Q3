@@ -13,7 +13,7 @@ describe('MainPage API integration', () => {
   it('should render header, search, card list, and error button', () => {
     render(<MainPage />);
 
-    expect(screen.getByText('Zelda monsters store')).toBeInTheDocument();
+    expect(screen.getByTestId('title')).toBeInTheDocument();
     expect(screen.getByTestId('search')).toBeInTheDocument();
     expect(screen.getByTestId('card-list')).toBeInTheDocument();
   });

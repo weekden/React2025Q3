@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
-import type { HeaderProps } from '../../types/header';
+import type { TitleProps } from '../../types/title';
 import './title.css';
 
-function Header({ title }: HeaderProps): ReactNode {
+function Header({ title }: TitleProps): ReactNode {
   return (
     <>
-      <h1 className="header" data-testid="header">
+      <h1 className="title" data-testid="title">
         {title || 'Default title'}
       </h1>
     </>

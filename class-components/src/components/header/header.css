@@ -1,0 +1,39 @@
+.header {
+  padding: 1rem 2rem;
+  color: white;
+  background-color: #222;
+}
+
+.header__nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__nav-list {
+  display: flex;
+  gap: 1.5rem;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.nav-list__item {
+  display: inline;
+}
+
+.nav-list__item-link {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-list__item-link:hover {
+  color: #64ff71;
+}
+
+.nav-list__item-link.active {
+  color: #19a225;
+}
