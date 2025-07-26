@@ -35,5 +35,6 @@
 }
 
 .nav-list__item-link.active {
+  pointer-events: none;
   color: #19a225;
 }

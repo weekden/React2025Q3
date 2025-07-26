@@ -12,9 +12,10 @@ function CardList({
   isLoading,
   isError,
   errorMessage,
+  onSelectCard,
 }: CardListProps): ReactNode {
   return (
-    <main className="main-container" data-testid="card-list">
+    <>
       {isLoading && (
         <div className="center-conten">
           <Spinner />
@@ -34,18 +35,29 @@ function CardList({
       )}
 
       {!isLoading && (
-        <div className="card-column">
-          {data.map((card: Character, index) => (
+        <div
+          className="card-column"
+          onClick={(event) => {
+            const card = (event.target as HTMLElement).closest('.card');
+            if (card) {
+              const id = card.getAttribute('data-id');
+              if (id) {
+                onSelectCard(id);
+              }
+            }
+          }}
+        >
+          {data.map((card: Character) => (
             <Card
               name={card.name}
-              description={card.description}
               race={card.race}
-              key={index}
+              key={card.id}
+              id={card.id}
             />
           ))}
         </div>
       )}
-    </main>
+    </>
   );
 }
 

@@ -5,4 +5,5 @@ export type CardListProps = {
   isLoading: boolean;
   isError: boolean;
   errorMessage: string;
+  onSelectCard: (id: string) => void;
 };

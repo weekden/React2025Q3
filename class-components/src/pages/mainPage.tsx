@@ -8,6 +8,7 @@ import './page.css';
 import type { Character } from '../types/api';
 import Pagination from '../components/pagination/Pagination';
 import { useSearchParams } from 'react-router-dom';
+import CardDetails from '../components/cardDetail/CardDetail';
 
 function MainPage(): ReactNode {
   const limit = 20;
@@ -21,13 +22,13 @@ function MainPage(): ReactNode {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const pageParam = +(searchParams.get('page') || 1);
+  const detailsId = searchParams.get('details');
   const [page, setPage] = useState(pageParam);
   const [query, setQuery] = useState('');
 
   useEffect(() => {
-    setSearchParams({ page: page.toString() });
     queryChange(query, limit, page);
-  }, [query, page, setSearchParams]);
+  }, [query, page]);
 
   const queryChange = async (
     query: string,
@@ -39,7 +40,6 @@ function MainPage(): ReactNode {
 
     try {
       const result = await fetchCharacters(query, limit, page);
-      console.log(result);
       setData(result.data);
       setIsLoading(false);
       if (result.count < limit) {
@@ -62,14 +62,26 @@ function MainPage(): ReactNode {
     if (isLastPage || isError) {
       return;
     }
-    setPage((prev) => prev + 1);
+    updatePage(page + 1);
   };
 
   const handlePrevPage = (): void => {
     if (page === 1) {
       return;
     }
-    setPage((prev) => prev - 1);
+    updatePage(page - 1);
+  };
+
+  const handleSelectCard = (id: string): void => {
+    searchParams.set('details', id);
+    searchParams.set('page', page.toString());
+    setSearchParams(searchParams);
+  };
+
+  const updatePage = (newPage: number): void => {
+    setPage(newPage);
+    searchParams.set('page', newPage.toString());
+    setSearchParams(searchParams);
   };
 
   return (
@@ -81,12 +93,16 @@ function MainPage(): ReactNode {
           setPage(1);
         }}
       />
-      <CardList
-        data={data}
-        isLoading={isLoading}
-        isError={isError}
-        errorMessage={errorMessage}
-      ></CardList>
+      <div className="main-container" data-testid="card-list">
+        <CardList
+          data={data}
+          isLoading={isLoading}
+          isError={isError}
+          errorMessage={errorMessage}
+          onSelectCard={handleSelectCard}
+        ></CardList>
+        {detailsId && <CardDetails />}
+      </div>
       <Pagination
         page={page}
         onPrev={handlePrevPage}
