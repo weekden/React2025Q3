@@ -4,7 +4,7 @@ import './header.css';
 
 function Header(): ReactNode {
   return (
-    <header className="header">
+    <header className="header" data-testid="header-nav">
       <nav className="header__nav">
         <ul className="header__nav-list">
           <li className="nav-list__item">

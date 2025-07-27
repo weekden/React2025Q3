@@ -18,7 +18,9 @@ function Pagination({
       >
         Prev
       </button>
-      <span className="current-page">{page}</span>
+      <span className="current-page" data-testid="current-page">
+        Page: <strong>{page}</strong>
+      </span>
       <button
         className="button, btn-next"
         onClick={onNext}
