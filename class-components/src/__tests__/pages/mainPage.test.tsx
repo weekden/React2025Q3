@@ -1,56 +1,9 @@
-import {
-  render,
-  screen,
-  waitFor,
-  within,
-  type RenderResult,
-} from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import MainPage from '../../pages/mainPage';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import CardDetails from '../../components/cardDetail/CardDetail';
+import { mockByIdResponse, mockListResponse, mockRender } from '../mocks/data';
 
 type PartialResponse = Pick<Response, 'ok' | 'status' | 'json'> &
   Partial<Pick<Response, 'statusText'>>;
-
-const mockListResponse = {
-  data: [
-    {
-      name: 'Link',
-      race: 'Hylian',
-      description: 'Hero of Hyrule',
-      id: 'card-1',
-    },
-    {
-      name: 'Zelda',
-      race: 'Hylian',
-      description: 'Princess of Hyrule',
-      id: 'card-2',
-    },
-  ],
-};
-
-const mockByIdResponse = {
-  success: true,
-  data: {
-    id: 'card-1',
-    name: 'Link',
-    race: 'Hylian',
-    description: 'Hero of Hyrule',
-  },
-};
-
-const mockRender = (defaultPath: string = '/page/1'): RenderResult => {
-  return render(
-    <MemoryRouter initialEntries={[defaultPath]}>
-      <Routes>
-        <Route path="/page/:page" element={<MainPage />}>
-          <Route path="detailsId/:id" element={<CardDetails />} />
-        </Route>
-      </Routes>
-    </MemoryRouter>
-  );
-};
 
 describe('MainPage API integration', () => {
   afterEach(() => {
