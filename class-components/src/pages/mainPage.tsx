@@ -7,28 +7,31 @@ import { fetchCharacters } from '../api/getData';
 import './page.css';
 import type { Character } from '../types/api';
 import Pagination from '../components/pagination/Pagination';
-import { useSearchParams } from 'react-router-dom';
-import CardDetails from '../components/cardDetail/CardDetail';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import NotFoundPage from './notFoundPage';
 
 function MainPage(): ReactNode {
   const limit = 20;
+  const { page } = useParams();
+  const navigate = useNavigate();
+
+  const pageNumber = Number(page);
+  const isInvalidPage = isNaN(pageNumber) || pageNumber <= 0;
+
   const [data, setData] = useState<Character[]>([]);
+  const [query, setQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(pageNumber || 1);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
   const [isLastPage, setIsLastPage] = useState(false);
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const pageParam = +(searchParams.get('page') || 1);
-  const detailsId = searchParams.get('details');
-  const [page, setPage] = useState(pageParam);
-  const [query, setQuery] = useState('');
-
   useEffect(() => {
-    queryChange(query, limit, page);
-  }, [query, page]);
+    if (isInvalidPage) {
+      return;
+    }
+    queryChange(query, limit, currentPage);
+  }, [query, currentPage, isInvalidPage]);
 
   const queryChange = async (
     query: string,
@@ -59,30 +62,26 @@ function MainPage(): ReactNode {
   };
 
   const handleNextPage = (): void => {
-    if (isLastPage || isError) {
-      return;
-    }
-    updatePage(page + 1);
+    if (isLastPage || isError) return;
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    navigate(`/page/${nextPage}`);
   };
 
   const handlePrevPage = (): void => {
-    if (page === 1) {
-      return;
-    }
-    updatePage(page - 1);
+    if (currentPage === 1) return;
+    const prevPage = currentPage - 1;
+    setCurrentPage(prevPage);
+    navigate(`/page/${prevPage}`);
   };
 
   const handleSelectCard = (id: string): void => {
-    searchParams.set('details', id);
-    searchParams.set('page', page.toString());
-    setSearchParams(searchParams);
+    navigate(`/page/${currentPage}/detailsId/${id}`);
   };
 
-  const updatePage = (newPage: number): void => {
-    setPage(newPage);
-    searchParams.set('page', newPage.toString());
-    setSearchParams(searchParams);
-  };
+  if (isInvalidPage) {
+    return <NotFoundPage />;
+  }
 
   return (
     <div className="page-wrapper">
@@ -90,7 +89,8 @@ function MainPage(): ReactNode {
       <Search
         onQueryChange={(newQuery) => {
           setQuery(newQuery);
-          setPage(1);
+          setCurrentPage(1);
+          navigate('/page/1');
         }}
       />
       <div className="main-container" data-testid="main-container">
@@ -100,11 +100,10 @@ function MainPage(): ReactNode {
           isError={isError}
           errorMessage={errorMessage}
           onSelectCard={handleSelectCard}
-        ></CardList>
-        {detailsId && <CardDetails />}
+        />
+        <Outlet />
       </div>
       <Pagination
-        page={page}
         onPrev={handlePrevPage}
         onNext={handleNextPage}
         isLastPage={isLastPage}

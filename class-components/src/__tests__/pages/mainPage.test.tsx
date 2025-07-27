@@ -1,7 +1,14 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import {
+  render,
+  screen,
+  waitFor,
+  within,
+  type RenderResult,
+} from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import MainPage from '../../pages/mainPage';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import CardDetails from '../../components/cardDetail/CardDetail';
 
 type PartialResponse = Pick<Response, 'ok' | 'status' | 'json'> &
   Partial<Pick<Response, 'statusText'>>;
@@ -33,17 +40,25 @@ const mockByIdResponse = {
   },
 };
 
+const mockRender = (defaultPath: string = '/page/1'): RenderResult => {
+  return render(
+    <MemoryRouter initialEntries={[defaultPath]}>
+      <Routes>
+        <Route path="/page/:page" element={<MainPage />}>
+          <Route path="detailsId/:id" element={<CardDetails />} />
+        </Route>
+      </Routes>
+    </MemoryRouter>
+  );
+};
+
 describe('MainPage API integration', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
 
   it('should render header, search, card list', () => {
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
+    mockRender();
 
     expect(screen.getByTestId('title')).toBeInTheDocument();
     expect(screen.getByTestId('search')).toBeInTheDocument();
@@ -65,11 +80,7 @@ describe('MainPage API integration', () => {
         json: () => Promise.resolve(mockByIdResponse),
       } as Response);
 
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
+    mockRender('/page/1');
 
     await waitFor(() => {
       expect(screen.getByText('Link')).toBeInTheDocument();
@@ -80,6 +91,7 @@ describe('MainPage API integration', () => {
     expect(card).toBeInTheDocument();
 
     card.click();
+    mockRender('/page/1/detailsId/card-1');
 
     await waitFor(() => {
       expect(screen.getByText('Hero of Hyrule')).toBeInTheDocument();
@@ -106,11 +118,7 @@ describe('MainPage API integration', () => {
         }) as Promise<Response>
     );
 
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
+    mockRender('/page/1');
 
     await waitFor(() => {
       expect(
@@ -132,11 +140,7 @@ describe('MainPage API integration', () => {
         }) as Promise<Response>
     );
 
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
+    mockRender('/page/1');
 
     await waitFor(() => {
       expect(
@@ -150,22 +154,14 @@ describe('MainPage API integration', () => {
   it('should show error message when fetch rejects with Error in CardDetails', async () => {
     global.fetch = vi.fn(() => Promise.reject(new Error('Something failed')));
 
-    render(
-      <MemoryRouter initialEntries={['/?details=card-1']}>
-        <MainPage />
-      </MemoryRouter>
-    );
+    mockRender('/page/1/detailsId/card-1');
     expect(screen.queryByTestId('detail-card')).not.toBeInTheDocument();
   });
 
   it('should show "Unexpected error" when fetch rejects with non-Error value in CardDetails ', async () => {
     global.fetch = vi.fn(() => Promise.reject('Network down'));
 
-    render(
-      <MemoryRouter initialEntries={['/?details=card-1']}>
-        <MainPage />
-      </MemoryRouter>
-    );
+    mockRender('/page/1/detailsId/card-1');
     const detailCard = await screen.findByTestId('card-details');
     await waitFor(() => {
       expect(

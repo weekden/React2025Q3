@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, type ReactNode } from 'react';
 import Spinner from '../spinner/Spinner';
 import Message from '../message/Message';
@@ -8,13 +8,12 @@ import './cardDetail.css';
 import Card from '../card/Card';
 
 function CardDetails(): ReactNode {
+  const { page, id } = useParams();
+  const navigate = useNavigate();
   const [data, setData] = useState<Character | null>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
-  const id = searchParams.get('details');
 
   useEffect(() => {
     if (!id) return;
@@ -56,10 +55,7 @@ function CardDetails(): ReactNode {
           <button
             className="card-details__close"
             aria-label="close-details"
-            onClick={() => {
-              searchParams.delete('details');
-              setSearchParams(searchParams);
-            }}
+            onClick={() => navigate(`/page/${page}`)}
           >
             &#9747;
           </button>
