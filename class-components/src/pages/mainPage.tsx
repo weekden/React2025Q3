@@ -12,7 +12,7 @@ import NotFoundPage from './notFoundPage';
 
 function MainPage(): ReactNode {
   const limit = 20;
-  const { page } = useParams();
+  const { page = 1 } = useParams();
   const navigate = useNavigate();
 
   const pageNumber = Number(page);
@@ -20,7 +20,6 @@ function MainPage(): ReactNode {
 
   const [data, setData] = useState<Character[]>([]);
   const [query, setQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(pageNumber || 1);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -30,8 +29,8 @@ function MainPage(): ReactNode {
     if (isInvalidPage) {
       return;
     }
-    queryChange(query, limit, currentPage);
-  }, [query, currentPage, isInvalidPage]);
+    queryChange(query, limit, +page);
+  }, [query, page, isInvalidPage]);
 
   const queryChange = async (
     query: string,
@@ -63,20 +62,18 @@ function MainPage(): ReactNode {
 
   const handleNextPage = (): void => {
     if (isLastPage || isError) return;
-    const nextPage = currentPage + 1;
-    setCurrentPage(nextPage);
+    const nextPage = +page + 1;
     navigate(`/page/${nextPage}`);
   };
 
   const handlePrevPage = (): void => {
-    if (currentPage === 1) return;
-    const prevPage = currentPage - 1;
-    setCurrentPage(prevPage);
+    if (+page === 1) return;
+    const prevPage = +page - 1;
     navigate(`/page/${prevPage}`);
   };
 
   const handleSelectCard = (id: string): void => {
-    navigate(`/page/${currentPage}/detailsId/${id}`);
+    navigate(`/page/${page}/detailsId/${id}`);
   };
 
   if (isInvalidPage) {
@@ -89,7 +86,6 @@ function MainPage(): ReactNode {
       <Search
         onQueryChange={(newQuery) => {
           setQuery(newQuery);
-          setCurrentPage(1);
           navigate('/page/1');
         }}
       />
