@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import './index.css';
 
 import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
@@ -11,9 +11,9 @@ if (root) {
   createRoot(root).render(
     <StrictMode>
       <ErrorBoundary>
-        <BrowserRouter basename="/React2025Q3/class-components/">
+        <HashRouter>
           <App />
-        </BrowserRouter>
+        </HashRouter>
       </ErrorBoundary>
     </StrictMode>
   );

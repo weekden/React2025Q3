@@ -7,23 +7,6 @@ import NotFoundPage from './pages/notFoundPage';
 import Layout from './layouts/Layout';
 import CardDetails from './components/cardDetail/CardDetail';
 
-// import CardDetails from './components/cardDetail/CardDetail';
-
-// function App(): ReactNode {
-//   return (
-//     <Routes>
-//       <Route path="/" element={<Layout />}>
-//         <Route index element={<Navigate to="1" replace />} />
-//         <Route path=":page" element={<MainPage />}>
-//           <Route path=":detailsId" element={<CardDetails />} />
-//         </Route>
-//         <Route path="about" element={<AboutPage />} />
-//       </Route>
-//       <Route path="*" element={<NotFoundPage />} />
-//     </Routes>
-//   );
-// }
-
 function App(): ReactNode {
   return (
     <Routes>
