@@ -2,13 +2,13 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import '@testing-library/jest-dom';
 import Card from '../../components/card/Card';
-import type { CardProps } from '../../types/card';
 
 describe('Card component', () => {
-  const cardDefaultprops: CardProps = {
+  const cardDefaultprops = {
     name: 'Anche',
     race: 'Gerudo',
     description: 'Anche is a character in Breath of the Wild.',
+    id: 'card-id',
   };
   it('should render card element', () => {
     render(<Card {...cardDefaultprops} />);
@@ -21,6 +21,7 @@ describe('Card component', () => {
         name={cardDefaultprops.name}
         race={null}
         description={cardDefaultprops.description}
+        id={'card-id'}
       />
     );
     expect(screen.getByText('Unknow race')).toBeInTheDocument();

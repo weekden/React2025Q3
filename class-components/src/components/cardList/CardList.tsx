@@ -37,6 +37,7 @@ function CardList({
       {!isLoading && (
         <div
           className="card-column"
+          data-testid="card-list"
           onClick={(event) => {
             const card = (event.target as HTMLElement).closest('.card');
             if (card) {

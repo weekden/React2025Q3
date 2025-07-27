@@ -17,9 +17,8 @@ function CardDetails(): ReactNode {
   const id = searchParams.get('details');
 
   useEffect(() => {
-    if (id) {
-      showDetails(id);
-    }
+    if (!id) return;
+    showDetails(id);
   }, [id]);
 
   const showDetails = async (id: string): Promise<void> => {
@@ -41,7 +40,7 @@ function CardDetails(): ReactNode {
   };
 
   return (
-    <div className="card-details">
+    <div className="card-details" data-testid="card-details">
       {isLoading && (
         <div className="center-conten">
           <Spinner />
@@ -56,6 +55,7 @@ function CardDetails(): ReactNode {
         <>
           <button
             className="card-details__close"
+            aria-label="close-details"
             onClick={() => {
               searchParams.delete('details');
               setSearchParams(searchParams);

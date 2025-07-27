@@ -4,7 +4,7 @@ export type Character = {
   gender?: string;
   id: string;
   name: string;
-  race: string;
+  race: string | null;
 };
 
 export type CharacterApiResponse = {

@@ -93,7 +93,7 @@ function MainPage(): ReactNode {
           setPage(1);
         }}
       />
-      <div className="main-container" data-testid="card-list">
+      <div className="main-container" data-testid="main-container">
         <CardList
           data={data}
           isLoading={isLoading}

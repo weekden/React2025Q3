@@ -1,19 +1,20 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import CardList from '../../components/cardList/CardList';
-import type { CardProps } from '../../types/card';
-import { describe, expect, it } from 'vitest';
 
-const mockData: CardProps[] = [
+import { describe, expect, it, vi } from 'vitest';
+import type { Character } from '../../types/api';
+
+const mockData: Character[] = [
   {
     name: 'Anche',
     race: null,
-    description: 'Anche is a character in Breath of the Wild.',
+    id: '12',
   },
   {
     name: 'Flaxel',
     race: 'Hylian',
-    description: 'Flaxel is a character in Breath of the Wild.',
+    id: '18',
   },
 ];
 
@@ -25,13 +26,13 @@ describe('CardList component', () => {
         isLoading={false}
         isError={false}
         errorMessage=""
+        onSelectCard={() => {}}
       />
     );
 
-    mockData.forEach(({ name, race, description }) => {
+    mockData.forEach(({ name, race }) => {
       expect(screen.getByText(name)).toBeInTheDocument();
 
-      expect(screen.getByText(description)).toBeInTheDocument();
       if (race !== null) {
         expect(screen.getByText(race)).toBeInTheDocument();
       } else {
@@ -42,14 +43,26 @@ describe('CardList component', () => {
 
   it('should render spinner element', () => {
     render(
-      <CardList data={[]} isLoading={true} isError={false} errorMessage="" />
+      <CardList
+        data={[]}
+        isLoading={true}
+        isError={false}
+        errorMessage=""
+        onSelectCard={() => {}}
+      />
     );
     expect(screen.getByLabelText('Loading...')).toBeInTheDocument();
   });
 
   it('should render not found when mockdata length === 0', () => {
     render(
-      <CardList data={[]} isLoading={false} isError={false} errorMessage="" />
+      <CardList
+        data={[]}
+        isLoading={false}
+        isError={false}
+        errorMessage=""
+        onSelectCard={() => {}}
+      />
     );
     expect(screen.getByText('Not found')).toBeInTheDocument();
   });
@@ -61,6 +74,7 @@ describe('CardList component', () => {
         isLoading={false}
         isError={false}
         errorMessage=""
+        onSelectCard={() => {}}
       />
     );
     expect(screen.getAllByRole('heading')).toHaveLength(mockData.length);
@@ -73,8 +87,57 @@ describe('CardList component', () => {
         isLoading={false}
         isError={true}
         errorMessage="Client error 404"
+        onSelectCard={() => {}}
       />
     );
     expect(screen.getByText('Client error 404')).toBeInTheDocument();
+  });
+
+  it('should render cards and handle success click', () => {
+    const handleSelectCard = vi.fn();
+
+    render(
+      <CardList
+        data={mockData}
+        isLoading={false}
+        isError={false}
+        errorMessage=""
+        onSelectCard={handleSelectCard}
+      />
+    );
+
+    expect(screen.getByText('Anche')).toBeInTheDocument();
+    expect(screen.getByText('Flaxel')).toBeInTheDocument();
+    const card = screen.getByText('Anche').closest('.card');
+    if (card) {
+      fireEvent.click(card);
+      expect(card).toHaveAttribute('data-id', '12');
+      expect(handleSelectCard).toHaveBeenCalledWith('12');
+    }
+  });
+
+  it('should not call onSelectCard when clicking card without data-id', () => {
+    const handleSelectCard = vi.fn();
+
+    render(
+      <CardList
+        data={mockData}
+        isLoading={false}
+        isError={false}
+        errorMessage=""
+        onSelectCard={handleSelectCard}
+      />
+    );
+
+    const cardList = screen.getByTestId('card-list');
+    const fakeCard = document.createElement('div');
+    fakeCard.className = 'card';
+    cardList.append(fakeCard);
+
+    fireEvent.click(fakeCard);
+    expect(handleSelectCard).not.toHaveBeenCalled();
+
+    fireEvent.click(cardList);
+    expect(handleSelectCard).not.toHaveBeenCalled();
   });
 });

@@ -3,7 +3,7 @@ import MainPage from './pages/mainPage';
 import AboutPage from './pages/aboutPage';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './layouts/Layout';
-import NotFoundPage from './pages/NotFoundPage';
+import NotFoundPage from './pages/notFoundPage';
 
 function App(): ReactNode {
   return (

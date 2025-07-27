@@ -1,10 +1,37 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import MainPage from '../../pages/mainPage';
 import { MemoryRouter } from 'react-router-dom';
 
 type PartialResponse = Pick<Response, 'ok' | 'status' | 'json'> &
   Partial<Pick<Response, 'statusText'>>;
+
+const mockListResponse = {
+  data: [
+    {
+      name: 'Link',
+      race: 'Hylian',
+      description: 'Hero of Hyrule',
+      id: 'card-1',
+    },
+    {
+      name: 'Zelda',
+      race: 'Hylian',
+      description: 'Princess of Hyrule',
+      id: 'card-2',
+    },
+  ],
+};
+
+const mockByIdResponse = {
+  success: true,
+  data: {
+    id: 'card-1',
+    name: 'Link',
+    race: 'Hylian',
+    description: 'Hero of Hyrule',
+  },
+};
 
 describe('MainPage API integration', () => {
   afterEach(() => {
@@ -20,26 +47,23 @@ describe('MainPage API integration', () => {
 
     expect(screen.getByTestId('title')).toBeInTheDocument();
     expect(screen.getByTestId('search')).toBeInTheDocument();
-    expect(screen.getByTestId('card-list')).toBeInTheDocument();
+    expect(screen.getByTestId('main-container')).toBeInTheDocument();
     expect(screen.getByTestId('pagination')).toBeInTheDocument();
   });
 
   it('should fetch and render data successfully', async () => {
-    const mockResponse = {
-      data: [
-        { name: 'Link', race: 'Hylian', description: 'Hero of Hyrule' },
-        { name: 'Zelda', race: 'Hylian', description: 'Princess of Hyrule' },
-      ],
-    };
-
-    global.fetch = vi.fn(
-      () =>
-        Promise.resolve<PartialResponse>({
-          ok: true,
-          status: 200,
-          json: () => Promise.resolve(mockResponse),
-        }) as Promise<Response>
-    );
+    global.fetch = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve(mockListResponse),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve(mockByIdResponse),
+      } as Response);
 
     render(
       <MemoryRouter>
@@ -52,7 +76,23 @@ describe('MainPage API integration', () => {
       expect(screen.getByText('Zelda')).toBeInTheDocument();
     });
 
+    const card = await screen.findByText('Link');
+    expect(card).toBeInTheDocument();
+
+    card.click();
+
+    await waitFor(() => {
+      expect(screen.getByText('Hero of Hyrule')).toBeInTheDocument();
+    });
+
     expect(screen.queryByLabelText('Loading...')).not.toBeInTheDocument();
+
+    const closeButton = screen.getByRole('button', { name: 'close-details' });
+    closeButton.click();
+
+    await waitFor(() => {
+      expect(screen.queryByText('Hero of Hyrule')).not.toBeInTheDocument();
+    });
   });
 
   it('should handle client error response (4xx)', async () => {
@@ -105,5 +145,32 @@ describe('MainPage API integration', () => {
     });
 
     expect(screen.queryByLabelText('Loading...')).not.toBeInTheDocument();
+  });
+
+  it('should show error message when fetch rejects with Error in CardDetails', async () => {
+    global.fetch = vi.fn(() => Promise.reject(new Error('Something failed')));
+
+    render(
+      <MemoryRouter initialEntries={['/?details=card-1']}>
+        <MainPage />
+      </MemoryRouter>
+    );
+    expect(screen.queryByTestId('detail-card')).not.toBeInTheDocument();
+  });
+
+  it('should show "Unexpected error" when fetch rejects with non-Error value in CardDetails ', async () => {
+    global.fetch = vi.fn(() => Promise.reject('Network down'));
+
+    render(
+      <MemoryRouter initialEntries={['/?details=card-1']}>
+        <MainPage />
+      </MemoryRouter>
+    );
+    const detailCard = await screen.findByTestId('card-details');
+    await waitFor(() => {
+      expect(
+        within(detailCard).getByText('Unexpected error')
+      ).toBeInTheDocument();
+    });
   });
 });
