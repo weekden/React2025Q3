@@ -7,6 +7,7 @@ function NotFoundPage(): ReactNode {
       style={{
         fontSize: '24px',
         margin: 'auto',
+        textAlign: 'center',
       }}
     >
       <p>This page doesn&apos;t exist.</p>
