@@ -1,49 +1,65 @@
-import { Component, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import Card from '../card/Card';
 import Spinner from '../spinner/Spinner';
 import Message from '../message/Message';
 
 import type { CardListProps } from '../../types/cardList';
-import type { CardProps } from '../../types/card';
 import './card-list.css';
+import type { Character } from '../../types/api';
 
-class CardList extends Component<CardListProps> {
-  public render(): ReactNode {
-    return (
-      <main className="main-container" data-testid="card-list">
-        {this.props.isLoading && (
-          <div className="center-conten">
-            <Spinner />
-          </div>
-        )}
+function CardList({
+  data,
+  isLoading,
+  isError,
+  errorMessage,
+  onSelectCard,
+}: CardListProps): ReactNode {
+  return (
+    <>
+      {isLoading && (
+        <div className="center-conten">
+          <Spinner />
+        </div>
+      )}
 
-        {this.props.isError && (
-          <div className="center-content">
-            <Message message={this.props.errorMessage} />
-          </div>
-        )}
+      {isError && (
+        <div className="center-content">
+          <Message message={errorMessage} />
+        </div>
+      )}
 
-        {!this.props.isLoading && this.props.data.length === 0 && (
-          <div className="center-conten">
-            <Message message="Not found" />
-          </div>
-        )}
+      {!isLoading && data.length === 0 && (
+        <div className="center-conten">
+          <Message message="Not found" />
+        </div>
+      )}
 
-        {!this.props.isLoading && (
-          <div className="card-column">
-            {this.props.data.map((card: CardProps, index) => (
-              <Card
-                name={card.name}
-                description={card.description}
-                race={card.race}
-                key={index}
-              />
-            ))}
-          </div>
-        )}
-      </main>
-    );
-  }
+      {!isLoading && (
+        <div
+          className="card-column"
+          data-testid="card-list"
+          onClick={(event) => {
+            const card = (event.target as HTMLElement).closest('.card');
+            if (card) {
+              const id = card.getAttribute('data-id');
+              if (id) {
+                onSelectCard(id);
+              }
+            }
+          }}
+        >
+          {data.map((card: Character) => (
+            <Card
+              name={card.name}
+              race={card.race}
+              key={card.id}
+              id={card.id}
+            />
+          ))}
+        </div>
+      )}
+    </>
+  );
 }
 
 export default CardList;
