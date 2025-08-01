@@ -18,7 +18,7 @@ export const checkCardsSlice = createSlice({
         (item) => item.id === action.payload.id
       );
       if (index === -1) {
-        state.list.push({ ...action.payload, isChecked: true });
+        state.list.push({ ...action.payload });
       } else {
         state.list.splice(index, 1);
       }

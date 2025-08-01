@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import Card from '../card/Card';
 import Spinner from '../spinner/Spinner';
 import Message from '../message/Message';
@@ -6,6 +6,8 @@ import Message from '../message/Message';
 import type { CardListProps } from '../../types/cardList';
 import './card-list.css';
 import type { Character } from '../../types/api';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { toggleCard } from '../../store/cardsSlice';
 
 function CardList({
   data,
@@ -14,6 +16,12 @@ function CardList({
   errorMessage,
   onSelectCard,
 }: CardListProps): ReactNode {
+  const checkedCardList = useAppSelector((state) => state.checkCards.list);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    console.log(checkedCardList);
+  });
   return (
     <>
       {isLoading && (
@@ -39,9 +47,23 @@ function CardList({
           className="card-column"
           data-testid="card-list"
           onClick={(event) => {
-            const card = (event.target as HTMLElement).closest('.card');
-            if (card) {
-              const id = card.getAttribute('data-id');
+            const target = event.target as HTMLElement;
+
+            if (target.closest('.card__control')) {
+              const card = target.closest('.card');
+              const id = card?.getAttribute('data-id');
+              if (id) {
+                const character = data.find((item) => item.id === id);
+                if (character) {
+                  dispatch(toggleCard(character));
+                }
+              }
+              return;
+            }
+
+            if (target.closest('.card')) {
+              const card = target.closest('.card');
+              const id = card?.getAttribute('data-id');
               if (id) {
                 onSelectCard(id);
               }
@@ -54,6 +76,7 @@ function CardList({
               race={card.race}
               key={card.id}
               id={card.id}
+              isChecked={!!checkedCardList.find((item) => item.id === card.id)}
             />
           ))}
         </div>

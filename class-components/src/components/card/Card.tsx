@@ -22,7 +22,7 @@ function Card({
       )}
       {!description && (
         <p className="card__control">
-          <input type="checkbox" checked={isChecked} />
+          <input type="checkbox" checked={isChecked} readOnly />
         </p>
       )}
     </div>
