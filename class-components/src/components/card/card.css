@@ -29,6 +29,17 @@
   font-weight: bold;
 }
 
+.card__check {
+  width: 60px;
+  padding: 5px 0;
+  font-size: 12px;
+}
+
+.card__check.checked {
+  color: white;
+  background-color: #6d6d6d;
+}
+
 @media (width <= 678px) {
   .card {
     width: 100%;

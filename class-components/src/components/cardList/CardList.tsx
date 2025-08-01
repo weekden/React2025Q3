@@ -49,7 +49,7 @@ function CardList({
           onClick={(event) => {
             const target = event.target as HTMLElement;
 
-            if (target.closest('.card__control')) {
+            if (target.closest('.card__check')) {
               const card = target.closest('.card');
               const id = card?.getAttribute('data-id');
               if (id) {

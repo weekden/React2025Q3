@@ -21,9 +21,9 @@ function Card({
         </p>
       )}
       {!description && (
-        <p className="card__control">
-          <input type="checkbox" checked={isChecked} readOnly />
-        </p>
+        <button className={`card__check ${isChecked ? 'checked' : ''}`}>
+          {isChecked ? 'Uncheck' : 'Check'}
+        </button>
       )}
     </div>
   );

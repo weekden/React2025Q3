@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+// import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import './index.css';
@@ -11,14 +11,14 @@ import store from './store';
 const root = document.getElementById('root');
 if (root) {
   createRoot(root).render(
-    <StrictMode>
-      <Provider store={store}>
-        <ErrorBoundary>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </ErrorBoundary>
-      </Provider>
-    </StrictMode>
+    // <StrictMode>
+    <Provider store={store}>
+      <ErrorBoundary>
+        <HashRouter>
+          <App />
+        </HashRouter>
+      </ErrorBoundary>
+    </Provider>
+    // </StrictMode>
   );
 }
