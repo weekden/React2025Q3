@@ -30,13 +30,25 @@
 }
 
 .card__check {
+  cursor: pointer;
+
   width: 60px;
   padding: 5px 0;
-  font-size: 12px;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+
+  background-color: #2e7d32;
+}
+
+.card__check:hover {
+  background-color: #388e3c;
 }
 
 .card__check.checked {
-  color: white;
   background-color: #6d6d6d;
 }
 

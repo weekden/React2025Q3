@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import Card from '../card/Card';
 import Spinner from '../spinner/Spinner';
 import Message from '../message/Message';
@@ -20,6 +20,9 @@ function CardList({
   const checkedCardList = useAppSelector((state) => state.checkCards.list);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    console.log(checkedCardList);
+  });
   return (
     <>
       {isLoading && (
@@ -50,6 +53,7 @@ function CardList({
             if (target.closest('.card__check')) {
               const card = target.closest('.card');
               const id = card?.getAttribute('data-id');
+              event.preventDefault();
               if (id) {
                 const character = data.find((item) => item.id === id);
                 if (character) {
