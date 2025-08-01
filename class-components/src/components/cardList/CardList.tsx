@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import Card from '../card/Card';
 import Spinner from '../spinner/Spinner';
 import Message from '../message/Message';
@@ -8,6 +8,7 @@ import './card-list.css';
 import type { Character } from '../../types/api';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { toggleCard } from '../../store/cardsSlice';
+import SelectionFlyout from '../selectionFlyout/SelectionFlyout';
 
 function CardList({
   data,
@@ -19,9 +20,6 @@ function CardList({
   const checkedCardList = useAppSelector((state) => state.checkCards.list);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    console.log(checkedCardList);
-  });
   return (
     <>
       {isLoading && (
@@ -79,6 +77,7 @@ function CardList({
               isChecked={!!checkedCardList.find((item) => item.id === card.id)}
             />
           ))}
+          {checkedCardList.length > 0 && <SelectionFlyout />}
         </div>
       )}
     </>

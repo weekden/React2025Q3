@@ -1,0 +1,17 @@
+.checked-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: 20px;
+  border-radius: 12px;
+
+  background-color: #e7e5e5;
+}
+
+.checked-item__buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+}
