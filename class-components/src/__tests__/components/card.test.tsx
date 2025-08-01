@@ -7,7 +7,7 @@ describe('Card component', () => {
   const cardDefaultprops = {
     name: 'Anche',
     race: 'Gerudo',
-    description: 'Anche is a character in Breath of the Wild.',
+    description: '',
     id: 'card-id',
   };
   it('should render card element', () => {
@@ -16,14 +16,23 @@ describe('Card component', () => {
   });
 
   it('should display the unknow race if no race is specified', () => {
-    render(
-      <Card
-        name={cardDefaultprops.name}
-        race={null}
-        description={cardDefaultprops.description}
-        id={'card-id'}
-      />
-    );
+    render(<Card {...cardDefaultprops} race={null} />);
     expect(screen.getByText('Unknow race')).toBeInTheDocument();
+  });
+
+  it('should add "checked" class if isChecked is true', () => {
+    const { container } = render(
+      <Card {...cardDefaultprops} isChecked={true} />
+    );
+    const label = container.querySelector('.card__check');
+    expect(label).toHaveClass('checked');
+  });
+
+  it('should does not have class "checked"  if isChecked is false', () => {
+    const { container } = render(
+      <Card {...cardDefaultprops} isChecked={false} />
+    );
+    const label = container.querySelector('.card__check');
+    expect(label).not.toHaveClass('checked');
   });
 });
