@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import Card from '../card/Card';
 import Spinner from '../spinner/Spinner';
 import Message from '../message/Message';
@@ -20,9 +20,6 @@ function CardList({
   const checkedCardList = useAppSelector((state) => state.checkCards.list);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    console.log(checkedCardList);
-  });
   return (
     <>
       {isLoading && (

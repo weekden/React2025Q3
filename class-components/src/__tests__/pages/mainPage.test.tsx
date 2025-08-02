@@ -44,7 +44,6 @@ describe('MainPage API integration', () => {
     expect(card).toBeInTheDocument();
 
     card.click();
-    mockRender('/page/1/detailsId/card-1');
 
     await waitFor(() => {
       expect(screen.getByText('Hero of Hyrule')).toBeInTheDocument();
@@ -108,7 +107,9 @@ describe('MainPage API integration', () => {
     global.fetch = vi.fn(() => Promise.reject(new Error('Something failed')));
 
     mockRender('/page/1/detailsId/card-1');
-    expect(screen.queryByTestId('detail-card')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByTestId('detail-card')).not.toBeInTheDocument();
+    });
   });
 
   it('should show "Unexpected error" when fetch rejects with non-Error value in CardDetails ', async () => {

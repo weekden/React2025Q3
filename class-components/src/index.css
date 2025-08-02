@@ -1,7 +1,34 @@
 :root {
+  --bg-color: #e7edf0;
+  --text-color: #1f2a34;
+  --header-bg: #d4dce1;
+  --header-text: #1f2a34;
+  --card-bg: #f5f7f8;
+  --card-hover-bg: #d6dce1;
+  --card-details-bg: #f5f7f8;
+  --link-color: #2e7d32;
+  --link-hover: #388e3c;
+  --link-active: #19a225;
+  --button-bg: #2e7d32;
+  --button-hover-bg: #388e3c;
+  --button-disabled-opacity: 0.5;
+  --input-border: #dfe3e6;
+  --card-checked: #6d6d6d;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
-  color: #213547;
+}
+
+:root.dark {
+  --bg-color: #1e293b;
+  --text-color: #d1d5db;
+  --header-bg: #2c3e50;
+  --header-text: #d1d5db;
+  --card-bg: #353a47;
+  --card-hover-bg: #394860;
+  --card-details-bg: #353a47;
+  --input-border: #475569;
+  --card-checked: #9ca3af;
 }
 
 * {
@@ -11,19 +38,8 @@
 }
 
 body {
-  display: flex;
-  justify-content: center;
-
-  width: 100%;
-  min-width: 320px;
-  min-height: 100vh;
-  margin: 0;
-}
-
-#root {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+  color: var(--text-color);
+  background-color: var(--bg-color);
 }
 
 h1 {
@@ -32,9 +48,8 @@ h1 {
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--link-color);
+  text-decoration: none;
 }
 
 button {
@@ -49,18 +64,17 @@ button {
   font-family: inherit;
   font-size: 1em;
   font-weight: 500;
-  color: #fff;
+  color: var(--text-color);
 
-  background-color: #2e7d32;
+  background-color: var(--button-bg);
 
   transition: background-color 0.25s;
 }
 
-button[disabled] {
-  cursor: default;
-  opacity: 0.5;
+button:hover {
+  background-color: var(--button-hover-bg);
 }
 
-button:hover {
-  background-color: #388e3c;
+button[disabled] {
+  opacity: var(--button-disabled-opacity);
 }

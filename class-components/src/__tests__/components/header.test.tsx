@@ -2,12 +2,15 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 import Header from '../../components/header/Header';
+import { ThemeContextProvider } from '../../context/ThemeContext';
 
 describe('Header component', () => {
   it('sould render nav links', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <Header />
+      <MemoryRouter initialEntries={['/page/1']}>
+        <ThemeContextProvider>
+          <Header />
+        </ThemeContextProvider>
       </MemoryRouter>
     );
 
@@ -24,7 +27,9 @@ describe('Header component', () => {
   it('should navigate to aboutPage and has to route /about', () => {
     render(
       <MemoryRouter initialEntries={['/about']}>
-        <Header />
+        <ThemeContextProvider>
+          <Header />
+        </ThemeContextProvider>
       </MemoryRouter>
     );
 

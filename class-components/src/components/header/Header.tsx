@@ -1,8 +1,18 @@
-import type { ReactNode } from 'react';
+import { useContext, type ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import './header.css';
+import { ThemeContext } from '../../context/ThemeContext';
 
 function Header(): ReactNode {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    return null;
+  }
+
+  const toggleTheme = (): void => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+  const { theme, setTheme } = context;
   return (
     <header className="header" data-testid="header-nav">
       <nav className="header__nav">
@@ -12,7 +22,7 @@ function Header(): ReactNode {
               className={({ isActive }) =>
                 isActive ? 'nav-list__item-link active' : 'nav-list__item-link'
               }
-              to="/"
+              to="/page/1"
             >
               Home
             </NavLink>
@@ -29,6 +39,11 @@ function Header(): ReactNode {
           </li>
         </ul>
       </nav>
+      <div className="header__tools">
+        <button onClick={toggleTheme}>
+          {theme === 'light' ? 'Dark' : 'Light'}
+        </button>
+      </div>
     </header>
   );
 }

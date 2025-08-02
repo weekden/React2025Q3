@@ -9,8 +9,6 @@ import type { Character } from '../types/api';
 import Pagination from '../components/pagination/Pagination';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import NotFoundPage from './notFoundPage';
-import { Provider } from 'react-redux';
-import store from '../store';
 
 function MainPage(): ReactNode {
   const limit = 20;
@@ -92,15 +90,13 @@ function MainPage(): ReactNode {
         }}
       />
       <div className="main-container" data-testid="main-container">
-        <Provider store={store}>
-          <CardList
-            data={data}
-            isLoading={isLoading}
-            isError={isError}
-            errorMessage={errorMessage}
-            onSelectCard={handleSelectCard}
-          />
-        </Provider>
+        <CardList
+          data={data}
+          isLoading={isLoading}
+          isError={isError}
+          errorMessage={errorMessage}
+          onSelectCard={handleSelectCard}
+        />
         <Outlet />
       </div>
       <Pagination

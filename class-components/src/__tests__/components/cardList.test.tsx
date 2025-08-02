@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { Character } from '../../types/api';
 import { Provider } from 'react-redux';
 import store from '../../store';
+import { ThemeContextProvider } from '../../context/ThemeContext';
 
 const mockData: Character[] = [
   {
@@ -24,13 +25,15 @@ describe('CardList component', () => {
   it('should render all card data fields correctly', () => {
     render(
       <Provider store={store}>
-        <CardList
-          data={mockData}
-          isLoading={false}
-          isError={false}
-          errorMessage=""
-          onSelectCard={() => {}}
-        />
+        <ThemeContextProvider>
+          <CardList
+            data={mockData}
+            isLoading={false}
+            isError={false}
+            errorMessage=""
+            onSelectCard={() => {}}
+          />
+        </ThemeContextProvider>
       </Provider>
     );
 
@@ -48,13 +51,15 @@ describe('CardList component', () => {
   it('should render spinner element', () => {
     render(
       <Provider store={store}>
-        <CardList
-          data={[]}
-          isLoading={true}
-          isError={false}
-          errorMessage=""
-          onSelectCard={() => {}}
-        />
+        <ThemeContextProvider>
+          <CardList
+            data={[]}
+            isLoading={true}
+            isError={false}
+            errorMessage=""
+            onSelectCard={() => {}}
+          />
+        </ThemeContextProvider>
       </Provider>
     );
     expect(screen.getByLabelText('Loading...')).toBeInTheDocument();
@@ -63,13 +68,15 @@ describe('CardList component', () => {
   it('should render not found when mockdata length === 0', () => {
     render(
       <Provider store={store}>
-        <CardList
-          data={[]}
-          isLoading={false}
-          isError={false}
-          errorMessage=""
-          onSelectCard={() => {}}
-        />
+        <ThemeContextProvider>
+          <CardList
+            data={[]}
+            isLoading={false}
+            isError={false}
+            errorMessage=""
+            onSelectCard={() => {}}
+          />
+        </ThemeContextProvider>
       </Provider>
     );
     expect(screen.getByText('Not found')).toBeInTheDocument();
@@ -78,13 +85,15 @@ describe('CardList component', () => {
   it('should render correct number of items when data is provided', () => {
     render(
       <Provider store={store}>
-        <CardList
-          data={mockData}
-          isLoading={false}
-          isError={false}
-          errorMessage=""
-          onSelectCard={() => {}}
-        />
+        <ThemeContextProvider>
+          <CardList
+            data={mockData}
+            isLoading={false}
+            isError={false}
+            errorMessage=""
+            onSelectCard={() => {}}
+          />
+        </ThemeContextProvider>
       </Provider>
     );
     expect(screen.getAllByRole('heading')).toHaveLength(mockData.length);
@@ -93,13 +102,15 @@ describe('CardList component', () => {
   it('should show appropriate error for different HTTP status codes', () => {
     render(
       <Provider store={store}>
-        <CardList
-          data={[]}
-          isLoading={false}
-          isError={true}
-          errorMessage="Client error 404"
-          onSelectCard={() => {}}
-        />
+        <ThemeContextProvider>
+          <CardList
+            data={[]}
+            isLoading={false}
+            isError={true}
+            errorMessage="Client error 404"
+            onSelectCard={() => {}}
+          />
+        </ThemeContextProvider>
       </Provider>
     );
     expect(screen.getByText('Client error 404')).toBeInTheDocument();
@@ -110,13 +121,15 @@ describe('CardList component', () => {
 
     render(
       <Provider store={store}>
-        <CardList
-          data={mockData}
-          isLoading={false}
-          isError={false}
-          errorMessage=""
-          onSelectCard={handleSelectCard}
-        />
+        <ThemeContextProvider>
+          <CardList
+            data={mockData}
+            isLoading={false}
+            isError={false}
+            errorMessage=""
+            onSelectCard={handleSelectCard}
+          />
+        </ThemeContextProvider>
       </Provider>
     );
 
@@ -135,13 +148,15 @@ describe('CardList component', () => {
 
     render(
       <Provider store={store}>
-        <CardList
-          data={mockData}
-          isLoading={false}
-          isError={false}
-          errorMessage=""
-          onSelectCard={handleSelectCard}
-        />
+        <ThemeContextProvider>
+          <CardList
+            data={mockData}
+            isLoading={false}
+            isError={false}
+            errorMessage=""
+            onSelectCard={handleSelectCard}
+          />
+        </ThemeContextProvider>
       </Provider>
     );
 

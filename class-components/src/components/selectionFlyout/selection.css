@@ -7,7 +7,7 @@
   padding: 20px;
   border-radius: 12px;
 
-  background-color: #e7e5e5;
+  background-color: var(--card-details-bg);
 }
 
 .checked-item__buttons {
