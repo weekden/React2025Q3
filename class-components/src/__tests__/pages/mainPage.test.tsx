@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { mockByIdResponse, mockListResponse, mockRender } from '../mocks/data';
 
@@ -43,7 +43,7 @@ describe('MainPage API integration', () => {
     const card = await screen.findByText('Link');
     expect(card).toBeInTheDocument();
 
-    card.click();
+    fireEvent.click(card);
 
     await waitFor(() => {
       expect(screen.getByText('Hero of Hyrule')).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe('MainPage API integration', () => {
     expect(screen.queryByLabelText('Loading...')).not.toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'close-details' });
-    closeButton.click();
+    fireEvent.click(closeButton);
 
     await waitFor(() => {
       expect(screen.queryByText('Hero of Hyrule')).not.toBeInTheDocument();
@@ -121,6 +121,27 @@ describe('MainPage API integration', () => {
       expect(
         within(detailCard).getByText('Unexpected error')
       ).toBeInTheDocument();
+    });
+  });
+
+  it('should set true if current page is last page', async () => {
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            data: mockListResponse.data,
+            count: 10,
+          }),
+      } as Response)
+    );
+    mockRender('/page/1');
+    const nextButton = screen.getByRole('button', {
+      name: /Next/i,
+    });
+    await waitFor(() => {
+      expect(nextButton).toBeDisabled();
     });
   });
 });

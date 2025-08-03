@@ -7,6 +7,7 @@ import type { Character } from '../../types/api';
 import { Provider } from 'react-redux';
 import store from '../../store';
 import { ThemeContextProvider } from '../../context/ThemeContext';
+import { toggleCard } from '../../store/cardsSlice';
 
 const mockData: Character[] = [
   {
@@ -170,5 +171,67 @@ describe('CardList component', () => {
 
     fireEvent.click(cardList);
     expect(handleSelectCard).not.toHaveBeenCalled();
+  });
+
+  it('should dispatch toggleCard when clicking on checkbox', () => {
+    const mockDispatch = vi.fn();
+    const handleSelectCard = vi.fn();
+    const originalDispatch = store.dispatch;
+    store.dispatch = mockDispatch;
+
+    render(
+      <Provider store={store}>
+        <ThemeContextProvider>
+          <CardList
+            data={mockData}
+            isLoading={false}
+            isError={false}
+            errorMessage=""
+            onSelectCard={handleSelectCard}
+          />
+        </ThemeContextProvider>
+      </Provider>
+    );
+
+    const card = screen.getByText('Anche').closest('.card');
+    expect(card).not.toBeNull();
+
+    if (card) {
+      const checkbox = card.querySelector('.card__check');
+      expect(checkbox).not.toBeNull();
+
+      if (checkbox) {
+        fireEvent.click(checkbox);
+        expect(mockDispatch).toHaveBeenCalledTimes(1);
+      }
+    }
+    store.dispatch = originalDispatch;
+  });
+
+  it('should mark card as checked if it is in checkedCardList', () => {
+    const handleSelectCard = vi.fn();
+    store.dispatch(toggleCard(mockData[0]));
+
+    render(
+      <Provider store={store}>
+        <ThemeContextProvider>
+          <CardList
+            data={mockData}
+            isLoading={false}
+            isError={false}
+            errorMessage=""
+            onSelectCard={handleSelectCard}
+          />
+        </ThemeContextProvider>
+      </Provider>
+    );
+
+    const cardOne = screen.getByText('Anche').closest('.card');
+
+    expect(cardOne).toBeInTheDocument();
+
+    const checkboxOne = cardOne?.querySelector('.card__check');
+    expect(checkboxOne).toBeInTheDocument();
+    expect(checkboxOne?.classList.contains('checked')).toBe(true);
   });
 });

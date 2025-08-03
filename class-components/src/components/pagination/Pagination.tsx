@@ -12,7 +12,7 @@ function Pagination({
   return (
     <div className="pagination-container" data-testid="pagination">
       <button
-        className="button, btn-prev"
+        className="button btn-prev"
         onClick={onPrev}
         disabled={page === '1'}
       >
@@ -22,7 +22,7 @@ function Pagination({
         Page: <strong>{page}</strong>
       </span>
       <button
-        className="button, btn-next"
+        className="button btn-next"
         onClick={onNext}
         disabled={isLastPage}
       >
