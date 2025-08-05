@@ -1,11 +1,12 @@
 .main-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: 24px;
+  align-items: flex-start;
   justify-content: center;
 
-  height: 100%;
+  width: 100%;
   min-height: 600px;
+  padding: 20px;
 }
 
 .center-content {
@@ -18,20 +19,11 @@
 }
 
 .card-column {
-  column-count: 3;
-  column-gap: 12px;
-}
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
 
-@media (width <= 1000px) {
-  .card-column {
-    column-count: 2;
-  }
-}
-
-@media (width <= 678px) {
-  .card-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  width: 100%;
+  max-width: 70%;
 }

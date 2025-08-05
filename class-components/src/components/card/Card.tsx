@@ -1,22 +1,21 @@
-import { Component, type ReactNode } from 'react';
-import type { CardProps } from '../../types/card';
+import type { ReactNode } from 'react';
+import type { Character } from '../../types/api';
 import './card.css';
 
-class Card extends Component<CardProps> {
-  public render(): ReactNode {
-    return (
-      <>
-        <div className="card">
-          <h4 className="card__name">{this.props.name}</h4>
-          <p className="card__race">
-            <span className="card__pretitle">Race:</span>{' '}
-            {this.props.race || 'Unknow race'}
-          </p>
-          <p className="card__desc">{this.props.description}</p>
-        </div>
-      </>
-    );
-  }
+function Card({ name, race, id, description, onClick }: Character): ReactNode {
+  return (
+    <div className="card" data-id={id} onClick={onClick}>
+      <h4 className="card__name">{name}</h4>
+      <p className="card__race">
+        <span className="card__pretitle">Race:</span> {race || 'Unknow race'}
+      </p>
+      {description && (
+        <p className="card__description">
+          <span className="card__pretitle">Description:</span> {description}
+        </p>
+      )}
+    </div>
+  );
 }
 
 export default Card;

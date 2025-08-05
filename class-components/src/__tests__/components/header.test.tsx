@@ -1,23 +1,37 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
+import { describe, expect, it } from 'vitest';
 import Header from '../../components/header/Header';
 
 describe('Header component', () => {
-  it('should render header element', () => {
-    render(<Header title="Test render" />);
-    expect(screen.getByRole('heading')).toBeInTheDocument();
-  });
-
-  it('should display the default title if no title is specified', () => {
-    render(<Header />);
-    expect(screen.getByRole('heading')).toHaveTextContent('Default title');
-  });
-
-  it('should display the title', () => {
-    render(<Header title="Zelda monsters store" />);
-    expect(screen.getByRole('heading')).toHaveTextContent(
-      'Zelda monsters store'
+  it('sould render nav links', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <Header />
+      </MemoryRouter>
     );
+
+    const homeLink = screen.getByText('Home');
+    const aboutLink = screen.getByText('About');
+
+    expect(homeLink).toBeInTheDocument();
+    expect(aboutLink).toBeInTheDocument();
+
+    expect(homeLink).toHaveClass('active');
+    expect(aboutLink).not.toHaveClass('active');
+  });
+
+  it('should navigate to aboutPage and has to route /about', () => {
+    render(
+      <MemoryRouter initialEntries={['/about']}>
+        <Header />
+      </MemoryRouter>
+    );
+
+    const homeLink = screen.getByText('Home');
+    const aboutLink = screen.getByText('About');
+
+    expect(aboutLink).toHaveClass('active');
+    expect(homeLink).not.toHaveClass('active');
   });
 });
