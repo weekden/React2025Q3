@@ -35,25 +35,14 @@ function CardList({
       )}
 
       {!isLoading && (
-        <div
-          className="card-column"
-          data-testid="card-list"
-          onClick={(event) => {
-            const card = (event.target as HTMLElement).closest('.card');
-            if (card) {
-              const id = card.getAttribute('data-id');
-              if (id) {
-                onSelectCard(id);
-              }
-            }
-          }}
-        >
+        <div className="card-column" data-testid="card-list">
           {data.map((card: Character) => (
             <Card
               name={card.name}
               race={card.race}
               key={card.id}
               id={card.id}
+              onClick={() => onSelectCard(card.id)}
             />
           ))}
         </div>

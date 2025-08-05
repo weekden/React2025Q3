@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { PaginationProps } from '../../types/pagination';
 import './pagination.css';
 import { useParams } from 'react-router-dom';
+import Button from '../elements/Button';
 
 function Pagination({
   onPrev,
@@ -11,23 +12,21 @@ function Pagination({
   const { page } = useParams();
   return (
     <div className="pagination-container" data-testid="pagination">
-      <button
+      <Button
         className="button, btn-prev"
+        text="Prev"
         onClick={onPrev}
         disabled={page === '1'}
-      >
-        Prev
-      </button>
+      />
       <span className="current-page" data-testid="current-page">
         Page: <strong>{page}</strong>
       </span>
-      <button
+      <Button
         className="button, btn-next"
+        text="Next"
         onClick={onNext}
-        disabled={isLastPage}
-      >
-        Next
-      </button>
+        disabled={!!isLastPage}
+      />
     </div>
   );
 }
