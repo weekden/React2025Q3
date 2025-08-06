@@ -11,19 +11,12 @@ describe('Card component', () => {
     id: 'card-id',
   };
   it('should render card element', () => {
-    render(<Card {...cardDefaultprops} />);
+    render(<Card card={cardDefaultprops} />);
     expect(screen.getByText('Anche')).toBeInTheDocument();
   });
 
-  it('should display the unknow race if no race is specified', () => {
-    render(
-      <Card
-        name={cardDefaultprops.name}
-        race={null}
-        description={cardDefaultprops.description}
-        id={'card-id'}
-      />
-    );
+  it('should display the unknown race if no race is specified', () => {
+    render(<Card card={{ ...cardDefaultprops, race: null }} />);
     expect(screen.getByText('Unknow race')).toBeInTheDocument();
   });
 });
