@@ -5,7 +5,6 @@ export type Character = {
   id: string;
   name: string;
   race: string | null;
-  onClick?: () => void;
 };
 
 export type CharacterApiResponse = {

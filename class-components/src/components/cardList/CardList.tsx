@@ -38,10 +38,12 @@ function CardList({
         <div className="card-column" data-testid="card-list">
           {data.map((card: Character) => (
             <Card
-              name={card.name}
-              race={card.race}
+              card={{
+                id: card.id,
+                name: card.name,
+                race: card.race,
+              }}
               key={card.id}
-              id={card.id}
               onClick={() => onSelectCard(card.id)}
             />
           ))}

@@ -1,17 +1,19 @@
 import type { ReactNode } from 'react';
-import type { Character } from '../../types/api';
 import './card.css';
+import type { CardProps } from '../../types/cardList';
 
-function Card({ name, race, id, description, onClick }: Character): ReactNode {
+function Card({ card, onClick }: CardProps): ReactNode {
   return (
-    <div className="card" data-id={id} onClick={onClick}>
-      <h4 className="card__name">{name}</h4>
+    <div className="card" data-id={card.id} onClick={onClick}>
+      <h4 className="card__name">{card.name}</h4>
       <p className="card__race">
-        <span className="card__pretitle">Race:</span> {race || 'Unknow race'}
+        <span className="card__pretitle">Race:</span>{' '}
+        {card.race || 'Unknow race'}
       </p>
-      {description && (
+      {card.description && (
         <p className="card__description">
-          <span className="card__pretitle">Description:</span> {description}
+          <span className="card__pretitle">Description:</span>{' '}
+          {card.description}
         </p>
       )}
     </div>

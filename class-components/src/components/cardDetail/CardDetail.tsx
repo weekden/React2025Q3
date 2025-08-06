@@ -60,12 +60,7 @@ function CardDetails(): ReactNode {
             &#9747;
           </button>
           <div className="card-details__card">
-            <Card
-              id={data.id}
-              name={data.name}
-              race={data.race}
-              description={data.description}
-            />
+            <Card card={data} />
           </div>
         </>
       )}
