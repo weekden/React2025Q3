@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { mockByIdResponse, mockListResponse, mockRender } from '../mocks/data';
 
@@ -43,7 +43,7 @@ describe('MainPage API integration', () => {
     const card = await screen.findByText('Link');
     expect(card).toBeInTheDocument();
 
-    card.click();
+    fireEvent.click(card);
     mockRender('/page/1/detailsId/card-1');
 
     await waitFor(() => {
@@ -52,8 +52,8 @@ describe('MainPage API integration', () => {
 
     expect(screen.queryByLabelText('Loading...')).not.toBeInTheDocument();
 
-    const closeButton = screen.getByRole('button', { name: 'close-details' });
-    closeButton.click();
+    const closeButton = screen.getByRole('button', { name: '☓' });
+    fireEvent.click(closeButton);
 
     await waitFor(() => {
       expect(screen.queryByText('Hero of Hyrule')).not.toBeInTheDocument();
