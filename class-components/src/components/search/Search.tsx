@@ -2,6 +2,7 @@ import { type ChangeEvent, type ReactNode } from 'react';
 import type { SearchProps } from '../../types/search';
 import './search.css';
 import useLocaleStorage from '../../hooks/localeStorage';
+import Button from '../elements/Button';
 
 function Search({ onQueryChange }: SearchProps): ReactNode {
   const [query, setQuery] = useLocaleStorage('search', '');
@@ -32,7 +33,11 @@ function Search({ onQueryChange }: SearchProps): ReactNode {
           value={query}
           onChange={handleChange}
         />
-        <button onClick={handleClick}>Search</button>
+        <Button
+          onClick={handleClick}
+          text="Search"
+          className={'button btn search__btn'}
+        />
       </div>
     </>
   );
