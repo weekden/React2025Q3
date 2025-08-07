@@ -12,6 +12,6 @@
 
 .checked-item__buttons {
   display: flex;
-  justify-content: space-between;
-  width: 50%;
+  gap: 12px;
+  justify-content: end;
 }

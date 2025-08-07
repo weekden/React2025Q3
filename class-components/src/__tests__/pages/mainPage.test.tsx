@@ -51,7 +51,7 @@ describe('MainPage API integration', () => {
 
     expect(screen.queryByLabelText('Loading...')).not.toBeInTheDocument();
 
-    const closeButton = screen.getByRole('button', { name: 'close-details' });
+    const closeButton = screen.getByRole('button', { name: '☓' });
     fireEvent.click(closeButton);
 
     await waitFor(() => {

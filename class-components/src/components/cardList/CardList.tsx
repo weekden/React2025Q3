@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import Card from '../card/Card';
 import Spinner from '../spinner/Spinner';
 import Message from '../message/Message';
@@ -19,7 +19,12 @@ function CardList({
 }: CardListProps): ReactNode {
   const checkedCardList = useAppSelector((state) => state.checkCards.list);
   const dispatch = useAppDispatch();
-
+  const handleCheckboxChange = (id: string): void => {
+    const card = data.find((item) => item.id === id);
+    if (card) {
+      dispatch(toggleCard(card));
+    }
+  };
   return (
     <>
       {isLoading && (
@@ -41,41 +46,18 @@ function CardList({
       )}
 
       {!isLoading && (
-        <div
-          className="card-column"
-          data-testid="card-list"
-          onClick={(event) => {
-            const target = event.target as HTMLElement;
-
-            if (target.closest('.card__check')) {
-              const card = target.closest('.card');
-              const id = card?.getAttribute('data-id');
-              event.preventDefault();
-              if (id) {
-                const character = data.find((item) => item.id === id);
-                if (character) {
-                  dispatch(toggleCard(character));
-                }
-              }
-              return;
-            }
-
-            if (target.closest('.card')) {
-              const card = target.closest('.card');
-              const id = card?.getAttribute('data-id');
-              if (id) {
-                onSelectCard(id);
-              }
-            }
-          }}
-        >
+        <div className="card-column" data-testid="card-list">
           {data.map((card: Character) => (
             <Card
-              name={card.name}
-              race={card.race}
+              card={{
+                id: card.id,
+                name: card.name,
+                race: card.race,
+              }}
               key={card.id}
-              id={card.id}
+              onClick={() => onSelectCard(card.id)}
               isChecked={!!checkedCardList.find((item) => item.id === card.id)}
+              onChange={() => handleCheckboxChange(card.id)}
             />
           ))}
           {checkedCardList.length > 0 && <SelectionFlyout />}

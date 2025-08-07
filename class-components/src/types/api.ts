@@ -5,7 +5,6 @@ export type Character = {
   id: string;
   name: string;
   race: string | null;
-  isChecked?: boolean;
 };
 
 export type CharacterApiResponse = {

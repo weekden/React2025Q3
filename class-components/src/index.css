@@ -76,5 +76,6 @@ button:hover {
 }
 
 button[disabled] {
+  pointer-events: none;
   opacity: var(--button-disabled-opacity);
 }

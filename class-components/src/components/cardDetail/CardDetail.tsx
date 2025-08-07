@@ -6,6 +6,7 @@ import { fetchCharactersById } from '../../api/getData';
 import type { Character } from '../../types/api';
 import './cardDetail.css';
 import Card from '../card/Card';
+import Button from '../elements/Button';
 
 function CardDetails(): ReactNode {
   const { page, id } = useParams();
@@ -52,20 +53,13 @@ function CardDetails(): ReactNode {
       )}
       {!isLoading && !isError && data && (
         <>
-          <button
+          <Button
             className="card-details__close"
-            aria-label="close-details"
             onClick={() => navigate(`/page/${page}`)}
-          >
-            &#9747;
-          </button>
+            text={'☓'}
+          />
           <div className="card-details__card">
-            <Card
-              id={data.id}
-              name={data.name}
-              race={data.race}
-              description={data.description}
-            />
+            <Card card={data} />
           </div>
         </>
       )}
