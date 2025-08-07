@@ -10,13 +10,17 @@ import {
 } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { mockListResponse } from '../mocks/data';
+import { Provider } from 'react-redux';
+import store from '../../store';
 
 export function customRender(route = '/page/1'): RenderResult {
   return render(
     <MemoryRouter initialEntries={[route]}>
-      <Routes>
-        <Route path="/page/:page" element={<MainPage />} />
-      </Routes>
+      <Provider store={store}>
+        <Routes>
+          <Route path="/page/:page" element={<MainPage />} />
+        </Routes>
+      </Provider>
     </MemoryRouter>
   );
 }

@@ -2,6 +2,8 @@ import { render, type RenderResult } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import CardDetails from '../../components/cardDetail/CardDetail';
 import MainPage from '../../pages/mainPage';
+import { Provider } from 'react-redux';
+import store from '../../store';
 
 export const mockListResponse = {
   data: [
@@ -32,12 +34,14 @@ export const mockByIdResponse = {
 
 export const mockRender = (defaultPath: string = '/page/1'): RenderResult => {
   return render(
-    <MemoryRouter initialEntries={[defaultPath]}>
-      <Routes>
-        <Route path="/page/:page" element={<MainPage />}>
-          <Route path="detailsId/:id" element={<CardDetails />} />
-        </Route>
-      </Routes>
-    </MemoryRouter>
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[defaultPath]}>
+        <Routes>
+          <Route path="/page/:page" element={<MainPage />}>
+            <Route path="detailsId/:id" element={<CardDetails />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>
+    </Provider>
   );
 };

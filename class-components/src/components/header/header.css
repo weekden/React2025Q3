@@ -1,11 +1,17 @@
 .header {
+  display: flex;
+  justify-content: space-between;
+
   padding: 1rem 2rem;
-  color: white;
-  background-color: #222;
+
+  color: var(--header-text);
+
+  background-color: var(--header-bg);
 }
 
 .header__nav {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -25,16 +31,16 @@
 
 .nav-list__item-link {
   font-weight: bold;
-  color: white;
+  color: var(--text-color);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .nav-list__item-link:hover {
-  color: #64ff71;
+  color: var(--link-hover);
 }
 
 .nav-list__item-link.active {
   pointer-events: none;
-  color: #19a225;
+  color: var(--link-active);
 }

@@ -6,6 +6,9 @@ import Message from '../message/Message';
 import type { CardListProps } from '../../types/cardList';
 import './card-list.css';
 import type { Character } from '../../types/api';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { toggleCard } from '../../store/cardsSlice';
+import SelectionFlyout from '../selectionFlyout/SelectionFlyout';
 
 function CardList({
   data,
@@ -14,6 +17,14 @@ function CardList({
   errorMessage,
   onSelectCard,
 }: CardListProps): ReactNode {
+  const checkedCardList = useAppSelector((state) => state.checkCards.list);
+  const dispatch = useAppDispatch();
+  const handleCheckboxChange = (id: string): void => {
+    const card = data.find((item) => item.id === id);
+    if (card) {
+      dispatch(toggleCard(card));
+    }
+  };
   return (
     <>
       {isLoading && (
@@ -45,8 +56,11 @@ function CardList({
               }}
               key={card.id}
               onClick={() => onSelectCard(card.id)}
+              isChecked={!!checkedCardList.find((item) => item.id === card.id)}
+              onChange={() => handleCheckboxChange(card.id)}
             />
           ))}
+          {checkedCardList.length > 0 && <SelectionFlyout />}
         </div>
       )}
     </>

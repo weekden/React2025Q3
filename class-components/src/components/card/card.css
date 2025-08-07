@@ -11,13 +11,13 @@
   padding: 1rem;
   border-radius: 12px;
 
-  background-color: #e7e5e5;
+  background-color: var(--card-bg);
 
   transition: background-color 0.2s ease-in;
 }
 
 .card:hover {
-  background-color: #b7b6b6;
+  background-color: var(--card-hover-bg);
 }
 
 .card__name {
@@ -27,6 +27,29 @@
 .card__pretitle {
   margin-right: 12px;
   font-weight: bold;
+}
+
+.card__check {
+  cursor: pointer;
+
+  width: 60px;
+  padding: 5px 0;
+  border-radius: 4px;
+
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-color);
+  text-align: center;
+
+  background-color: var(--button-bg);
+}
+
+.card__check:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.card__check.checked {
+  background-color: var(--card-checked);
 }
 
 @media (width <= 678px) {

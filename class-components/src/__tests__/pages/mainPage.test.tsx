@@ -44,7 +44,6 @@ describe('MainPage API integration', () => {
     expect(card).toBeInTheDocument();
 
     fireEvent.click(card);
-    mockRender('/page/1/detailsId/card-1');
 
     await waitFor(() => {
       expect(screen.getByText('Hero of Hyrule')).toBeInTheDocument();
@@ -108,7 +107,9 @@ describe('MainPage API integration', () => {
     global.fetch = vi.fn(() => Promise.reject(new Error('Something failed')));
 
     mockRender('/page/1/detailsId/card-1');
-    expect(screen.queryByTestId('detail-card')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByTestId('detail-card')).not.toBeInTheDocument();
+    });
   });
 
   it('should show "Unexpected error" when fetch rejects with non-Error value in CardDetails ', async () => {
@@ -120,6 +121,27 @@ describe('MainPage API integration', () => {
       expect(
         within(detailCard).getByText('Unexpected error')
       ).toBeInTheDocument();
+    });
+  });
+
+  it('should set true if current page is last page', async () => {
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            data: mockListResponse.data,
+            count: 10,
+          }),
+      } as Response)
+    );
+    mockRender('/page/1');
+    const nextButton = screen.getByRole('button', {
+      name: /Next/i,
+    });
+    await waitFor(() => {
+      expect(nextButton).toBeDisabled();
     });
   });
 });

@@ -7,7 +7,7 @@ describe('Card component', () => {
   const cardDefaultprops = {
     name: 'Anche',
     race: 'Gerudo',
-    description: 'Anche is a character in Breath of the Wild.',
+    description: '',
     id: 'card-id',
   };
   it('should render card element', () => {
@@ -15,7 +15,7 @@ describe('Card component', () => {
     expect(screen.getByText('Anche')).toBeInTheDocument();
   });
 
-  it('should display the unknown race if no race is specified', () => {
+  it('should display the unknow race if no race is specified', () => {
     render(<Card card={{ ...cardDefaultprops, race: null }} />);
     expect(screen.getByText('Unknow race')).toBeInTheDocument();
   });
