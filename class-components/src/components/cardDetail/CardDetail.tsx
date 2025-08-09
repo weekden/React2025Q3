@@ -5,7 +5,10 @@ import Message from '../message/Message';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import type { ReactNode } from 'react';
-import { useGetCharacterByIdQuery } from '../../store/apiSlice';
+import {
+  useClearCharacterCacheByIdMutation,
+  useGetCharacterByIdQuery,
+} from '../../store/apiSlice';
 import { getErrorMessage } from '../../utils/getErrorMessage';
 
 import './cardDetail.css';
@@ -20,6 +23,14 @@ function CardDetails(): ReactNode {
       skip: !id,
     }
   );
+
+  const [clearCache] = useClearCharacterCacheByIdMutation();
+  const handleClearCacheById = (): void => {
+    if (!id) {
+      return;
+    }
+    clearCache(id);
+  };
 
   if (error) {
     return <Message message={getErrorMessage(error)} />;
@@ -47,6 +58,7 @@ function CardDetails(): ReactNode {
             </div>
           </>
         )}
+        <Button text="Refresh" onClick={handleClearCacheById} />
       </div>
     </>
   );

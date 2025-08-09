@@ -6,9 +6,13 @@ import NotFoundPage from './notFoundPage';
 
 import { useState, type ReactNode } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import { useGetCharactersQuery } from '../store/apiSlice';
+import {
+  useClearCharactersCacheMutation,
+  useGetCharactersQuery,
+} from '../store/apiSlice';
 
 import './page.css';
+import Button from '../components/elements/Button';
 
 function MainPage(): ReactNode {
   const limit = 20;
@@ -24,6 +28,12 @@ function MainPage(): ReactNode {
     limit,
     page: pageNumber,
   });
+
+  const [clearCache] = useClearCharactersCacheMutation();
+
+  const handleClearCacheByList = (): void => {
+    clearCache(null);
+  };
 
   const totalCount = data?.count || 0;
   const isLastPage = totalCount < limit;
@@ -67,6 +77,7 @@ function MainPage(): ReactNode {
         />
         <Outlet />
       </div>
+      <Button text="Clear cache and refresh" onClick={handleClearCacheByList} />
       <Pagination
         onPrev={handlePrevPage}
         onNext={handleNextPage}
