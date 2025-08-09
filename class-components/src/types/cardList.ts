@@ -4,6 +4,7 @@ export type CardListProps = {
   data: Character[];
   isLoading: boolean;
   isFetching: boolean;
+  error: unknown;
   onSelectCard: (id: string) => void;
 };
 

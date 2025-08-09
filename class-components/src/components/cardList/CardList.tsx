@@ -8,6 +8,7 @@ import type { CardListProps } from '../../types/cardList';
 import type { Character } from '../../types/api';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { toggleCard } from '../../store/cardsSlice';
+import { getErrorMessage } from '../../utils/getErrorMessage';
 
 import './card-list.css';
 
@@ -15,6 +16,7 @@ function CardList({
   data,
   isLoading,
   isFetching,
+  error,
   onSelectCard,
 }: CardListProps): ReactNode {
   const checkedCardList = useAppSelector((state) => state.checkCards.list);
@@ -25,6 +27,11 @@ function CardList({
       dispatch(toggleCard(card));
     }
   };
+
+  if (error) {
+    return <Message message={getErrorMessage(error)} />;
+  }
+
   return (
     <>
       {(isLoading || isFetching) && (
@@ -33,6 +40,7 @@ function CardList({
           {!isLoading && isFetching && <Message message="Fetching data..." />}
         </div>
       )}
+
       {!isLoading && !isFetching && (
         <div className="card-column" data-testid="card-list">
           {data.map((card: Character) => (

@@ -19,7 +19,7 @@ function MainPage(): ReactNode {
   const pageNumber = Number(page);
   const isInvalidPage = isNaN(pageNumber) || pageNumber <= 0;
 
-  const { data, isLoading, isFetching } = useGetCharactersQuery({
+  const { data, isLoading, isFetching, error } = useGetCharactersQuery({
     query,
     limit,
     page: pageNumber,
@@ -62,6 +62,7 @@ function MainPage(): ReactNode {
           data={data?.data || []}
           isLoading={isLoading}
           isFetching={isFetching}
+          error={error}
           onSelectCard={handleSelectCard}
         />
         <Outlet />
