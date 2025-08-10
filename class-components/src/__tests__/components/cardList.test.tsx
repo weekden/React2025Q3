@@ -30,8 +30,8 @@ describe('CardList component', () => {
           <CardList
             data={mockData}
             isLoading={false}
-            isError={false}
-            errorMessage=""
+            isFetching={false}
+            error={null}
             onSelectCard={() => {}}
           />
         </ThemeContextProvider>
@@ -49,15 +49,15 @@ describe('CardList component', () => {
     });
   });
 
-  it('should render spinner element', () => {
+  it('should render spinner element when loading', () => {
     render(
       <Provider store={store}>
         <ThemeContextProvider>
           <CardList
             data={[]}
             isLoading={true}
-            isError={false}
-            errorMessage=""
+            isFetching={false}
+            error={null}
             onSelectCard={() => {}}
           />
         </ThemeContextProvider>
@@ -66,21 +66,21 @@ describe('CardList component', () => {
     expect(screen.getByLabelText('Loading...')).toBeInTheDocument();
   });
 
-  it('should render not found when mockdata length === 0', () => {
+  it('should render fetching message when fetching but not loading', () => {
     render(
       <Provider store={store}>
         <ThemeContextProvider>
           <CardList
             data={[]}
             isLoading={false}
-            isError={false}
-            errorMessage=""
+            isFetching={true}
+            error={null}
             onSelectCard={() => {}}
           />
         </ThemeContextProvider>
       </Provider>
     );
-    expect(screen.getByText('Not found')).toBeInTheDocument();
+    expect(screen.getByText('Fetching data...')).toBeInTheDocument();
   });
 
   it('should render correct number of items when data is provided', () => {
@@ -90,8 +90,8 @@ describe('CardList component', () => {
           <CardList
             data={mockData}
             isLoading={false}
-            isError={false}
-            errorMessage=""
+            isFetching={false}
+            error={null}
             onSelectCard={() => {}}
           />
         </ThemeContextProvider>
@@ -107,8 +107,8 @@ describe('CardList component', () => {
           <CardList
             data={[]}
             isLoading={false}
-            isError={true}
-            errorMessage="Client error 404"
+            isFetching={false}
+            error={{ status: 404, data: 'Client error 404' }}
             onSelectCard={() => {}}
           />
         </ThemeContextProvider>
@@ -126,8 +126,8 @@ describe('CardList component', () => {
           <CardList
             data={mockData}
             isLoading={false}
-            isError={false}
-            errorMessage=""
+            isFetching={false}
+            error={null}
             onSelectCard={handleSelectCard}
           />
         </ThemeContextProvider>
@@ -153,8 +153,8 @@ describe('CardList component', () => {
           <CardList
             data={mockData}
             isLoading={false}
-            isError={false}
-            errorMessage=""
+            isFetching={false}
+            error={null}
             onSelectCard={handleSelectCard}
           />
         </ThemeContextProvider>
@@ -185,8 +185,8 @@ describe('CardList component', () => {
           <CardList
             data={mockData}
             isLoading={false}
-            isError={false}
-            errorMessage=""
+            isFetching={false}
+            error={null}
             onSelectCard={handleSelectCard}
           />
         </ThemeContextProvider>
@@ -218,8 +218,8 @@ describe('CardList component', () => {
           <CardList
             data={mockData}
             isLoading={false}
-            isError={false}
-            errorMessage=""
+            isFetching={false}
+            error={null}
             onSelectCard={handleSelectCard}
           />
         </ThemeContextProvider>

@@ -16,6 +16,7 @@ import './cardDetail.css';
 function CardDetails(): ReactNode {
   const { page, id } = useParams();
   const navigate = useNavigate();
+  const [clearCache] = useClearCharacterCacheByIdMutation();
 
   const { data, isLoading, isFetching, error } = useGetCharacterByIdQuery(
     id || '',
@@ -23,14 +24,6 @@ function CardDetails(): ReactNode {
       skip: !id,
     }
   );
-
-  const [clearCache] = useClearCharacterCacheByIdMutation();
-  const handleClearCacheById = (): void => {
-    if (!id) {
-      return;
-    }
-    clearCache(id);
-  };
 
   if (error) {
     return <Message message={getErrorMessage(error)} />;
@@ -58,7 +51,9 @@ function CardDetails(): ReactNode {
             </div>
           </>
         )}
-        <Button text="Refresh" onClick={handleClearCacheById} />
+        {!isLoading && !isFetching && data && (
+          <Button text="Refresh" onClick={() => clearCache(id)} />
+        )}
       </div>
     </>
   );

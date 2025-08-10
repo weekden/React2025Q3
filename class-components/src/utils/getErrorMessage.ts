@@ -1,7 +1,9 @@
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import type { SerializedError } from '@reduxjs/toolkit/react';
 
-function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryError {
+export function isFetchBaseQueryError(
+  error: unknown
+): error is FetchBaseQueryError {
   return typeof error === 'object' && error !== null && 'status' in error;
 }
 
