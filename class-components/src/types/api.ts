@@ -17,3 +17,7 @@ export type CharacterIdResponse = {
   success: boolean;
   data: Character;
 };
+export const ZeldaTagTypes = {
+  CharacterList: 'CharacterList',
+  Character: 'Character',
+};

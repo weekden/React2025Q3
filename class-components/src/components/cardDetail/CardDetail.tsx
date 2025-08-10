@@ -1,69 +1,61 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState, type ReactNode } from 'react';
-import Spinner from '../spinner/Spinner';
-import Message from '../message/Message';
-import { fetchCharactersById } from '../../api/getData';
-import type { Character } from '../../types/api';
-import './cardDetail.css';
 import Card from '../card/Card';
 import Button from '../elements/Button';
+import Spinner from '../spinner/Spinner';
+import Message from '../message/Message';
+
+import { useNavigate, useParams } from 'react-router-dom';
+import type { ReactNode } from 'react';
+import {
+  useClearCharacterCacheByIdMutation,
+  useGetCharacterByIdQuery,
+} from '../../store/apiSlice';
+import { getErrorMessage } from '../../utils/getErrorMessage';
+
+import './cardDetail.css';
 
 function CardDetails(): ReactNode {
   const { page, id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState<Character | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [clearCache] = useClearCharacterCacheByIdMutation();
 
-  useEffect(() => {
-    if (!id) return;
-    showDetails(id);
-  }, [id]);
-
-  const showDetails = async (id: string): Promise<void> => {
-    setIsLoading(true);
-    try {
-      const result = await fetchCharactersById(id);
-      setData(result.data);
-      setIsLoading(false);
-    } catch (error) {
-      setData(null);
-      setIsError(true);
-      setIsLoading(false);
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage('Unexpected error');
-      }
+  const { data, isLoading, isFetching, error } = useGetCharacterByIdQuery(
+    id || '',
+    {
+      skip: !id,
     }
-  };
+  );
+
+  if (error) {
+    return <Message message={getErrorMessage(error)} />;
+  }
 
   return (
-    <div className="card-details" data-testid="card-details">
-      {isLoading && (
-        <div className="center-conten">
-          <Spinner />
-        </div>
-      )}
-      {isError && (
-        <div className="center-content">
-          <Message message={errorMessage} />
-        </div>
-      )}
-      {!isLoading && !isError && data && (
-        <>
-          <Button
-            className="card-details__close"
-            onClick={() => navigate(`/page/${page}`)}
-            text={'☓'}
-          />
-          <div className="card-details__card">
-            <Card card={data} />
+    <>
+      <div className="card-details" data-testid="card-details">
+        {(isLoading || isFetching) && (
+          <div className="center-content">
+            {isLoading && <Spinner />}
+            {!isLoading && isFetching && <Message message="Fetching data..." />}
           </div>
-        </>
-      )}
-    </div>
+        )}
+
+        {!isLoading && !isFetching && data && (
+          <>
+            <Button
+              className="card-details__close"
+              onClick={() => navigate(`/page/${page}`)}
+              text={'☓'}
+            />
+            <div className="card-details__card">
+              <Card card={data.data} />
+            </div>
+          </>
+        )}
+        {!isLoading && !isFetching && data && (
+          <Button text="Refresh" onClick={() => clearCache(id)} />
+        )}
+      </div>
+    </>
   );
 }
 

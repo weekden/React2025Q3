@@ -1,11 +1,14 @@
 import { render, type RenderResult } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import CardDetails from '../../components/cardDetail/CardDetail';
-import MainPage from '../../pages/mainPage';
+
 import { Provider } from 'react-redux';
 import store from '../../store';
+import { ThemeContextProvider } from '../../context/ThemeContext';
+import App from '../../App';
 
 export const mockListResponse = {
+  count: 2,
   data: [
     {
       name: 'Link',
@@ -32,16 +35,30 @@ export const mockByIdResponse = {
   },
 };
 
-export const mockRender = (defaultPath: string = '/page/1'): RenderResult => {
+export const mockRender = (initialPath: string = '/page/1'): RenderResult => {
   return render(
     <Provider store={store}>
-      <MemoryRouter initialEntries={[defaultPath]}>
-        <Routes>
-          <Route path="/page/:page" element={<MainPage />}>
-            <Route path="detailsId/:id" element={<CardDetails />} />
-          </Route>
-        </Routes>
-      </MemoryRouter>
+      <ThemeContextProvider>
+        <MemoryRouter initialEntries={[initialPath]}>
+          <App />
+        </MemoryRouter>
+      </ThemeContextProvider>
+    </Provider>
+  );
+};
+
+export const mockRenderWithTheme = (
+  defaultPath: string = '/page/1'
+): RenderResult => {
+  return render(
+    <Provider store={store}>
+      <ThemeContextProvider>
+        <MemoryRouter initialEntries={[defaultPath]}>
+          <Routes>
+            <Route path="/page/:page/detailsId/:id" element={<CardDetails />} />
+          </Routes>
+        </MemoryRouter>
+      </ThemeContextProvider>
     </Provider>
   );
 };
