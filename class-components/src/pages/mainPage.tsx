@@ -1,84 +1,111 @@
-import { Component, type ReactNode } from 'react';
-import Header from '../components/header/Header';
+import { useEffect, useState, type ReactNode } from 'react';
+import Header from '../components/title/Title';
 import Search from '../components/search/Search';
-import type { MainState } from '../types/data';
 import CardList from '../components/cardList/CardList';
-import ErrorButton from '../components/errorButton/ErrorButton';
+import { fetchCharacters } from '../api/getData';
+
 import './page.css';
+import type { Character } from '../types/api';
+import Pagination from '../components/pagination/Pagination';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import NotFoundPage from './notFoundPage';
 
-class MainPage extends Component<object, MainState> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      data: [],
-      query: '',
-      isLoading: false,
-      isError: false,
-      errorMessage: '',
-      isMockError: false,
-    };
-  }
+function MainPage(): ReactNode {
+  const limit = 20;
+  const { page = 1 } = useParams();
+  const navigate = useNavigate();
 
-  public componentDidMount(): void {
-    this.queryChange('');
-  }
+  const pageNumber = Number(page);
+  const isInvalidPage = isNaN(pageNumber) || pageNumber <= 0;
 
-  public render(): ReactNode {
-    if (this.state.isMockError) {
-      throw new Error('This is mock error');
+  const [data, setData] = useState<Character[]>([]);
+  const [query, setQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLastPage, setIsLastPage] = useState(false);
+
+  useEffect(() => {
+    if (isInvalidPage) {
+      return;
     }
-    return (
-      <div className="page-wrapper">
-        <Header title="Zelda monsters store" />
-        <Search onQueryChange={this.queryChange} />
+    queryChange(query, limit, +page);
+  }, [query, page, isInvalidPage]);
 
-        <CardList
-          data={this.state.data}
-          isLoading={this.state.isLoading}
-          isError={this.state.isError}
-          errorMessage={this.state.errorMessage}
-        ></CardList>
+  const queryChange = async (
+    query: string,
+    limit: number,
+    page: number
+  ): Promise<void> => {
+    setIsLoading(true);
+    setIsLastPage(false);
 
-        <ErrorButton onErrorGenerate={this.errorGenerate} />
-      </div>
-    );
-  }
-
-  private queryChange = async (query: string): Promise<void> => {
-    this.setState({ isLoading: true });
     try {
-      const response = await fetch(
-        `https://zelda.fanapis.com/api/characters?name=${encodeURIComponent(query)}`
-      );
-      if (!response.ok) {
-        if (response.status >= 400 && response.status < 500) {
-          this.setState({
-            errorMessage: `Client error ${response.status} - ${response.statusText}`,
-          });
-        } else if (response.status >= 500) {
-          this.setState({
-            errorMessage: `Server error ${response.status} - ${response.statusText}`,
-          });
-        }
-
-        return this.setState({ data: [], isLoading: false, isError: true });
+      const result = await fetchCharacters(query, limit, page);
+      setData(result.data);
+      setIsLoading(false);
+      if (result.count < limit) {
+        setIsLastPage(true);
       }
-
-      const result = await response.json();
-      console.log(result);
-      this.setState({ data: result.data, isLoading: false, isError: false });
-    } catch {
-      this.setState({
-        data: [],
-        isLoading: false,
-        isError: true,
-        errorMessage: 'Unexpected error',
-      });
+    } catch (error) {
+      setData([]);
+      setIsLoading(false);
+      setIsError(true);
+      setIsLastPage(true);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage('Unexpected error');
+      }
     }
   };
 
-  private errorGenerate = (): void => {
-    this.setState({ isMockError: true });
+  const handleNextPage = (): void => {
+    if (isLastPage || isError) return;
+    const nextPage = +page + 1;
+    navigate(`/page/${nextPage}`);
   };
+
+  const handlePrevPage = (): void => {
+    if (+page === 1) return;
+    const prevPage = +page - 1;
+    navigate(`/page/${prevPage}`);
+  };
+
+  const handleSelectCard = (id: string): void => {
+    navigate(`/page/${page}/detailsId/${id}`);
+  };
+
+  if (isInvalidPage) {
+    return <NotFoundPage />;
+  }
+
+  return (
+    <div className="page-wrapper">
+      <Header title="Zelda monsters store" />
+      <Search
+        onQueryChange={(newQuery) => {
+          setQuery(newQuery);
+          navigate('/page/1');
+        }}
+      />
+      <div className="main-container" data-testid="main-container">
+        <CardList
+          data={data}
+          isLoading={isLoading}
+          isError={isError}
+          errorMessage={errorMessage}
+          onSelectCard={handleSelectCard}
+        />
+        <Outlet />
+      </div>
+      <Pagination
+        onPrev={handlePrevPage}
+        onNext={handleNextPage}
+        isLastPage={isLastPage}
+      />
+    </div>
+  );
 }
+
 export default MainPage;
