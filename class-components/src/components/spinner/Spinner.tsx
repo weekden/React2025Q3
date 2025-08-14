@@ -1,10 +1,10 @@
-import { useContext, type ReactNode } from 'react';
+import { useContext, type JSX } from 'react';
 import spinnerBlack from '../../assets/spinner-black.png';
 import spinnerWhite from '../../assets/spinner-white.png';
 import './spinner.css';
 import { ThemeContext } from '../../context/ThemeContext';
 
-function Spinner(): ReactNode {
+function Spinner(): JSX.Element | null {
   const context = useContext(ThemeContext);
   if (!context) {
     return null;

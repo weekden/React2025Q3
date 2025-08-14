@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 import type { PaginationProps } from '../../types/pagination';
 import './pagination.css';
 import { useParams } from 'react-router-dom';
@@ -8,7 +8,7 @@ function Pagination({
   onPrev,
   onNext,
   isLastPage,
-}: PaginationProps): ReactNode {
+}: PaginationProps): JSX.Element {
   const { page } = useParams();
   return (
     <div className="pagination-container" data-testid="pagination">

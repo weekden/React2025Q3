@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 
-function About(): ReactNode {
+function About(): JSX.Element {
   return (
     <div className="page-wrapper" data-testid="about-page">
       <h1>Zelda Store</h1>

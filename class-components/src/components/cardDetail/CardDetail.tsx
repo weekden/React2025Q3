@@ -4,20 +4,18 @@ import Spinner from '../spinner/Spinner';
 import Message from '../message/Message';
 
 import { useNavigate, useParams } from 'react-router-dom';
-import type { ReactNode } from 'react';
-import {
-  useClearCharacterCacheByIdMutation,
-  useGetCharacterByIdQuery,
-} from '../../store/apiSlice';
+import type { JSX } from 'react';
+import { useGetCharacterByIdQuery, zeldaApi } from '../../store/apiSlice';
 import { getErrorMessage } from '../../utils/getErrorMessage';
 
 import './cardDetail.css';
+import { ZeldaTagTypes } from '../../types/api';
+import { useDispatch } from 'react-redux';
 
-function CardDetails(): ReactNode {
+function CardDetails(): JSX.Element {
   const { page, id } = useParams();
   const navigate = useNavigate();
-  const [clearCache] = useClearCharacterCacheByIdMutation();
-
+  const dispatch = useDispatch();
   const { data, isLoading, isFetching, error } = useGetCharacterByIdQuery(
     id || '',
     {
@@ -52,7 +50,16 @@ function CardDetails(): ReactNode {
           </>
         )}
         {!isLoading && !isFetching && data && (
-          <Button text="Refresh" onClick={() => clearCache(id)} />
+          <Button
+            text="Refresh"
+            onClick={() =>
+              dispatch(
+                zeldaApi.util.invalidateTags([
+                  { type: ZeldaTagTypes.Character },
+                ])
+              )
+            }
+          />
         )}
       </div>
     </>

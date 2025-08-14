@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 import './card.css';
 import type { CardProps } from '../../types/cardList';
 
-function Card({ card, onClick, onChange, isChecked }: CardProps): ReactNode {
+function Card({ card, onClick, onChange, isChecked }: CardProps): JSX.Element {
   return (
     <div className="card" data-id={card.id} onClick={onClick}>
       <h4 className="card__name">{card.name}</h4>

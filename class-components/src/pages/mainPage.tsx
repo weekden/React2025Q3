@@ -4,21 +4,21 @@ import CardList from '../components/cardList/CardList';
 import Pagination from '../components/pagination/Pagination';
 import NotFoundPage from './notFoundPage';
 
-import { useState, type ReactNode } from 'react';
+import { useState, type JSX } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import {
-  useClearCharactersCacheMutation,
-  useGetCharactersQuery,
-} from '../store/apiSlice';
+import { useGetCharactersQuery, zeldaApi } from '../store/apiSlice';
 
 import './page.css';
 import Button from '../components/elements/Button';
+import { useDispatch } from 'react-redux';
+import { ZeldaTagTypes } from '../types/api';
 
-function MainPage(): ReactNode {
+function MainPage(): JSX.Element {
   const limit = 20;
   const { page = '1' } = useParams();
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const pageNumber = Number(page);
   const isInvalidPage = isNaN(pageNumber) || pageNumber <= 0;
@@ -29,10 +29,10 @@ function MainPage(): ReactNode {
     page: pageNumber,
   });
 
-  const [clearCache] = useClearCharactersCacheMutation();
-
   const handleClearCacheByList = (): void => {
-    clearCache(null);
+    dispatch(
+      zeldaApi.util.invalidateTags([{ type: ZeldaTagTypes.CharacterList }])
+    );
   };
 
   const totalCount = data?.count || 0;

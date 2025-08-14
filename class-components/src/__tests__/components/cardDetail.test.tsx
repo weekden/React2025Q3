@@ -1,5 +1,5 @@
 import { fireEvent, screen, within } from '@testing-library/react';
-import { describe, it, vi, beforeEach, afterEach, expect } from 'vitest';
+import { describe, it, vi, beforeEach, expect } from 'vitest';
 import * as api from '../../store/apiSlice';
 import {
   mockByIdResponse,
@@ -8,13 +8,8 @@ import {
 } from '../mocks/data';
 
 type GetCharacterByIdResult = ReturnType<typeof api.useGetCharacterByIdQuery>;
-type ClearCharacterCacheByIdMutationResult = ReturnType<
-  typeof api.useClearCharacterCacheByIdMutation
->;
 
 describe('CardDetails component with RTK Query', () => {
-  const clearCacheMock = vi.fn();
-
   beforeEach(() => {
     vi.spyOn(api, 'useGetCharacterByIdQuery').mockReturnValue({
       data: mockByIdResponse,
@@ -22,14 +17,6 @@ describe('CardDetails component with RTK Query', () => {
       isFetching: false,
       error: undefined,
     } as Partial<GetCharacterByIdResult> as GetCharacterByIdResult);
-
-    vi.spyOn(api, 'useClearCharacterCacheByIdMutation').mockReturnValue([
-      clearCacheMock,
-    ] as Partial<ClearCharacterCacheByIdMutationResult> as ClearCharacterCacheByIdMutationResult);
-  });
-
-  afterEach(() => {
-    clearCacheMock.mockClear();
   });
 
   it('should show spinner when isLoading is true', () => {
@@ -91,9 +78,6 @@ describe('CardDetails component with RTK Query', () => {
     expect(closeButton).toBeInTheDocument();
     expect(refreshButton).toBeInTheDocument();
     expect(screen.getByText(mockByIdResponse.data.name)).toBeInTheDocument();
-
-    fireEvent.click(refreshButton);
-    expect(clearCacheMock).toHaveBeenCalledWith('card-1');
 
     fireEvent.click(closeButton);
     expect(screen.getByTestId('current-page')).toHaveTextContent('Page: 1');

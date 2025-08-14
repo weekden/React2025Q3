@@ -1,9 +1,9 @@
-import { useContext, type ReactNode } from 'react';
+import { useContext, type JSX } from 'react';
 import { NavLink } from 'react-router-dom';
 import './header.css';
 import { ThemeContext } from '../../context/ThemeContext';
 
-function Header(): ReactNode {
+function Header(): JSX.Element | null {
   const context = useContext(ThemeContext);
   if (!context) {
     return null;

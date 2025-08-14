@@ -35,21 +35,7 @@ export const zeldaApi = createApi({
         return [{ type: ZeldaTagTypes.Character, id }];
       },
     }),
-    clearCharactersCache: build.mutation({
-      queryFn: () => ({ data: null }),
-      invalidatesTags: [ZeldaTagTypes.CharacterList],
-    }),
-
-    clearCharacterCacheById: build.mutation({
-      queryFn: () => ({ data: undefined }),
-      invalidatesTags: (id) => [{ type: ZeldaTagTypes.Character, id }],
-    }),
   }),
 });
 
-export const {
-  useGetCharactersQuery,
-  useGetCharacterByIdQuery,
-  useClearCharactersCacheMutation,
-  useClearCharacterCacheByIdMutation,
-} = zeldaApi;
+export const { useGetCharactersQuery, useGetCharacterByIdQuery } = zeldaApi;

@@ -3,7 +3,7 @@ import Spinner from '../spinner/Spinner';
 import SelectionFlyout from '../selectionFlyout/SelectionFlyout';
 import Message from '../message/Message';
 
-import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 import type { CardListProps } from '../../types/cardList';
 import type { Character } from '../../types/api';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -18,7 +18,7 @@ function CardList({
   isFetching,
   error,
   onSelectCard,
-}: CardListProps): ReactNode {
+}: CardListProps): JSX.Element {
   const checkedCardList = useAppSelector((state) => state.checkCards.list);
   const dispatch = useAppDispatch();
   const handleCheckboxChange = (id: string): void => {

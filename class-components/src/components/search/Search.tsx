@@ -1,9 +1,9 @@
-import { type ChangeEvent, type ReactNode } from 'react';
+import { type ChangeEvent, type JSX } from 'react';
 import type { SearchProps } from '../../types/search';
 import './search.css';
 import useLocaleStorage from '../../hooks/localeStorage';
 
-function Search({ onQueryChange }: SearchProps): ReactNode {
+function Search({ onQueryChange }: SearchProps): JSX.Element {
   const [query, setQuery] = useLocaleStorage('search', '');
 
   const handleClick = (): void => {

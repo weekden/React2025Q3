@@ -1,15 +1,11 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { describe, it, vi, beforeEach, expect, afterEach } from 'vitest';
+import { describe, it, vi, beforeEach, expect } from 'vitest';
 import { mockListResponse, mockRender } from '../mocks/data';
 import * as api from '../../store/apiSlice';
 
 type GetCharactersResult = ReturnType<typeof api.useGetCharactersQuery>;
-type ClearCharactersMutationResult = ReturnType<
-  typeof api.useClearCharactersCacheMutation
->;
 
 describe('Test MainPage with RTK Query', () => {
-  const clearCacheMock = vi.fn();
   beforeEach(() => {
     vi.spyOn(api, 'useGetCharactersQuery').mockReturnValue({
       data: mockListResponse,
@@ -17,13 +13,6 @@ describe('Test MainPage with RTK Query', () => {
       isFetching: false,
       error: undefined,
     } as Partial<GetCharactersResult> as GetCharactersResult);
-
-    vi.spyOn(api, 'useClearCharactersCacheMutation').mockReturnValue([
-      clearCacheMock,
-    ] as Partial<ClearCharactersMutationResult> as ClearCharactersMutationResult);
-  });
-  afterEach(() => {
-    clearCacheMock.mockClear();
   });
 
   it('should render components', () => {
@@ -72,16 +61,6 @@ describe('Test MainPage with RTK Query', () => {
 
     const nextButton = screen.getByRole('button', { name: 'Next' });
     expect(nextButton).toBeDisabled();
-  });
-
-  it('shold calls clearCache when clicking Clear cache button', () => {
-    mockRender('/page/1');
-    const button = screen.getByRole('button', {
-      name: /clear cache and refresh/i,
-    });
-    fireEvent.click(button);
-
-    expect(clearCacheMock).toHaveBeenCalledWith(null);
   });
 
   it('should navigates to details page when clicking on card', async () => {

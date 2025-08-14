@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 import type { ButtonProps } from '../../types/elements/button';
 
 function Button({
@@ -6,7 +6,7 @@ function Button({
   className = '',
   onClick,
   disabled = false,
-}: ButtonProps): ReactNode {
+}: ButtonProps): JSX.Element {
   return (
     <button className={className} onClick={onClick} disabled={disabled}>
       {text}
