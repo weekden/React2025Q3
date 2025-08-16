@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import type { TitleProps } from '../../types/title';
 import './title.css';
 
-function Header({ title }: TitleProps): JSX.Element {
+function Title({ title }: TitleProps): JSX.Element {
   return (
     <>
       <h1 className="title" data-testid="title">
@@ -11,4 +11,4 @@ function Header({ title }: TitleProps): JSX.Element {
     </>
   );
 }
-export default Header;
+export default Title;

@@ -1,40 +1,38 @@
-import { type ChangeEvent, type JSX } from 'react';
-import type { SearchProps } from '../../types/search';
-import './search.css';
-import useLocaleStorage from '../../hooks/localeStorage';
+'use client';
 
-function Search({ onQueryChange }: SearchProps): JSX.Element {
+import { JSX, type ChangeEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import useLocaleStorage from '../../hooks/localeStorage';
+import Button from '../elements/Button';
+
+import './search.css';
+
+export default function Search(): JSX.Element {
   const [query, setQuery] = useLocaleStorage('search', '');
+  const router = useRouter();
 
   const handleClick = (): void => {
-    const trimmedQuery: string = query.trim();
-    if (!trimmedQuery) {
-      return;
-    }
-    onQueryChange(trimmedQuery);
+    const trimmedQuery = query.trim();
+    router.push(`?query=${encodeURIComponent(trimmedQuery)}&page=1`);
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const trimmedQuery = event.target.value.trim();
-    setQuery(trimmedQuery);
-    if (trimmedQuery === '') {
-      onQueryChange('');
+    setQuery(event.target.value);
+    if (event.target.value.trim() === '') {
+      router.push(`?page=1`);
     }
   };
 
   return (
-    <>
-      <div className="search-container" data-testid="search">
-        <input
-          type="search"
-          className="input-search"
-          placeholder="Enter Name"
-          value={query}
-          onChange={handleChange}
-        />
-        <button onClick={handleClick}>Search</button>
-      </div>
-    </>
+    <div className="search-container" data-testid="search">
+      <input
+        type="search"
+        className="input-search"
+        placeholder="Enter Name"
+        value={query}
+        onChange={handleChange}
+      />
+      <Button onClick={handleClick} text="Search" />
+    </div>
   );
 }
-export default Search;

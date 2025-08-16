@@ -11,6 +11,7 @@ export type CardListProps = {
 export type CardProps = {
   card: Character;
   isChecked?: boolean;
+  isDetail: boolean;
   onClick?: () => void;
   onChange?: () => void;
 };

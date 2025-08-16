@@ -1,41 +1,49 @@
 import { useContext, type JSX } from 'react';
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
 import './header.css';
+
 import { ThemeContext } from '../../context/ThemeContext';
+import { usePathname } from 'next/navigation';
 
 function Header(): JSX.Element | null {
   const context = useContext(ThemeContext);
+  const pathname = usePathname();
   if (!context) {
     return null;
   }
+  const { theme, setTheme } = context;
 
   const toggleTheme = (): void => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
-  const { theme, setTheme } = context;
+
   return (
     <header className="header" data-testid="header-nav">
       <nav className="header__nav">
         <ul className="header__nav-list">
           <li className="nav-list__item">
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? 'nav-list__item-link active' : 'nav-list__item-link'
+            <Link
+              href="/"
+              className={
+                pathname === '/'
+                  ? 'nav-list__item-link active'
+                  : 'nav-list__item-link'
               }
-              to="/page/1"
             >
               Home
-            </NavLink>
+            </Link>
           </li>
           <li className="nav-list__item">
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? 'nav-list__item-link active' : 'nav-list__item-link'
+            <Link
+              href="/about"
+              className={
+                pathname === '/about'
+                  ? 'nav-list__item-link active'
+                  : 'nav-list__item-link'
               }
-              to="about"
             >
               About
-            </NavLink>
+            </Link>
           </li>
         </ul>
       </nav>

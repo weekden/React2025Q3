@@ -2,7 +2,13 @@ import type { JSX } from 'react';
 import './card.css';
 import type { CardProps } from '../../types/cardList';
 
-function Card({ card, onClick, onChange, isChecked }: CardProps): JSX.Element {
+function Card({
+  card,
+  onClick,
+  onChange,
+  isChecked,
+  isDetail,
+}: CardProps): JSX.Element {
   return (
     <div className="card" data-id={card.id} onClick={onClick}>
       <h4 className="card__name">{card.name}</h4>
@@ -10,13 +16,13 @@ function Card({ card, onClick, onChange, isChecked }: CardProps): JSX.Element {
         <span className="card__pretitle">Race:</span>{' '}
         {card.race || 'Unknow race'}
       </p>
-      {card.description && (
+      {isDetail && (
         <p className="card__description">
           <span className="card__pretitle">Description:</span>{' '}
           {card.description}
         </p>
       )}
-      {!card.description && (
+      {!isDetail && (
         <label
           className={`card__check ${isChecked ? 'checked' : ''}`}
           onClick={(event) => event.stopPropagation()}
