@@ -7,14 +7,6 @@ import { routing } from '@/i18n/routing';
 import { JSX } from 'react';
 import { cookies } from 'next/dist/server/request/cookies';
 
-export const metadata = {
-  title: 'Zelda',
-  description: 'Zelda monster store',
-  icons: {
-    icon: '/favicon-zelda.png',
-  },
-};
-
 export type RootLayoutProps = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
