@@ -1,34 +1,42 @@
-import type { JSX } from 'react';
-import type { PaginationProps } from '../../types/pagination';
-import './pagination.css';
-import { useParams } from 'react-router-dom';
 import Button from '../elements/Button';
+import { Link } from '../../i18n/navigation';
+import { JSX } from 'react';
+import { useTranslations } from 'next-intl';
 
-function Pagination({
-  onPrev,
-  onNext,
+import './pagination.css';
+
+export default function Pagination({
+  currentPage,
   isLastPage,
-}: PaginationProps): JSX.Element {
-  const { page } = useParams();
+}: {
+  currentPage: number;
+  isLastPage: boolean;
+}): JSX.Element {
+  const t = useTranslations('main');
+  const prevPage = Math.max(currentPage - 1, 1);
+  const nextPage = currentPage + 1;
+
   return (
-    <div className="pagination-container" data-testid="pagination">
-      <Button
-        className="button, btn-prev"
-        text="Prev"
-        onClick={onPrev}
-        disabled={page === '1'}
-      />
+    <div className="pagination-container">
+      <Link href={`/?page=${prevPage}`} scroll={false}>
+        <Button
+          disabled={currentPage === 1}
+          nameLocale="main"
+          keyLocale="pagination.prev"
+        />
+      </Link>
+
       <span className="current-page" data-testid="current-page">
-        Page: <strong>{page}</strong>
+        {t('pagination.page')}: <strong>{currentPage}</strong>
       </span>
-      <Button
-        className="button, btn-next"
-        text="Next"
-        onClick={onNext}
-        disabled={!!isLastPage}
-      />
+
+      <Link href={`/?page=${nextPage}`} scroll={false}>
+        <Button
+          disabled={isLastPage}
+          nameLocale="main"
+          keyLocale="pagination.next"
+        />
+      </Link>
     </div>
   );
 }
-
-export default Pagination;

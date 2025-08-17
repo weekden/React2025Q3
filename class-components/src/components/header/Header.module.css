@@ -1,0 +1,51 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 1rem 2rem;
+
+  color: var(--header-text);
+
+  background-color: var(--header-bg);
+}
+
+.header__nav {
+  display: flex;
+  align-items: center;
+}
+
+.header__navList {
+  display: flex;
+  gap: 1.5rem;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.navList__itemLink {
+  font-weight: bold;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navList__itemLink:hover {
+  color: var(--link-hover);
+}
+
+.navList__itemLinkActive {
+  pointer-events: none;
+  color: var(--link-active);
+}
+
+.header__tools {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+
+  min-width: 20%;
+}

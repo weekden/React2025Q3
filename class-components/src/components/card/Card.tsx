@@ -1,8 +1,17 @@
 import type { JSX } from 'react';
-import './card.css';
 import type { CardProps } from '../../types/cardList';
+import { useTranslations } from 'next-intl';
 
-function Card({ card, onClick, onChange, isChecked }: CardProps): JSX.Element {
+import './card.css';
+
+function Card({
+  card,
+  onClick,
+  onChange,
+  isChecked,
+  isDetail,
+}: CardProps): JSX.Element {
+  const t = useTranslations('main');
   return (
     <div className="card" data-id={card.id} onClick={onClick}>
       <h4 className="card__name">{card.name}</h4>
@@ -10,19 +19,19 @@ function Card({ card, onClick, onChange, isChecked }: CardProps): JSX.Element {
         <span className="card__pretitle">Race:</span>{' '}
         {card.race || 'Unknow race'}
       </p>
-      {card.description && (
+      {isDetail && (
         <p className="card__description">
           <span className="card__pretitle">Description:</span>{' '}
           {card.description}
         </p>
       )}
-      {!card.description && (
+      {!isDetail && (
         <label
           className={`card__check ${isChecked ? 'checked' : ''}`}
           onClick={(event) => event.stopPropagation()}
         >
           <input type="checkbox" onChange={onChange} hidden />
-          {isChecked ? 'Uncheck' : 'Check'}
+          {isChecked ? t('cards.uncheck') : t('cards.check')}
         </label>
       )}
     </div>

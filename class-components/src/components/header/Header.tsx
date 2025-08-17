@@ -1,48 +1,49 @@
+'use client';
 import { useContext, type JSX } from 'react';
-import { NavLink } from 'react-router-dom';
-import './header.css';
+import { Link } from '../../i18n/navigation';
 import { ThemeContext } from '../../context/ThemeContext';
+import Button from '../elements/Button';
+import { useTranslations } from 'next-intl';
+import LocaleSwitcher from './LocaleSwitcher';
+
+import styles from './Header.module.css';
 
 function Header(): JSX.Element | null {
   const context = useContext(ThemeContext);
+  const t = useTranslations('header');
+
   if (!context) {
     return null;
   }
+  const { theme, setTheme } = context;
 
   const toggleTheme = (): void => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
-  const { theme, setTheme } = context;
+
   return (
-    <header className="header" data-testid="header-nav">
-      <nav className="header__nav">
-        <ul className="header__nav-list">
-          <li className="nav-list__item">
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? 'nav-list__item-link active' : 'nav-list__item-link'
-              }
-              to="/page/1"
-            >
-              Home
-            </NavLink>
+    <header className={styles.header}>
+      <nav className={styles.header__nav}>
+        <ul className={styles.header__navList}>
+          <li className={styles.navList__item}>
+            <Link href="/" className={styles.navList__itemLink}>
+              {t('nav.home')}
+            </Link>
           </li>
           <li className="nav-list__item">
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? 'nav-list__item-link active' : 'nav-list__item-link'
-              }
-              to="about"
-            >
-              About
-            </NavLink>
+            <Link href="/about" className={styles.navList__itemLink}>
+              {t('nav.about')}
+            </Link>
           </li>
         </ul>
       </nav>
-      <div className="header__tools">
-        <button onClick={toggleTheme}>
-          {theme === 'light' ? 'Dark' : 'Light'}
-        </button>
+      <div className={styles.header__tools}>
+        <Button
+          onClick={toggleTheme}
+          nameLocale="header.theme"
+          keyLocale={theme === 'light' ? 'dark' : 'light'}
+        />
+        <LocaleSwitcher />
       </div>
     </header>
   );
