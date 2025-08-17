@@ -1,0 +1,50 @@
+{
+  "header": {
+    "nav": {
+      "home": "Home",
+      "about": "About"
+    },
+    "languages": {
+      "title": "Languages",
+      "en": "English",
+      "ru": "Russian"
+    },
+    "theme": {
+      "dark": "Dark",
+      "light": "Light"
+    }
+  },
+
+  "main": {
+    "title":"Zelda Monsters Store",
+    "search": {
+      "searchPlaceholder": "Search for monsters...",
+      "searchButton": "Search" 
+    },
+    "pagination": {
+      "page": "Page",
+      "prev": "Prev",
+      "next": "Next"
+    },
+    "cards": {
+      "check": "Check",
+      "uncheck": "Uncheck"
+    },
+    "flyOut": {
+      "uncheckAll": "Unselect All",
+      "download": "Download",
+      "coin": "Selected elements"
+    }
+  },
+
+  "about": {
+    "title": "About Us",
+    "description": "Learn more about our monsters."
+  },
+  
+  "404": {
+    "title": "404 - Page Not Found",
+    "message": "This page doesn't exist",
+    "back": "Go back to home"
+  }
+}

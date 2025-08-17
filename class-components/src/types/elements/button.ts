@@ -3,4 +3,6 @@ export type ButtonProps = {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  nameLocale?: string;
+  keyLocale?: string;
 };

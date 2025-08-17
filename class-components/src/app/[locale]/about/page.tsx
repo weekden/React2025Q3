@@ -1,12 +1,13 @@
+import Title from '@/components/title/Title';
+import { useTranslations } from 'next-intl';
 import type { JSX } from 'react';
 
 function About(): JSX.Element {
+  const t = useTranslations('about');
   return (
     <div className="page-wrapper" data-testid="about-page">
-      <h1>Zelda Store</h1>
-      <p>
-        This is small App for check information about person this amazing game!
-      </p>
+      <Title nameLocale="about" />
+      <p>{t('description')}</p>
       <p>
         Created by <strong>Denis Nedelko</strong>
       </p>

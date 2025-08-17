@@ -12,6 +12,8 @@
 }
 
 .card-details__card {
+  pointer-events: none;
+
   position: relative;
 
   display: flex;

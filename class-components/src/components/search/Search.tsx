@@ -1,15 +1,17 @@
 'use client';
+import Button from '../elements/Button';
+import useLocaleStorage from '../../hooks/localeStorage';
 
 import { JSX, type ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import useLocaleStorage from '../../hooks/localeStorage';
-import Button from '../elements/Button';
+import { useTranslations } from 'next-intl';
 
 import './search.css';
 
 export default function Search(): JSX.Element {
   const [query, setQuery] = useLocaleStorage('search', '');
   const router = useRouter();
+  const t = useTranslations('main');
 
   const handleClick = (): void => {
     const trimmedQuery = query.trim();
@@ -28,11 +30,15 @@ export default function Search(): JSX.Element {
       <input
         type="search"
         className="input-search"
-        placeholder="Enter Name"
+        placeholder={t('search.searchPlaceholder')}
         value={query}
         onChange={handleChange}
       />
-      <Button onClick={handleClick} text="Search" />
+      <Button
+        onClick={handleClick}
+        nameLocale="main"
+        keyLocale="search.searchButton"
+      />
     </div>
   );
 }

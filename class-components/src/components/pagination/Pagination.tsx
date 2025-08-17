@@ -1,7 +1,9 @@
-import Link from 'next/link';
-import { JSX } from 'react';
-import './pagination.css';
 import Button from '../elements/Button';
+import { Link } from '../../i18n/navigation';
+import { JSX } from 'react';
+import { useTranslations } from 'next-intl';
+
+import './pagination.css';
 
 export default function Pagination({
   currentPage,
@@ -10,21 +12,30 @@ export default function Pagination({
   currentPage: number;
   isLastPage: boolean;
 }): JSX.Element {
+  const t = useTranslations('main');
   const prevPage = Math.max(currentPage - 1, 1);
   const nextPage = currentPage + 1;
 
   return (
     <div className="pagination-container">
-      <Link href={`/?page=${prevPage}`}>
-        <Button disabled={currentPage === 1} text="Prev" />
+      <Link href={`/?page=${prevPage}`} scroll={false}>
+        <Button
+          disabled={currentPage === 1}
+          nameLocale="main"
+          keyLocale="pagination.prev"
+        />
       </Link>
 
       <span className="current-page" data-testid="current-page">
-        Page: <strong>{currentPage}</strong>
+        {t('pagination.page')}: <strong>{currentPage}</strong>
       </span>
 
-      <Link href={`/?page=${nextPage}`}>
-        <Button disabled={isLastPage} text="Next" />
+      <Link href={`/?page=${nextPage}`} scroll={false}>
+        <Button
+          disabled={isLastPage}
+          nameLocale="main"
+          keyLocale="pagination.next"
+        />
       </Link>
     </div>
   );

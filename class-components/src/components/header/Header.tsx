@@ -1,13 +1,19 @@
+'use client';
 import { useContext, type JSX } from 'react';
-import Link from 'next/link';
 import './header.css';
-
+import { Link } from '../../i18n/navigation';
 import { ThemeContext } from '../../context/ThemeContext';
 import { usePathname } from 'next/navigation';
+import Button from '../elements/Button';
+import { useTranslations } from 'next-intl';
+import LocaleSwitcher from './LocaleSwitcher';
 
 function Header(): JSX.Element | null {
   const context = useContext(ThemeContext);
   const pathname = usePathname();
+
+  const t = useTranslations('header');
+
   if (!context) {
     return null;
   }
@@ -30,7 +36,7 @@ function Header(): JSX.Element | null {
                   : 'nav-list__item-link'
               }
             >
-              Home
+              {t('nav.home')}
             </Link>
           </li>
           <li className="nav-list__item">
@@ -42,15 +48,18 @@ function Header(): JSX.Element | null {
                   : 'nav-list__item-link'
               }
             >
-              About
+              {t('nav.about')}
             </Link>
           </li>
         </ul>
       </nav>
       <div className="header__tools">
-        <button onClick={toggleTheme}>
-          {theme === 'light' ? 'Dark' : 'Light'}
-        </button>
+        <Button
+          onClick={toggleTheme}
+          nameLocale="header.theme"
+          keyLocale={theme === 'light' ? 'dark' : 'light'}
+        />
+        <LocaleSwitcher />
       </div>
     </header>
   );

@@ -1,21 +1,20 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useDispatch } from 'react-redux';
-import { zeldaApi } from '@/store/apiSlice';
 import Button from '../elements/Button';
 import Card from '../card/Card';
 import { JSX } from 'react';
-import { Character } from '@/types/api';
 import './cardDetail.css';
+import { Character } from '@/types/api';
+
+type ClientCardDetailProps = {
+  character: Character;
+};
 
 export default function ClientCardDetail({
   character,
-}: {
-  character: Character;
-}): JSX.Element {
+}: ClientCardDetailProps): JSX.Element {
   const router = useRouter();
-  const dispatch = useDispatch();
   const searchParams = useSearchParams();
 
   const closeCardDetail = (): void => {
@@ -34,12 +33,6 @@ export default function ClientCardDetail({
       <div className="card-details__card">
         <Card card={character} isDetail={true} />
       </div>
-      <Button
-        text="Refresh"
-        onClick={() =>
-          dispatch(zeldaApi.util.invalidateTags([{ type: 'Character' }]))
-        }
-      />
     </div>
   );
 }

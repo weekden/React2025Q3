@@ -2,7 +2,7 @@ import { Character } from '@/types/api';
 import { JSX } from 'react';
 import ClientCardList from './ClientCardList';
 
-export default function CardList({
+export default function ServerCardList({
   data,
   page,
 }: {

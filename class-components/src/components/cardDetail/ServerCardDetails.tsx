@@ -1,23 +1,22 @@
-import ClientCardDetail from './ClientCardDetail';
-import { fetchCharactersById } from '@/api/api';
-import { JSX } from 'react';
 import Message from '../message/Message';
+import { JSX } from 'react';
+import { fetchCharactersById } from '@/api/api';
+import ClientCardDetail from './ClientCardDetail';
 
 type ServerCardDetailProps = {
-  id: string;
+  id: string | null;
 };
 
 export default async function ServerCardDetail({
   id,
-}: ServerCardDetailProps): Promise<JSX.Element> {
+}: ServerCardDetailProps): Promise<JSX.Element | null> {
   try {
-    const detailData = await fetchCharactersById(id);
+    if (!id) return null;
+    const response = await fetchCharactersById(id);
+    const character = response?.data;
 
-    if (!detailData?.data) {
-      return <Message message="Character not found" />;
-    }
-
-    return <ClientCardDetail character={detailData.data} />;
+    if (!character) return <Message message="Character not found" />;
+    return <ClientCardDetail character={character} />;
   } catch (error: unknown) {
     if (error instanceof Error) {
       return <Message message={`Fetching error - ${error.message}`} />;
