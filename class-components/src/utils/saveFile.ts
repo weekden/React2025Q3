@@ -1,31 +1,23 @@
 import type { Character } from '../types/api';
 
-const saveFile = (selector: Character[], quantity: number): void => {
-  if (selector.length === 0) {
+export default async function saveFile(
+  selector: Character[],
+  quantity: number
+): Promise<void> {
+  if (!selector.length) {
     return;
   }
 
-  const header: (keyof Character)[] = [
-    'id',
-    'name',
-    'gender',
-    'race',
-    'description',
-    'appearances',
-  ];
-
-  const rowsArr = selector.map((item) => {
-    return header.map((head) => item[head]).join(',');
+  const response = await fetch('/api/create-csv', {
+    method: 'POST',
+    body: JSON.stringify(selector),
   });
 
-  const csvText = [header.join(','), ...rowsArr].join('\n');
-  const blob = new Blob([csvText], { type: 'text/csv' });
+  const blob = await response.blob();
   const url = URL.createObjectURL(blob);
 
   const link = document.createElement('a');
   link.href = url;
-  link.download = `${quantity}_items`;
+  link.download = `${quantity}_items.csv`;
   link.click();
-};
-
-export default saveFile;
+}

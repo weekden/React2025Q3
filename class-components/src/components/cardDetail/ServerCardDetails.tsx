@@ -1,6 +1,6 @@
 import Message from '../message/Message';
 import { JSX } from 'react';
-import { fetchCharactersById } from '@/api/api';
+import { fetchCharactersById } from '@/app/api/api';
 import ClientCardDetail from './ClientCardDetail';
 
 type ServerCardDetailProps = {

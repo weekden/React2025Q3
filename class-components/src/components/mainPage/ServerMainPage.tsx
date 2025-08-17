@@ -2,7 +2,7 @@ import Message from '@/components/message/Message';
 import ClientMainPage from './ClientMainPage';
 
 import { JSX } from 'react';
-import { fetchCharacters } from '@/api/api';
+import { fetchCharacters } from '@/app/api/api';
 
 type ServerMainPageProps = {
   query?: string;

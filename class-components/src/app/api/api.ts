@@ -1,4 +1,7 @@
-import type { CharacterApiResponse, CharacterIdResponse } from '../types/api';
+import type {
+  CharacterApiResponse,
+  CharacterIdResponse,
+} from '../../types/api';
 const BASE_URL = 'https://zelda.fanapis.com/api/characters';
 
 async function checkResponse<T>(response: Response): Promise<T> {
