@@ -58,6 +58,7 @@ button {
   display: block;
 
   width: fit-content;
+  max-height: fit-content;
   padding: 10px 12px;
   border: 1px solid transparent;
   border-radius: 8px;

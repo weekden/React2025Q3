@@ -1,17 +1,15 @@
 'use client';
 import { useContext, type JSX } from 'react';
-import './header.css';
 import { Link } from '../../i18n/navigation';
 import { ThemeContext } from '../../context/ThemeContext';
-import { usePathname } from 'next/navigation';
 import Button from '../elements/Button';
 import { useTranslations } from 'next-intl';
 import LocaleSwitcher from './LocaleSwitcher';
 
+import styles from './Header.module.css';
+
 function Header(): JSX.Element | null {
   const context = useContext(ThemeContext);
-  const pathname = usePathname();
-
   const t = useTranslations('header');
 
   if (!context) {
@@ -24,36 +22,22 @@ function Header(): JSX.Element | null {
   };
 
   return (
-    <header className="header" data-testid="header-nav">
-      <nav className="header__nav">
-        <ul className="header__nav-list">
-          <li className="nav-list__item">
-            <Link
-              href="/"
-              className={
-                pathname === '/'
-                  ? 'nav-list__item-link active'
-                  : 'nav-list__item-link'
-              }
-            >
+    <header className={styles.header}>
+      <nav className={styles.header__nav}>
+        <ul className={styles.header__navList}>
+          <li className={styles.navList__item}>
+            <Link href="/" className={styles.navList__itemLink}>
               {t('nav.home')}
             </Link>
           </li>
           <li className="nav-list__item">
-            <Link
-              href="/about"
-              className={
-                pathname === '/about'
-                  ? 'nav-list__item-link active'
-                  : 'nav-list__item-link'
-              }
-            >
+            <Link href="/about" className={styles.navList__itemLink}>
               {t('nav.about')}
             </Link>
           </li>
         </ul>
       </nav>
-      <div className="header__tools">
+      <div className={styles.header__tools}>
         <Button
           onClick={toggleTheme}
           nameLocale="header.theme"

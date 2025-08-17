@@ -1,5 +1,6 @@
 .header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 
   padding: 1rem 2rem;
@@ -12,10 +13,9 @@
 .header__nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
-.header__nav-list {
+.header__navList {
   display: flex;
   gap: 1.5rem;
 
@@ -25,22 +25,25 @@
   list-style: none;
 }
 
-.nav-list__item {
-  display: inline;
-}
-
-.nav-list__item-link {
+.navList__itemLink {
   font-weight: bold;
   color: var(--text-color);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.nav-list__item-link:hover {
+.navList__itemLink:hover {
   color: var(--link-hover);
 }
 
-.nav-list__item-link.active {
+.navList__itemLinkActive {
   pointer-events: none;
   color: var(--link-active);
+}
+
+.header__tools {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  min-width: 20%;
 }

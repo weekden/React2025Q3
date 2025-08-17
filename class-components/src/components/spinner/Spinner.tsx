@@ -1,7 +1,5 @@
 'use client';
 import { useContext, type JSX } from 'react';
-import spinnerBlack from '../../assets/spinner-black.png';
-import spinnerWhite from '../../assets/spinner-white.png';
 import './spinner.css';
 import { ThemeContext } from '../../context/ThemeContext';
 import Image from 'next/image';
@@ -11,7 +9,10 @@ function Spinner(): JSX.Element | null {
   if (!context) {
     return null;
   }
-  const spinner = context.theme === 'light' ? spinnerBlack : spinnerWhite;
+  const spinner =
+    context.theme === 'light'
+      ? '/assets/spinner-black.png'
+      : '/assets/spinner-white.png';
   return (
     <div className="spinner-container">
       <Image
@@ -19,6 +20,8 @@ function Spinner(): JSX.Element | null {
         alt="Loading..."
         aria-label="Loading..."
         className="spinner-img"
+        width={40}
+        height={40}
       />
     </div>
   );

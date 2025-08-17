@@ -17,6 +17,7 @@ function ThemeContextProvider({ children }: PropsWithChildren): ReactNode {
   const [theme, setTheme] = useLocalStorage('theme', 'light');
 
   useEffect(() => {
+    document.cookie = `theme=${theme}`;
     const root = document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);

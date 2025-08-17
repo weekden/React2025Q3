@@ -1,0 +1,29 @@
+.locals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.locals p {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.locale-link {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.locale-link:hover {
+  color: var(--link-hover);
+}
