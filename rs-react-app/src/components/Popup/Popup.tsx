@@ -2,11 +2,16 @@ import { useEffect, type JSX } from 'react';
 import { createPortal } from 'react-dom';
 import Button from '../elements/Button';
 import type { PopupProps } from '../../types/popup';
-import styles from './Popup.module.css';
+import './popup.css';
 
 const portal = document.getElementById('portal');
 
-function Popup({ isOpen, onClose, children }: PopupProps): JSX.Element | null {
+function Popup({
+  title,
+  isOpen,
+  onClose,
+  children,
+}: PopupProps): JSX.Element | null {
   useEffect((): void => {
     const handleEsc = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') onClose();
@@ -19,10 +24,12 @@ function Popup({ isOpen, onClose, children }: PopupProps): JSX.Element | null {
   }
 
   return createPortal(
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.popup} onClick={(e) => e.stopPropagation()}>
-        <Button onClick={onClose} text="X" />
-        <div className={styles.formWrapper}>{children}</div>
+    <div className="overlay" onClick={onClose}>
+      <div className="popup" onClick={(e) => e.stopPropagation()}>
+        <p className="popup-title">{`${title?.toUpperCase()} FORM`}</p>
+        <Button className="close-btn" onClick={onClose} text="X" />
+        <div className="form-wrapper">{children}</div>
+        <Button className="submit-btn" type="submit" form="form" text="Send" />
       </div>
     </div>,
     portal

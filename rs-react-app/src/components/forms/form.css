@@ -1,0 +1,76 @@
+.form {
+  max-width: 40rem;
+  padding: 1rem;
+  border: 1px solid var(--form-border);
+  border-radius: 0.8rem;
+
+  background: var(--form-bg);
+}
+
+.input-container {
+  margin-bottom: 1rem;
+}
+
+.label-title {
+  margin-left: 0.5rem;
+}
+
+.form fieldset {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--form-fieldset);
+  border-radius: 0.8rem;
+}
+
+.form legend {
+  padding: 0 0.3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--form-label);
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--form-label);
+}
+
+.form .label-radio,
+.form .label-checkbox {
+  flex-direction: row-reverse;
+  gap: 0;
+  justify-content: start;
+  margin-bottom: 1rem;
+}
+
+.form input[type='text'],
+.form input[type='number'],
+.form input[type='email'],
+.form input[type='password'] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--form-input-border);
+  border-radius: 0.6rem;
+
+  font-size: 1rem;
+  color: var(--form-input-text);
+
+  transition: border-color 0.2s;
+}
+
+.form input[type='text']:focus,
+.form input[type='number']:focus,
+.form input[type='email']:focus,
+.form input[type='password']:focus {
+  border-color: var(--form-input-focus);
+  outline: none;
+}
+
+.form input[type='checkbox'],
+.form input[type='radio'] {
+  margin-right: 0.5rem;
+}

@@ -1,6 +1,8 @@
 export type ButtonProps = {
   text?: string;
+  type?: string;
   className?: string;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
+  form?: string;
 };

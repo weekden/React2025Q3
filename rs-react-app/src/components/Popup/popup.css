@@ -1,0 +1,65 @@
+.overlay {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100vh;
+
+  background: var(--overlay-bg);
+}
+
+.popup {
+  position: relative;
+
+  width: 400px;
+  max-width: 90%;
+  padding: 2rem;
+  border: 1px solid var(--popup-border);
+  border-radius: 0.8rem;
+
+  color: var(--popup-text);
+
+  background: var(--popup-bg);
+}
+
+.popup-title {
+  margin-left: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--form-label);
+}
+
+.close-btn {
+  position: absolute;
+  top: -0.5rem;
+  right: 0;
+
+  padding: 0.8rem;
+
+  font-size: 1.5rem;
+  color: var(--button-close-color);
+
+  background: transparent;
+}
+
+.close-btn:hover {
+  color: var(--button-close-hover);
+  background-color: transparent;
+}
+
+.form-wrapper {
+  margin-top: 1.5rem;
+}
+
+.submit-btn {
+  width: 100%;
+  max-width: 12rem;
+  margin-top: 1rem;
+  font-size: 1.4rem;
+}

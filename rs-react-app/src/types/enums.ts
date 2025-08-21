@@ -1,1 +1,1 @@
-export type FormType = 'uncontroll' | 'hookForm' | null;
+export type FormType = 'uncontroll' | 'hook' | null;
