@@ -18,6 +18,8 @@
   --form-input-border: #cbd5e1;
   --form-input-text: #1f2a34;
   --form-input-focus: #4a90e2;
+  --form-autocomplite-bg: #fff;
+  --form-autocomplite-hover: #bdd9e6;
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;

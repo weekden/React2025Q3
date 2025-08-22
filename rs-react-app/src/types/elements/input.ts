@@ -1,10 +1,12 @@
 export type InputProps = {
   id?: string;
   name: string;
-  type: string;
-  placeholder?: string;
+  type?: string;
   label?: string;
-  autocomplete?: string;
-  value?: string;
+  placeholder?: string;
   accept?: string;
+  value?: string;
+  autocomplete?: string;
+  onInput?: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur?: () => void;
 };

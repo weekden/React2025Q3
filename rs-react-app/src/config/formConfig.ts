@@ -10,7 +10,7 @@ export const formConfig: FormConfig[] = [
     label: 'Name',
     type: 'text',
     placeholder: 'Enter name',
-    autocomplete: 'true',
+    autocomplete: 'on',
   },
   {
     name: 'age',
@@ -25,18 +25,25 @@ export const formConfig: FormConfig[] = [
     placeholder: 'example@mail.com',
   },
   {
+    name: 'country',
+    label: 'Country',
+    type: 'search',
+    placeholder: 'Enter your country',
+    autocomplete: 'on',
+  },
+  {
     name: 'password',
     label: 'Password',
     type: 'password',
     placeholder: 'Enter password',
-    autocomplete: 'true',
+    autocomplete: 'on',
   },
   {
     name: 'confirm-password',
     label: 'Confirm Password',
     type: 'password',
     placeholder: 'Confirm password',
-    autocomplete: 'true',
+    autocomplete: 'on',
   },
   {
     name: 'gender',
