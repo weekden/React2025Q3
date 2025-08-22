@@ -6,14 +6,18 @@ import { useAppDispatch, useAppSelector } from '../../store/redux';
 import type { FormDataInputs } from '../../types/forms';
 import { convertToBase64 } from '../../utils/base64';
 import { countriesFilter } from '../../utils/automomplite';
+import { formSchema } from '../../zod/formShema';
 
 import './form.css';
+import type { FormErrors } from '../../types/zod';
 
 function UncontrolledForm(): JSX.Element {
   const countriesStore = useAppSelector((state) => state.countries);
   const countryRef = useRef<HTMLInputElement | null>(null);
   const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
   const dispatch = useAppDispatch();
+
+  const [error, setErrors] = useState<FormErrors>({});
 
   const handleCountryInput = (): void => {
     if (countryRef.current) {
@@ -30,12 +34,23 @@ function UncontrolledForm(): JSX.Element {
     HTMLFormElement & FormDataInputs
   > = async (event): Promise<void> => {
     event.preventDefault();
+
+    const fieldErrors: FormErrors = {};
     const form = event.currentTarget;
-    const { name, email, age, country, gender, password, avatar } = form;
+
+    const {
+      name,
+      email,
+      age,
+      country,
+      gender,
+      password,
+      confirmPassword,
+      avatar,
+      terms,
+    } = form;
     const file = avatar.files?.[0];
-    if (!file) {
-      return;
-    }
+
     const avatarBase64 = await convertToBase64(file);
 
     const data = {
@@ -43,21 +58,39 @@ function UncontrolledForm(): JSX.Element {
       age: Number(age.value),
       email: email.value,
       password: password.value,
+      confirmPassword: confirmPassword.value,
       country: country.value,
       gender: gender.value,
-      avatar: avatarBase64,
+      avatar: file,
+      terms: terms.checked,
     };
     console.log(data);
+    const validationResult = formSchema.safeParse(data);
 
-    dispatch(addFormData(data));
+    if (!validationResult.success) {
+      validationResult.error.issues.forEach((err) => {
+        const field = err.path[0] as string;
+
+        if (!fieldErrors[field]) {
+          fieldErrors[field] = err.message;
+        }
+      });
+      setErrors(fieldErrors);
+    } else {
+      const finalData = {
+        ...data,
+        avatar: avatarBase64,
+      };
+      dispatch(addFormData(finalData));
+    }
   };
 
   return (
-    <form id="form" className="form" onSubmit={handleSubmit}>
+    <form noValidate id="form" className="form" onSubmit={handleSubmit}>
       {formConfig.map((field) => {
         if (field.gender) {
           return (
-            <fieldset key={field.name}>
+            <fieldset key={field.name} radioGroup="">
               <legend>{field.label}</legend>
               {field.gender.map((item) => (
                 <Input
@@ -66,9 +99,10 @@ function UncontrolledForm(): JSX.Element {
                   id={`radio-${item.toLowerCase()}`}
                   type={field.type}
                   name={field.name}
-                  value={item.toLowerCase()}
+                  defaultValue={item.toLowerCase()}
                 />
               ))}
+              <p className="input-error">{error[field.name]}</p>
             </fieldset>
           );
         }
@@ -85,6 +119,7 @@ function UncontrolledForm(): JSX.Element {
                 label={field.label}
                 onInput={handleCountryInput}
                 onBlur={handleBlur}
+                errorMessage={error[field.name]}
               />
 
               {filteredCountries.length > 0 && (
@@ -117,8 +152,8 @@ function UncontrolledForm(): JSX.Element {
             type={field.type}
             placeholder={field.placeholder}
             label={field.label}
-            accept={field.accept}
             autocomplete={field.autocomplete}
+            errorMessage={error[field.name]}
           />
         );
       })}

@@ -12,7 +12,9 @@ export type FormDataInputs = {
   age: HTMLInputElement;
   email: HTMLInputElement;
   passwor: HTMLInputElement;
+  confirmPassword: HTMLInputElement;
   avatar: HTMLInputElement;
   gender: HTMLInputElement;
   country: HTMLInputElement;
+  terms: HTMLInputElement;
 };

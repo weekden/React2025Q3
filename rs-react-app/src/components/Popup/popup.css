@@ -17,9 +17,9 @@
 .popup {
   position: relative;
 
-  width: 400px;
-  max-width: 90%;
-  padding: 2rem;
+  width: 40rem;
+  max-width: 100%;
+  padding: 1.2rem;
   border: 1px solid var(--popup-border);
   border-radius: 0.8rem;
 
@@ -37,7 +37,7 @@
 
 .close-btn {
   position: absolute;
-  top: -0.5rem;
+  top: 0;
   right: 0;
 
   padding: 0.8rem;

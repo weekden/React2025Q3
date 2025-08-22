@@ -8,9 +8,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     type = 'text',
     label,
     placeholder,
-    accept,
-    value,
+    defaultValue,
     autocomplete,
+    errorMessage,
     onInput,
     onBlur,
   } = props;
@@ -18,12 +18,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const inputId = id || name;
 
   const renderInput = (): JSX.Element => {
-    if (type === 'file') {
-      return <input id={inputId} name={name} type={type} accept={accept} />;
-    }
-
     if (type === 'radio') {
-      return <input id={inputId} name={name} type={type} value={value} />;
+      return (
+        <input
+          id={inputId}
+          name={name}
+          type={type}
+          defaultValue={defaultValue}
+        />
+      );
     }
 
     if (type === 'search') {
@@ -53,10 +56,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   };
 
   return (
-    <label className={`input-container label-${type}`} htmlFor={inputId}>
-      {label && <span>{label}</span>}
-      {renderInput()}
-    </label>
+    <div className="input-container">
+      <label className={` label-${type}`} htmlFor={inputId}>
+        {label && <span>{label}</span>}
+        {renderInput()}
+      </label>
+      <p className="input-error">{errorMessage}</p>
+    </div>
   );
 });
 

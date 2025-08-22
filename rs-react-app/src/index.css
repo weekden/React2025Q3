@@ -20,6 +20,7 @@
   --form-input-focus: #4a90e2;
   --form-autocomplite-bg: #fff;
   --form-autocomplite-hover: #bdd9e6;
+  --form-validate-error: #f96f53;
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;

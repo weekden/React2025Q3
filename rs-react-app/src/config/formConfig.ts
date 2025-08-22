@@ -1,5 +1,7 @@
 import type { InputProps } from '../types/elements/input';
 
+export const genderOptions = ['male', 'female', 'indeterminate'];
+
 type FormConfig = InputProps & {
   gender?: string[];
 };
@@ -39,7 +41,7 @@ export const formConfig: FormConfig[] = [
     autocomplete: 'on',
   },
   {
-    name: 'confirm-password',
+    name: 'confirmPassword',
     label: 'Confirm Password',
     type: 'password',
     placeholder: 'Confirm password',
@@ -49,13 +51,12 @@ export const formConfig: FormConfig[] = [
     name: 'gender',
     label: 'Gender',
     type: 'radio',
-    gender: ['Male', 'Female', 'Indeterminate'],
+    gender: genderOptions,
   },
   {
     name: 'avatar',
     label: 'Choose a profile picture',
     type: 'file',
-    accept: '.jpeg, .png',
   },
   {
     name: 'terms',

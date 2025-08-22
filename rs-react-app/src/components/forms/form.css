@@ -7,10 +7,6 @@
   background: var(--form-bg);
 }
 
-.input-container {
-  margin-bottom: 1rem;
-}
-
 .label-title {
   margin-left: 0.5rem;
 }
@@ -32,7 +28,7 @@
 .form label {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.5rem;
 
   font-size: 1.2rem;
   font-weight: 600;
@@ -44,7 +40,6 @@
   flex-direction: row-reverse;
   gap: 0;
   justify-content: start;
-  margin-bottom: 1rem;
 }
 
 .form input[type='text'],
@@ -99,4 +94,13 @@
 
 .countries-list__item:hover {
   background: var(--form-autocomplite-hover);
+}
+
+.input-error {
+  height: 1rem;
+  padding-left: 0.5rem;
+
+  font-size: 0.9rem;
+  line-height: 1rem;
+  color: var(--form-validate-error);
 }

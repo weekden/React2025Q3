@@ -3,8 +3,9 @@ import Button from '../elements/Button';
 import type { FormType } from '../../types/enums';
 import Popup from '../Popup/Popup';
 import UncontrolledForm from '../forms/UncontrolledForm';
-import './mainButtons.css';
 import { useAppSelector } from '../../store/redux';
+
+import './mainButtons.css';
 
 function AppButtonsControll(): JSX.Element {
   const formData = useAppSelector((state) => state.formData);
@@ -18,7 +19,8 @@ function AppButtonsControll(): JSX.Element {
         }}
         text="Uncontroll Form"
       />
-      <Button onClick={() => setFormType('hook')} text="Hook Form" />
+      {/* <Button onClick={() => setFormType('hook')} text="Hook Form" /> */}
+      <Button onClick={() => console.log(formData)} text="Hook Form" />
       <Popup
         title={formType}
         isOpen={!!formType}

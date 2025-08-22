@@ -4,9 +4,9 @@ export type InputProps = {
   type?: string;
   label?: string;
   placeholder?: string;
-  accept?: string;
-  value?: string;
+  defaultValue?: string;
   autocomplete?: string;
   onInput?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: () => void;
+  errorMessage?: string;
 };
