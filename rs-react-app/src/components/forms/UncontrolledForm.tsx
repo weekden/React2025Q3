@@ -9,10 +9,11 @@ import { formSchema } from '../../zod/formShema';
 import './form.css';
 import type { FormErrors } from '../../types/zod';
 import FormFields from './RenderFields';
+import Button from '../elements/Button';
 
 function UncontrolledForm(): JSX.Element {
   const countriesStore = useAppSelector((state) => state.countries);
-  const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
+  const [, setFilteredCountries] = useState<string[]>([]);
   const dispatch = useAppDispatch();
 
   const [error, setErrors] = useState<FormErrors>({});
@@ -46,9 +47,9 @@ function UncontrolledForm(): JSX.Element {
       avatar,
       terms,
     } = form;
-    const file = avatar.files?.[0];
+    const file = avatar.files;
 
-    const avatarBase64 = await convertToBase64(file);
+    const avatarBase64 = await convertToBase64(file?.[0]);
 
     const data = {
       name: name.value,
@@ -61,7 +62,6 @@ function UncontrolledForm(): JSX.Element {
       avatar: file,
       terms: terms.checked,
     };
-    console.log(data);
     const validationResult = formSchema.safeParse(data);
 
     if (!validationResult.success) {
@@ -91,10 +91,11 @@ function UncontrolledForm(): JSX.Element {
     >
       <FormFields
         customErrors={error}
-        filteredCountries={filteredCountries}
+        filteredCountries={countriesStore}
         onCountryInput={handleCountrySearch}
         onCountryBlur={handleCountryBlur}
       />
+      <Button className="submit-btn" type="submit" text="Send" />
     </form>
   );
 }

@@ -67,7 +67,6 @@ function FormFields({
                 list={field.list}
                 errorMessage={errorMessage}
               />
-
               <datalist id={field.list} className="countries-list">
                 {filteredCountries.map((item) => (
                   <option

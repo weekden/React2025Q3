@@ -23,7 +23,6 @@ function AppButtonsControll(): JSX.Element {
         title={formType}
         isOpen={!!formType}
         onClose={() => setFormType(null)}
-        form={formType}
       >
         {formType === 'uncontroll' && <UncontrolledForm />}
         {formType === 'hook' && <HookForm />}

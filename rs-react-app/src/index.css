@@ -6,7 +6,7 @@
   --button-bg: #0188b1;
   --button-hover-bg: #01607d;
   --button-text: #fff;
-  --disabled-opacity: 0.5;
+  --button-disabled-opacity: 0.6;
   --button-close-color: #6b7280;
   --button-close-hover: #1f2a34;
   --form-bg: #fafafa;
@@ -21,6 +21,8 @@
   --form-autocomplite-bg: #fff;
   --form-autocomplite-hover: #bdd9e6;
   --form-validate-error: #f96f53;
+  --table-header-bg: #bdd9e6;
+  --table-row-hover: #eaf2f5;
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;

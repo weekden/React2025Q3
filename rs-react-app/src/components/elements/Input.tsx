@@ -46,6 +46,18 @@ function Input(props: InputProps): JSX.Element {
       );
     }
 
+    if (type === 'number') {
+      return (
+        <input
+          {...(register ? register(name, { valueAsNumber: true }) : {})}
+          id={inputId}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+        />
+      );
+    }
+
     return (
       <input
         {...(register ? register(name) : {})}

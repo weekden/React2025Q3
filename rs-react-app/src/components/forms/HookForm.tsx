@@ -3,28 +3,46 @@ import { useState, type JSX } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import { countriesFilter } from '../../utils/automomplite';
-import { addFormData } from '../../store/formSlice';
+
 import type { FormDataValues } from '../../types/forms';
 import FormFields from './RenderFields';
 
-function HookForm(): JSX.Element {
-  const dispatch = useAppDispatch();
-  const countriesStore = useAppSelector((state) => state.countries);
+import { zodResolver } from '@hookform/resolvers/zod';
+import { formSchema } from '../../zod/formShema';
+import Button from '../elements/Button';
+import { addFormData } from '../../store/formSlice';
+import { convertToBase64 } from '../../utils/base64';
 
-  const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
+function HookForm(): JSX.Element {
+  const countriesStore = useAppSelector((state) => state.countries);
+  const dispatch = useAppDispatch();
+  const [, setFilteredCountries] = useState<string[]>([]);
   const {
     register,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
-  } = useForm<FormDataValues>();
+  } = useForm<FormDataValues>({
+    resolver: zodResolver(formSchema),
+    mode: 'all',
+  });
 
   const handleCountrySearch = (): void => {
     setFilteredCountries(countriesFilter(countriesStore, watch('country')));
   };
 
-  const onSubmit = (data: FormDataValues): void => {
-    dispatch(addFormData(data));
+  const onSubmit = async (data: FormDataValues): Promise<void> => {
+    if (!isValid) {
+      return;
+    }
+    const files = watch('avatar') as FileList | undefined;
+    const avatarBase64 = await convertToBase64(files?.[0]);
+
+    const finalData = {
+      ...data,
+      avatar: avatarBase64,
+    };
+    dispatch(addFormData(finalData));
   };
   return (
     <form
@@ -36,8 +54,14 @@ function HookForm(): JSX.Element {
       <FormFields
         register={register}
         hookFormErrors={errors}
-        filteredCountries={filteredCountries}
+        filteredCountries={countriesStore}
         onCountryInput={handleCountrySearch}
+      />
+      <Button
+        className="submit-btn"
+        type="submit"
+        text="Send"
+        disabled={!isValid}
       />
     </form>
   );
