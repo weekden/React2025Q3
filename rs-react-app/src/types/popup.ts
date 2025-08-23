@@ -5,4 +5,5 @@ export type PopupProps = {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  form?: string | null;
 };

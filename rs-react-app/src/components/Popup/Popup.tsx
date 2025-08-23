@@ -11,6 +11,7 @@ function Popup({
   isOpen,
   onClose,
   children,
+  form,
 }: PopupProps): JSX.Element | null {
   useEffect((): void => {
     const handleEsc = (event: KeyboardEvent): void => {
@@ -29,7 +30,12 @@ function Popup({
         <p className="popup-title">{`${title?.toUpperCase()} FORM`}</p>
         <Button className="close-btn" onClick={onClose} text="X" />
         <div className="form-wrapper">{children}</div>
-        <Button className="submit-btn" type="submit" form="form" text="Send" />
+        <Button
+          className="submit-btn"
+          type="submit"
+          form={`${form}-form`}
+          text="Send"
+        />
       </div>
     </div>,
     portal

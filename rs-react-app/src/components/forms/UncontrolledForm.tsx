@@ -1,6 +1,4 @@
-import { useRef, useState, type JSX } from 'react';
-import Input from '../elements/Input';
-import { formConfig } from '../../config/formConfig';
+import { useState, type JSX } from 'react';
 import { addFormData } from '../../store/formSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import type { FormDataInputs } from '../../types/forms';
@@ -10,24 +8,23 @@ import { formSchema } from '../../zod/formShema';
 
 import './form.css';
 import type { FormErrors } from '../../types/zod';
+import FormFields from './RenderFields';
 
 function UncontrolledForm(): JSX.Element {
   const countriesStore = useAppSelector((state) => state.countries);
-  const countryRef = useRef<HTMLInputElement | null>(null);
   const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
   const dispatch = useAppDispatch();
 
   const [error, setErrors] = useState<FormErrors>({});
 
-  const handleCountryInput = (): void => {
-    if (countryRef.current) {
-      const query = countryRef.current.value;
-      setFilteredCountries(countriesFilter(countriesStore, query));
-    }
+  const handleCountrySearch = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setFilteredCountries(countriesFilter(countriesStore, event.target.value));
   };
 
-  const handleBlur = (): void => {
-    setTimeout(() => setFilteredCountries([]), 100);
+  const handleCountryBlur = (): void => {
+    setFilteredCountries([]);
   };
 
   const handleSubmit: React.FormEventHandler<
@@ -86,77 +83,18 @@ function UncontrolledForm(): JSX.Element {
   };
 
   return (
-    <form noValidate id="form" className="form" onSubmit={handleSubmit}>
-      {formConfig.map((field) => {
-        if (field.gender) {
-          return (
-            <fieldset key={field.name} radioGroup="">
-              <legend>{field.label}</legend>
-              {field.gender.map((item) => (
-                <Input
-                  label={item}
-                  key={item}
-                  id={`radio-${item.toLowerCase()}`}
-                  type={field.type}
-                  name={field.name}
-                  defaultValue={item.toLowerCase()}
-                />
-              ))}
-              <p className="input-error">{error[field.name]}</p>
-            </fieldset>
-          );
-        }
-
-        if (field.name === 'country') {
-          return (
-            <div key={field.name} style={{ position: 'relative' }}>
-              <Input
-                ref={countryRef}
-                id={field.name}
-                name={field.name}
-                type={field.type}
-                placeholder={field.placeholder}
-                label={field.label}
-                onInput={handleCountryInput}
-                onBlur={handleBlur}
-                errorMessage={error[field.name]}
-              />
-
-              {filteredCountries.length > 0 && (
-                <ul className="countries-list">
-                  {filteredCountries.map((item) => (
-                    <li
-                      className="countries-list__item"
-                      key={item}
-                      role="option"
-                      onClick={() => {
-                        if (countryRef.current) {
-                          countryRef.current.value = item;
-                          setFilteredCountries([]);
-                        }
-                      }}
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          );
-        }
-        return (
-          <Input
-            id={field.name}
-            key={field.name}
-            name={field.name}
-            type={field.type}
-            placeholder={field.placeholder}
-            label={field.label}
-            autocomplete={field.autocomplete}
-            errorMessage={error[field.name]}
-          />
-        );
-      })}
+    <form
+      noValidate
+      id="uncontroll-form"
+      className="form"
+      onSubmit={handleSubmit}
+    >
+      <FormFields
+        customErrors={error}
+        filteredCountries={filteredCountries}
+        onCountryInput={handleCountrySearch}
+        onCountryBlur={handleCountryBlur}
+      />
     </form>
   );
 }

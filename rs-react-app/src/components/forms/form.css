@@ -86,16 +86,6 @@
   background: var(--form-autocomplite-bg);
 }
 
-.countries-list__item {
-  cursor: pointer;
-  padding: 0.2rem;
-  background: var(--form-autocomplite-bg);
-}
-
-.countries-list__item:hover {
-  background: var(--form-autocomplite-hover);
-}
-
 .input-error {
   height: 1rem;
   padding-left: 0.5rem;

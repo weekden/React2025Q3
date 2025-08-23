@@ -5,13 +5,16 @@ export type FormDataValues = {
   avatar: string;
   gender: string;
   country: string;
+  password: string;
+  confirmPassword: string;
+  terms: boolean;
 };
 
 export type FormDataInputs = {
   name: HTMLInputElement;
   age: HTMLInputElement;
   email: HTMLInputElement;
-  passwor: HTMLInputElement;
+  password: HTMLInputElement;
   confirmPassword: HTMLInputElement;
   avatar: HTMLInputElement;
   gender: HTMLInputElement;

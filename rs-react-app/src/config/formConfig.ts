@@ -30,6 +30,7 @@ export const formConfig: FormConfig[] = [
     name: 'country',
     label: 'Country',
     type: 'search',
+    list: 'country-list',
     placeholder: 'Enter your country',
     autocomplete: 'on',
   },
