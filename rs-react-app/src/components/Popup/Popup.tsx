@@ -4,15 +4,14 @@ import Button from '../elements/Button';
 import type { PopupProps } from '../../types/popup';
 import './popup.css';
 
-const portal = document.getElementById('portal');
-
 function Popup({
   title,
   isOpen,
   onClose,
   children,
 }: PopupProps): JSX.Element | null {
-  useEffect((): void => {
+  const portal = document.getElementById('portal');
+  useEffect(() => {
     const handleEsc = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') onClose();
     };
@@ -24,8 +23,12 @@ function Popup({
   }
 
   return createPortal(
-    <div className="overlay" onClick={onClose}>
-      <div className="popup" onClick={(e) => e.stopPropagation()}>
+    <div className="overlay" onClick={onClose} data-testid="overlay">
+      <div
+        className="popup"
+        onClick={(e) => e.stopPropagation()}
+        data-testid="popup-form"
+      >
         <p className="popup-title">{`${title?.toUpperCase()} FORM`}</p>
         <Button className="close-btn" onClick={onClose} text="X" />
         <div className="form-wrapper">{children}</div>
