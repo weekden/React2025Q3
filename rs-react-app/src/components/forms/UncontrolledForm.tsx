@@ -1,67 +1,35 @@
 import { useState, type JSX } from 'react';
 import { addFormData } from '../../store/formSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
-import type { FormDataInputs } from '../../types/forms';
 import { convertToBase64 } from '../../utils/base64';
-import { countriesFilter } from '../../utils/automomplite';
-import { formSchema } from '../../zod/formShema';
-
-import './form.css';
 import type { FormErrors } from '../../types/zod';
 import FormFields from './RenderFields';
 import Button from '../elements/Button';
+import { formSchema } from '../../zod/formShema';
+import type { FormProps } from '../../types/forms';
+import './form.css';
 
-function UncontrolledForm(): JSX.Element {
+function UncontrolledForm({ onClose }: FormProps): JSX.Element {
   const countriesStore = useAppSelector((state) => state.countries);
-  const [, setFilteredCountries] = useState<string[]>([]);
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
   const [error, setErrors] = useState<FormErrors>({});
-
-  const handleCountrySearch = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setFilteredCountries(countriesFilter(countriesStore, event.target.value));
-  };
-
-  const handleCountryBlur = (): void => {
-    setFilteredCountries([]);
-  };
-
-  const handleSubmit: React.FormEventHandler<
-    HTMLFormElement & FormDataInputs
-  > = async (event): Promise<void> => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
+    event
+  ): Promise<void> => {
     event.preventDefault();
-
-    const fieldErrors: FormErrors = {};
     const form = event.currentTarget;
+    const fieldErrors: FormErrors = {};
 
-    const {
-      name,
-      email,
-      age,
-      country,
-      gender,
-      password,
-      confirmPassword,
-      avatar,
-      terms,
-    } = form;
-    const file = avatar.files;
-
-    const avatarBase64 = await convertToBase64(file?.[0]);
+    const formData = Object.fromEntries(new FormData(form));
 
     const data = {
-      name: name.value,
-      age: Number(age.value),
-      email: email.value,
-      password: password.value,
-      confirmPassword: confirmPassword.value,
-      country: country.value,
-      gender: gender.value,
-      avatar: file,
-      terms: terms.checked,
+      ...formData,
+      age: Number(formData.age),
+      terms: !formData.terms ? false : formData.terms === 'on',
     };
+
     const validationResult = formSchema.safeParse(data);
 
     if (!validationResult.success) {
@@ -74,29 +42,43 @@ function UncontrolledForm(): JSX.Element {
       });
       setErrors(fieldErrors);
     } else {
+      const data = validationResult.data;
+      const avatarBase64 = await convertToBase64(data.avatar);
+
       const finalData = {
         ...data,
         avatar: avatarBase64,
       };
+
       dispatch(addFormData(finalData));
+
+      setErrors({});
+      setSubmitMessage('Form submitted!');
+
+      setTimeout(() => {
+        setSubmitMessage(null);
+        onClose?.();
+      }, 1000);
     }
   };
 
   return (
-    <form
-      noValidate
-      id="uncontroll-form"
-      className="form"
-      onSubmit={handleSubmit}
-    >
-      <FormFields
-        customErrors={error}
-        filteredCountries={countriesStore}
-        onCountryInput={handleCountrySearch}
-        onCountryBlur={handleCountryBlur}
-      />
-      <Button className="submit-btn" type="submit" text="Send" />
-    </form>
+    <>
+      {!submitMessage && (
+        <form
+          noValidate
+          id="uncontroll-form"
+          className="form"
+          onSubmit={handleSubmit}
+        >
+          <FormFields customErrors={error} filteredCountries={countriesStore} />
+          <Button className="submit-btn" type="submit" text="Send" />
+        </form>
+      )}
+      {submitMessage && (
+        <div data-testid="success-message">{submitMessage}</div>
+      )}
+    </>
   );
 }
 

@@ -29,9 +29,10 @@ export const formConfig: FormConfig[] = [
   {
     name: 'country',
     label: 'Country',
-    type: 'search',
+    type: 'text',
     list: 'country-list',
     placeholder: 'Enter your country',
+    defaultValue: 'Country',
     autocomplete: 'on',
   },
   {
@@ -64,4 +65,26 @@ export const formConfig: FormConfig[] = [
     label: 'Accept Terms and Conditions ',
     type: 'checkbox',
   },
+];
+
+export const countryList = [
+  'Belarus',
+  'Finland',
+  'Greece',
+  'Australia',
+  'Argentina',
+  'Brazil',
+  'Austria',
+  'United States',
+  'Canada',
+  'Germany',
+  'France',
+  'Italy',
+  'Spain',
+  'United Kingdom',
+  'Poland',
+  'Ukraine',
+  'Japan',
+  'China',
+  'India',
 ];

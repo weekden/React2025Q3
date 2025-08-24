@@ -30,7 +30,7 @@ function Input(props: InputProps): JSX.Element {
       );
     }
 
-    if (type === 'search') {
+    if (name === 'country') {
       return (
         <input
           {...(register ? register(name) : {})}
@@ -39,6 +39,7 @@ function Input(props: InputProps): JSX.Element {
           type={type}
           placeholder={placeholder}
           autoComplete={autocomplete}
+          defaultValue={defaultValue}
           list={list}
           onBlur={onBlur}
           onInput={onInput}
@@ -76,7 +77,9 @@ function Input(props: InputProps): JSX.Element {
         {label && <span>{label}</span>}
         {renderInput()}
       </label>
-      <p className="input-error">{errorMessage}</p>
+      <p className="input-error" data-testid={`${name}-error`}>
+        {errorMessage}
+      </p>
     </div>
   );
 }

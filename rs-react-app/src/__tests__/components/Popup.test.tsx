@@ -25,7 +25,7 @@ describe('AppButtonsControll + Popup', () => {
     expect(screen.getByText('Hook Form')).toBeInTheDocument();
   });
 
-  it('should render UncontrolledForm', () => {
+  it('should render UncontrolledForm', async () => {
     render(
       <Provider store={store}>
         <AppButtonsControll />

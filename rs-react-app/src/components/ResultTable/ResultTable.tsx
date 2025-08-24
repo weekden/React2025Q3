@@ -9,7 +9,7 @@ function ResultTable(): JSX.Element | null {
   }
 
   return (
-    <div className="table-wrapper">
+    <div className="table-wrapper" data-testid="form-data-table">
       <table>
         <thead>
           <tr>

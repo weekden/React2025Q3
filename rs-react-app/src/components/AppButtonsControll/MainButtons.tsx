@@ -24,8 +24,10 @@ function AppButtonsControll(): JSX.Element {
         isOpen={!!formType}
         onClose={() => setFormType(null)}
       >
-        {formType === 'uncontroll' && <UncontrolledForm />}
-        {formType === 'hook' && <HookForm />}
+        {formType === 'uncontroll' && (
+          <UncontrolledForm onClose={() => setFormType(null)} />
+        )}
+        {formType === 'hook' && <HookForm onClose={() => setFormType(null)} />}
       </Popup>
     </div>
   );
