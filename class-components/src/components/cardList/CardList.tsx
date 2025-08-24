@@ -1,22 +1,24 @@
-import type { ReactNode } from 'react';
 import Card from '../card/Card';
 import Spinner from '../spinner/Spinner';
+import SelectionFlyout from '../selectionFlyout/SelectionFlyout';
 import Message from '../message/Message';
 
+import type { JSX } from 'react';
 import type { CardListProps } from '../../types/cardList';
-import './card-list.css';
 import type { Character } from '../../types/api';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { toggleCard } from '../../store/cardsSlice';
-import SelectionFlyout from '../selectionFlyout/SelectionFlyout';
+import { getErrorMessage } from '../../utils/getErrorMessage';
+
+import './card-list.css';
 
 function CardList({
   data,
   isLoading,
-  isError,
-  errorMessage,
+  isFetching,
+  error,
   onSelectCard,
-}: CardListProps): ReactNode {
+}: CardListProps): JSX.Element {
   const checkedCardList = useAppSelector((state) => state.checkCards.list);
   const dispatch = useAppDispatch();
   const handleCheckboxChange = (id: string): void => {
@@ -25,27 +27,21 @@ function CardList({
       dispatch(toggleCard(card));
     }
   };
+
+  if (error) {
+    return <Message message={getErrorMessage(error)} />;
+  }
+
   return (
     <>
-      {isLoading && (
-        <div className="center-conten">
-          <Spinner />
-        </div>
-      )}
-
-      {isError && (
+      {(isLoading || isFetching) && (
         <div className="center-content">
-          <Message message={errorMessage} />
+          {isLoading && <Spinner />}
+          {!isLoading && isFetching && <Message message="Fetching data..." />}
         </div>
       )}
 
-      {!isLoading && data.length === 0 && (
-        <div className="center-conten">
-          <Message message="Not found" />
-        </div>
-      )}
-
-      {!isLoading && (
+      {!isLoading && !isFetching && (
         <div className="card-column" data-testid="card-list">
           {data.map((card: Character) => (
             <Card

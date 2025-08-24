@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 
-function About(): ReactNode {
+function About(): JSX.Element {
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper" data-testid="about-page">
       <h1>Zelda Store</h1>
       <p>
         This is small App for check information about person this amazing game!

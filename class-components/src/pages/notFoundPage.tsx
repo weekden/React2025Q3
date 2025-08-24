@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 
-function NotFoundPage(): ReactNode {
+function NotFoundPage(): JSX.Element {
   return (
     <div
       style={{

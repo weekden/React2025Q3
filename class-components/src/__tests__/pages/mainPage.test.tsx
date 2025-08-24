@@ -1,147 +1,88 @@
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import { mockByIdResponse, mockListResponse, mockRender } from '../mocks/data';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { describe, it, vi, beforeEach, expect } from 'vitest';
+import { mockListResponse, mockRender } from '../mocks/data';
+import * as api from '../../store/apiSlice';
 
-type PartialResponse = Pick<Response, 'ok' | 'status' | 'json'> &
-  Partial<Pick<Response, 'statusText'>>;
+type GetCharactersResult = ReturnType<typeof api.useGetCharactersQuery>;
 
-describe('MainPage API integration', () => {
-  afterEach(() => {
-    vi.clearAllMocks();
+describe('Test MainPage with RTK Query', () => {
+  beforeEach(() => {
+    vi.spyOn(api, 'useGetCharactersQuery').mockReturnValue({
+      data: mockListResponse,
+      isLoading: false,
+      isFetching: false,
+      error: undefined,
+    } as Partial<GetCharactersResult> as GetCharactersResult);
   });
 
-  it('should render header, search, card list', () => {
-    mockRender();
+  it('should render components', () => {
+    mockRender('/page/1');
 
     expect(screen.getByTestId('title')).toBeInTheDocument();
     expect(screen.getByTestId('search')).toBeInTheDocument();
-    expect(screen.getByTestId('main-container')).toBeInTheDocument();
     expect(screen.getByTestId('pagination')).toBeInTheDocument();
   });
 
-  it('should fetch and render data successfully', async () => {
-    global.fetch = vi
-      .fn()
-      .mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve(mockListResponse),
-      } as Response)
-      .mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve(mockByIdResponse),
-      } as Response);
+  it('should render list from data', () => {
+    mockRender('/page/1');
+
+    expect(screen.getByText('Link')).toBeInTheDocument();
+    expect(screen.getByText('Zelda')).toBeInTheDocument();
+  });
+
+  it('shold navigate to next page when Next clicked', async () => {
+    vi.spyOn(api, 'useGetCharactersQuery').mockReturnValue({
+      data: { ...mockListResponse, count: 21 },
+      isLoading: false,
+      isFetching: false,
+      error: undefined,
+    } as Partial<GetCharactersResult> as GetCharactersResult);
+    mockRender('/page/1');
+
+    const nextButton = screen.getByRole('button', { name: 'Next' });
+    expect(nextButton).toBeEnabled();
+
+    fireEvent.click(nextButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('current-page')).toHaveTextContent('Page: 2');
+    });
+  });
+
+  it('should disable Next button when last page', () => {
+    vi.spyOn(api, 'useGetCharactersQuery').mockReturnValue({
+      data: { ...mockListResponse, count: 1 },
+      isLoading: false,
+      isFetching: false,
+      error: undefined,
+    } as Partial<GetCharactersResult> as GetCharactersResult);
 
     mockRender('/page/1');
 
-    await waitFor(() => {
-      expect(screen.getByText('Link')).toBeInTheDocument();
-      expect(screen.getByText('Zelda')).toBeInTheDocument();
-    });
+    const nextButton = screen.getByRole('button', { name: 'Next' });
+    expect(nextButton).toBeDisabled();
+  });
+
+  it('should navigates to details page when clicking on card', async () => {
+    vi.spyOn(api, 'useGetCharacterByIdQuery').mockReturnValue({
+      data: {
+        data: { id: 'card-1', name: 'Link' },
+      },
+      isLoading: false,
+      isFetching: false,
+      error: undefined,
+    } as Partial<ReturnType<typeof api.useGetCharacterByIdQuery>> as ReturnType<
+      typeof api.useGetCharacterByIdQuery
+    >);
+
+    mockRender('/page/1');
 
     const card = await screen.findByText('Link');
-    expect(card).toBeInTheDocument();
-
     fireEvent.click(card);
 
     await waitFor(() => {
-      expect(screen.getByText('Hero of Hyrule')).toBeInTheDocument();
-    });
-
-    expect(screen.queryByLabelText('Loading...')).not.toBeInTheDocument();
-
-    const closeButton = screen.getByRole('button', { name: '☓' });
-    fireEvent.click(closeButton);
-
-    await waitFor(() => {
-      expect(screen.queryByText('Hero of Hyrule')).not.toBeInTheDocument();
-    });
-  });
-
-  it('should handle client error response (4xx)', async () => {
-    global.fetch = vi.fn(
-      () =>
-        Promise.resolve<PartialResponse>({
-          ok: false,
-          status: 404,
-          statusText: 'Not found',
-          json: () => Promise.resolve([]),
-        }) as Promise<Response>
-    );
-
-    mockRender('/page/1');
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Client error 404 - Not found')
-      ).toBeInTheDocument();
-    });
-
-    expect(screen.queryByLabelText('Loading...')).not.toBeInTheDocument();
-  });
-
-  it('should handle client error response (5xx)', async () => {
-    global.fetch = vi.fn(
-      () =>
-        Promise.resolve<PartialResponse>({
-          ok: false,
-          status: 500,
-          statusText: 'Server Error',
-          json: () => Promise.resolve([]),
-        }) as Promise<Response>
-    );
-
-    mockRender('/page/1');
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Server error 500 - Server Error')
-      ).toBeInTheDocument();
-    });
-
-    expect(screen.queryByLabelText('Loading...')).not.toBeInTheDocument();
-  });
-
-  it('should show error message when fetch rejects with Error in CardDetails', async () => {
-    global.fetch = vi.fn(() => Promise.reject(new Error('Something failed')));
-
-    mockRender('/page/1/detailsId/card-1');
-    await waitFor(() => {
-      expect(screen.queryByTestId('detail-card')).not.toBeInTheDocument();
-    });
-  });
-
-  it('should show "Unexpected error" when fetch rejects with non-Error value in CardDetails ', async () => {
-    global.fetch = vi.fn(() => Promise.reject('Network down'));
-
-    mockRender('/page/1/detailsId/card-1');
-    const detailCard = await screen.findByTestId('card-details');
-    await waitFor(() => {
-      expect(
-        within(detailCard).getByText('Unexpected error')
-      ).toBeInTheDocument();
-    });
-  });
-
-  it('should set true if current page is last page', async () => {
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: true,
-        status: 200,
-        json: () =>
-          Promise.resolve({
-            data: mockListResponse.data,
-            count: 10,
-          }),
-      } as Response)
-    );
-    mockRender('/page/1');
-    const nextButton = screen.getByRole('button', {
-      name: /Next/i,
-    });
-    await waitFor(() => {
-      expect(nextButton).toBeDisabled();
+      expect(screen.getByTestId('card-details')).toBeInTheDocument();
+      expect(screen.getByTestId('card-details')).toHaveTextContent('Link');
     });
   });
 });

@@ -1,11 +1,11 @@
-import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { clearSelection } from '../../store/cardsSlice';
 import saveFile from '../../utils/saveFile';
 import './selection.css';
 import Button from '../elements/Button';
 
-function SelectionFlyout(): ReactNode {
+function SelectionFlyout(): JSX.Element {
   const selector = useAppSelector((state) => state.checkCards.list);
   const quantity = selector.length;
   const dispatch = useAppDispatch();

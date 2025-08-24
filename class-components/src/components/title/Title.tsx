@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 import type { TitleProps } from '../../types/title';
 import './title.css';
 
-function Header({ title }: TitleProps): ReactNode {
+function Header({ title }: TitleProps): JSX.Element {
   return (
     <>
       <h1 className="title" data-testid="title">
