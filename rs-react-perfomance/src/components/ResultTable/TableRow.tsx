@@ -20,15 +20,13 @@ export default function TableRow({
     dataForLastYear;
 
   return (
-    <tr>
-      <td>{countryInfo.iso_code ?? 'N/A'}</td>
-      <td>{countryName}</td>
-      <td>{dataForSelectedYear.population?.toString() ?? 'N/A'}</td>
-      <td>{dataForSelectedYear.year.toString()}</td>
-      <td>{dataForSelectedYear.co2?.toFixed(4).toString() ?? 'N/A'}</td>
-      <td>
-        {dataForSelectedYear.co2_per_capita?.toFixed(4).toString() ?? 'N/A'}
-      </td>
-    </tr>
+    <>
+      <tr>
+        <td>{countryInfo.iso_code ?? 'N/A'}</td>
+        <td>{countryName}</td>
+        <td>{dataForSelectedYear.population?.toString() ?? 'N/A'}</td>
+        <td>{dataForSelectedYear.year.toString()}</td>
+      </tr>
+    </>
   );
 }
