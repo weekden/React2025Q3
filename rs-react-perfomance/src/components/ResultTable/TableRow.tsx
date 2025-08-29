@@ -1,5 +1,6 @@
 import { type JSX } from 'react';
 import type { CountryInfo } from '../../types/data';
+import { getDataForYear } from '../../utils/getDataForYear';
 
 type Props = {
   key: string;
@@ -13,11 +14,7 @@ export default function TableRow({
   countryInfo,
   selectedYear,
 }: Props): JSX.Element {
-  const dataForCountry = countryInfo.data;
-  const dataForLastYear = dataForCountry[dataForCountry.length - 1];
-  const dataForSelectedYear =
-    dataForCountry.find((item) => item.year === selectedYear) ||
-    dataForLastYear;
+  const dataForSelectedYear = getDataForYear(countryInfo, selectedYear);
 
   return (
     <>

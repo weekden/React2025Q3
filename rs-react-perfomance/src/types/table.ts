@@ -1,1 +1,1 @@
-export type CountryOrder = 'asc' | 'desc' | null;
+export type SortOrder = 'asc' | 'desc' | '';

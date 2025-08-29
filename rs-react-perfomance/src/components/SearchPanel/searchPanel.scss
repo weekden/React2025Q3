@@ -1,0 +1,13 @@
+.search-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: 1rem;
+  border-top: 1px solid var(--table-border);
+  border-right: 1px solid var(--table-border);
+  border-left: 1px solid var(--table-border);
+
+  background-color: var(--search-panel-bg);
+}
