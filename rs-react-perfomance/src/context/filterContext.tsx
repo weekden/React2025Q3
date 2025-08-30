@@ -1,4 +1,4 @@
-import { createContext, useState, type ReactNode } from 'react';
+import { createContext, useMemo, useState, type ReactNode } from 'react';
 import type { SortOrder } from '../types/table';
 import { defaultTableValues } from '../consfig';
 
@@ -28,24 +28,24 @@ function FilterProvider({ children }: { children: ReactNode }): ReactNode {
   const [selectedFields, setSelectedFields] =
     useState<string[]>(defaultTableValues);
 
-  return (
-    <FilterContext.Provider
-      value={{
-        country,
-        year,
-        countryOrder,
-        populationOrder,
-        setCountry,
-        setYear,
-        setCountryOrder,
-        setPopulationOrder,
+  const value = useMemo(
+    () => ({
+      country,
+      year,
+      countryOrder,
+      populationOrder,
+      selectedFields,
+      setCountry,
+      setYear,
+      setCountryOrder,
+      setPopulationOrder,
+      setSelectedFields,
+    }),
+    [country, year, countryOrder, populationOrder, selectedFields]
+  );
 
-        selectedFields,
-        setSelectedFields,
-      }}
-    >
-      {children}
-    </FilterContext.Provider>
+  return (
+    <FilterContext.Provider value={value}>{children}</FilterContext.Provider>
   );
 }
 
