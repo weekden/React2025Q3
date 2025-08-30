@@ -7,7 +7,7 @@ function MainContent(): JSX.Element {
   const dataCountries = use(dataPromise);
   return (
     <div>
-      <SearchPanel />
+      <SearchPanel dataCountries={dataCountries} />
       <ResultTable dataCountries={dataCountries} />
     </div>
   );

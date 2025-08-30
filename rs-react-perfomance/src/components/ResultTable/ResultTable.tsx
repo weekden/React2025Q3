@@ -1,9 +1,10 @@
-import { useContext, useMemo, type JSX } from 'react';
+import { useMemo, type JSX } from 'react';
 import TableRow from './TableRow';
-import { FilterContext } from '../../context/filterContext';
 import { getDataForYear } from '../../utils/getDataForYear';
 import './tableStyle.scss';
 import type { CountryData } from '../../types/data';
+import { defaultTableFields } from '../../config';
+import { useFilters } from '../../hooks/useFilter';
 
 type ResultTableProps = {
   dataCountries: CountryData;
@@ -12,8 +13,8 @@ type ResultTableProps = {
 export default function ResultTable({
   dataCountries,
 }: ResultTableProps): JSX.Element {
-  const context = useContext(FilterContext);
-  const year = context?.year || 2023;
+  const context = useFilters();
+  const year = context?.year;
   const country = context?.country;
   const countryOrder = context?.countryOrder;
   const populationOrder = context?.populationOrder;
@@ -59,8 +60,9 @@ export default function ResultTable({
         <tr>
           <th>ISO</th>
           <th>Country</th>
-          <th>Population</th>
-          <th>Year</th>
+          {defaultTableFields.map((field) => (
+            <th key={field}>{field}</th>
+          ))}
           {selectedFields &&
             selectedFields.map((field) => <th key={field}>{field}</th>)}
         </tr>
@@ -71,8 +73,8 @@ export default function ResultTable({
             key={countryName}
             countryName={countryName}
             countryInfo={countryInfo}
-            selectedYear={year}
-            selectedFields={selectedFields ?? []}
+            selectedYear={year || 2023}
+            selectedFields={selectedFields || []}
           />
         ))}
       </tbody>

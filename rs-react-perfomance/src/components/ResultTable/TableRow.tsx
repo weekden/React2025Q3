@@ -1,6 +1,8 @@
 import { memo, type JSX } from 'react';
 import type { CountryInfo } from '../../types/data';
 import { getDataForYear } from '../../utils/getDataForYear';
+import { defaultTableFields } from '../../config';
+import SelectedColumn from './SelectedColumn';
 
 type Props = {
   countryName: string;
@@ -21,15 +23,15 @@ function TableRow({
     <tr>
       <td>{countryInfo.iso_code ?? 'N/A'}</td>
       <td>{countryName}</td>
-      <td>{dataForSelectedYear.population ?? 'N/A'}</td>
-      <td>{dataForSelectedYear.year}</td>
-      {selectedFields.map((field) => (
-        <td key={field}>
-          {dataForSelectedYear[field] !== undefined
-            ? dataForSelectedYear[field]?.toFixed(4).toString()
-            : 'N/A'}
-        </td>
+      {defaultTableFields.map((field) => (
+        <td key={field}>{dataForSelectedYear[field] ?? 'N/A'}</td>
       ))}
+      {selectedFields && (
+        <SelectedColumn
+          data={dataForSelectedYear}
+          selectedFields={selectedFields}
+        />
+      )}
     </tr>
   );
 }

@@ -1,13 +1,19 @@
-import { useContext, useState, type JSX } from 'react';
-import { FilterContext } from '../../context/filterContext';
+import { memo, useState, type JSX } from 'react';
 
 import './searchPanel.scss';
 import type { SortOrder } from '../../types/table';
 import ModatWidget from '../ModalWidget/ModalWidget';
-
-function SearchPanel(): JSX.Element {
-  const context = useContext(FilterContext);
+import type { CountryData } from '../../types/data';
+import { getAllYears } from '../../utils/getAllYears';
+import { useFilters } from '../../hooks/useFilter';
+type SearchPanelProps = {
+  dataCountries: CountryData;
+};
+function SearchPanel({ dataCountries }: SearchPanelProps): JSX.Element {
+  const context = useFilters();
+  const yearsList = getAllYears(dataCountries);
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
+
   return (
     <div className="search-panel">
       <div className="search-wrapper">
@@ -16,11 +22,13 @@ function SearchPanel(): JSX.Element {
           placeholder="Search country"
           onChange={(event) => context?.setCountry(event.target.value)}
         />
-        <input
-          type="number"
-          placeholder="Search by year"
-          onChange={(event) => context?.setYear(+event.target.value)}
-        />
+        <select onChange={(event) => context?.setYear(+event.target.value)}>
+          {yearsList.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="sort-panel">
         <div className="sort-wrapper">
@@ -57,4 +65,4 @@ function SearchPanel(): JSX.Element {
   );
 }
 
-export default SearchPanel;
+export default memo(SearchPanel);

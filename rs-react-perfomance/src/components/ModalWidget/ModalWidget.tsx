@@ -1,5 +1,5 @@
 import { useContext, type JSX } from 'react';
-import { addonInformValues } from '../../consfig';
+import { addonInformValues } from '../../config';
 import './modalWidget.scss';
 import { FilterContext } from '../../context/filterContext';
 

@@ -1,6 +1,5 @@
 import { createContext, useMemo, useState, type ReactNode } from 'react';
 import type { SortOrder } from '../types/table';
-import { defaultTableValues } from '../consfig';
 
 export type FiltersContextType = {
   country: string;
@@ -25,8 +24,7 @@ function FilterProvider({ children }: { children: ReactNode }): ReactNode {
   const [countryOrder, setCountryOrder] = useState<SortOrder>('');
   const [populationOrder, setPopulationOrder] = useState<SortOrder>('');
 
-  const [selectedFields, setSelectedFields] =
-    useState<string[]>(defaultTableValues);
+  const [selectedFields, setSelectedFields] = useState<string[]>([]);
 
   const value = useMemo(
     () => ({
