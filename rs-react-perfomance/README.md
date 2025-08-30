@@ -1,69 +1,37 @@
-# React + TypeScript + Vite
+# Report Rendering Improvement
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Before improvement
 
-Currently, two official plugins are available:
+### Sort by country
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Commit Duration: 1.9s
+- Render Duration: 225ms
+- Interactions: Not recorded (Profiler did not capture explicit interactions, but commit and render times were analyzed instead)
+- Flame Graph: ![ScreenShot](./public/report/before/sort/image-4.png)
+- Rancker Chart: ![ScreenShot](./public/report/before/sort/image-5.png)
 
-## Expanding the ESLint configuration
+### Add new colmn
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Commit Duration: 252 ms
+- Render Duration: 251.4 ms
+- Interactions: Not recorded (Profiler did not capture explicit interactions, but commit and render times were analyzed instead)
+- Flame Graph: ![ScreenShot](./public/report/before/column/image.png)
+- Rancker Chart:![ScreenShot](./public/report/before/column/image-1.png)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Search Country
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+Analiz for first later
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Commit Duration: 2.4s
+- Render Duration: 237.5 ms
+- Interactions: Not recorded (Profiler did not capture explicit interactions, but commit and render times were analyzed instead)
+- Flame Graph: ![ScreenShot](./public/report/before/search/image.png)
+- Rancker Chart:![ScreenShot](./public/report/before/search/image-1.png)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Select Year
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Commit Duration: 4.1s
+- Render Duration: 237.9 ms
+- Interactions: Not recorded (Profiler did not capture explicit interactions, but commit and render times were analyzed instead)
+- Flame Graph: ![ScreenShot](./public/report/before/year/image.png)
+- Rancker Chart:![ScreenShot](./public/report/before/year/image-1.png)
