@@ -1,8 +1,12 @@
-export type YearlyData = {
+type BaseYearlyData = {
   year: number;
-  population?: number;
-  co2?: number;
-  co2_per_capita?: number;
+  population: number;
+  co2: number;
+  co2_per_capita: number;
+};
+
+export type YearlyData = BaseYearlyData & {
+  [key: string]: number;
 };
 
 export type CountryInfo = {
@@ -13,3 +17,5 @@ export type CountryInfo = {
 export type CountryData = {
   [country: string]: CountryInfo;
 };
+
+// export type YearlyDataKeyType = keyof YearlyData;

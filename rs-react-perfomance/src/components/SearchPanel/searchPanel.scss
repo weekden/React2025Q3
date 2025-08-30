@@ -1,4 +1,6 @@
 .search-panel {
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -10,4 +12,8 @@
   border-left: 1px solid var(--table-border);
 
   background-color: var(--search-panel-bg);
+}
+
+.sort-panel {
+  display: flex;
 }

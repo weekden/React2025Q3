@@ -1,11 +1,13 @@
-import { useContext, type JSX } from 'react';
+import { useContext, useState, type JSX } from 'react';
 import { FilterContext } from '../../context/filterContext';
 
 import './searchPanel.scss';
 import type { SortOrder } from '../../types/table';
+import ModatWidget from '../ModalWidget/ModalWidget';
 
 function SearchPanel(): JSX.Element {
   const context = useContext(FilterContext);
+  const [isWidgetOpen, setIsWidgetOpen] = useState(false);
   return (
     <div className="search-panel">
       <div className="search-wrapper">
@@ -20,7 +22,7 @@ function SearchPanel(): JSX.Element {
           onChange={(event) => context?.setYear(+event.target.value)}
         />
       </div>
-      <div className="sort-wrapper">
+      <div className="sort-panel">
         <div className="sort-wrapper">
           <label>Sort by:</label>
 
@@ -46,7 +48,11 @@ function SearchPanel(): JSX.Element {
             <option value={'desc'}>Popul ↓</option>
           </select>
         </div>
+        <div className="settings-wrapper">
+          <button onClick={() => setIsWidgetOpen(true)}>⚙</button>
+        </div>
       </div>
+      {isWidgetOpen && <ModatWidget onClose={() => setIsWidgetOpen(false)} />}
     </div>
   );
 }

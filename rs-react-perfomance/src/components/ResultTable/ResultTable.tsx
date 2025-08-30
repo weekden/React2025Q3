@@ -1,19 +1,24 @@
-import { use, useContext, useEffect, useState, type JSX } from 'react';
+import { useContext, useEffect, useState, type JSX } from 'react';
 import TableRow from './TableRow';
 import { FilterContext } from '../../context/filterContext';
-import { dataPromise } from '../../api/getData';
 import { getDataForYear } from '../../utils/getDataForYear';
 import './tableStyle.scss';
+import type { CountryData } from '../../types/data';
 
-export default function ResultTable(): JSX.Element {
-  const dataCountries = use(dataPromise);
+type ResultTableProps = {
+  dataCountries: CountryData;
+};
+
+export default function ResultTable({
+  dataCountries,
+}: ResultTableProps): JSX.Element {
   const [countries, setCountries] = useState(Object.entries(dataCountries));
-
   const context = useContext(FilterContext);
   const year = context?.year || 2023;
   const country = context?.country;
   const countryOrder = context?.countryOrder;
   const populationOrder = context?.populationOrder;
+  const selectedFields = context?.selectedFields;
 
   useEffect(() => {
     let filteredData = Object.entries(dataCountries);
@@ -57,6 +62,8 @@ export default function ResultTable(): JSX.Element {
           <th>Country</th>
           <th>Population</th>
           <th>Year</th>
+          {selectedFields &&
+            selectedFields.map((field) => <th key={field}>{field}</th>)}
         </tr>
       </thead>
       <tbody>

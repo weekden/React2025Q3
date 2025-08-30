@@ -1,6 +1,7 @@
-import { type JSX } from 'react';
+import { useContext, type JSX } from 'react';
 import type { CountryInfo } from '../../types/data';
 import { getDataForYear } from '../../utils/getDataForYear';
+import { FilterContext } from '../../context/filterContext';
 
 type Props = {
   key: string;
@@ -9,11 +10,14 @@ type Props = {
   selectedYear: number;
 };
 
-export default function TableRow({
+function TableRow({
   countryName,
   countryInfo,
   selectedYear,
 }: Props): JSX.Element {
+  const context = useContext(FilterContext);
+
+  const selectedFields = context?.selectedFields;
   const dataForSelectedYear = getDataForYear(countryInfo, selectedYear);
 
   return (
@@ -21,9 +25,19 @@ export default function TableRow({
       <tr>
         <td>{countryInfo.iso_code ?? 'N/A'}</td>
         <td>{countryName}</td>
-        <td>{dataForSelectedYear.population?.toString() ?? 'N/A'}</td>
-        <td>{dataForSelectedYear.year.toString()}</td>
+        <td>{dataForSelectedYear.population ?? 'N/A'}</td>
+        <td>{dataForSelectedYear.year}</td>
+        {selectedFields &&
+          selectedFields.map((field) => (
+            <td key={field}>
+              {dataForSelectedYear[field] !== undefined
+                ? dataForSelectedYear[field]?.toFixed(4).toString()
+                : 'N/A'}
+            </td>
+          ))}
       </tr>
     </>
   );
 }
+
+export default TableRow;
