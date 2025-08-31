@@ -36,12 +36,11 @@ function SearchPanel({ dataCountries }: SearchPanelProps): JSX.Element {
   const selectedYear = useAppSelector((state) => state.year.selectedYear);
   const countryOrder = useAppSelector((state) => state.sort.countryOrder);
   const populationOrder = useAppSelector((state) => state.sort.populationOrder);
-
+  const yearsList = useMemo(() => getAllYears(dataCountries), [dataCountries]);
   useEffect(() => {
     dispatch(setAllYears(getAllYears(dataCountries)));
   }, [dataCountries, dispatch]);
 
-  const yearsList = useMemo(() => getAllYears(dataCountries), [dataCountries]);
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
 
   const handleSelectedYear = useCallback(
@@ -72,6 +71,7 @@ function SearchPanel({ dataCountries }: SearchPanelProps): JSX.Element {
     <div className="search-panel">
       <div className="search-wrapper">
         <SearchCountryInput
+          className="search-wrapper__input"
           value={country}
           onChange={handleSearchCountry}
           placeholder="Search country"
@@ -79,6 +79,7 @@ function SearchPanel({ dataCountries }: SearchPanelProps): JSX.Element {
 
         <Select
           id="select-year"
+          className="search-wrapper__select"
           options={yearsList}
           value={selectedYear}
           onChange={handleSelectedYear}
@@ -86,15 +87,17 @@ function SearchPanel({ dataCountries }: SearchPanelProps): JSX.Element {
       </div>
       <div className="sort-panel">
         <div className="sort-wrapper">
-          <label>Sort by:</label>
+          <label className="sort-wrapper__label">Sort by:</label>
           <SelectSort
             id="country-order"
+            className="sort-wrapper__select"
             options={COUNTRY_SORT_OPTIONS}
             value={countryOrder}
             onChange={handleSelectedOrderCountry}
           />
           <SelectSort
             id="population-order"
+            className="sort-wrapper__select"
             options={POPULATION_SORT_OPTIONS}
             value={populationOrder}
             onChange={handleSelectedOrderPopul}

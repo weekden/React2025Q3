@@ -6,7 +6,7 @@ import { dataPromise } from '../api/getData';
 function MainContent(): JSX.Element {
   const dataCountries = use(dataPromise);
   return (
-    <div>
+    <div className="table-wrapper">
       <SearchPanel dataCountries={dataCountries} />
       <ResultTable dataCountries={dataCountries} />
     </div>

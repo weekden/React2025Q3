@@ -10,6 +10,7 @@ export type YearSelectProps = {
   value?: string | number;
   options: number[];
   onChange: (value: string) => void;
+  className?: string;
 };
 
 export type SortSelectProps = {
@@ -17,4 +18,5 @@ export type SortSelectProps = {
   options: Option[];
   value: SortOrder;
   onChange: (value: SortOrder) => void;
+  className?: string;
 };

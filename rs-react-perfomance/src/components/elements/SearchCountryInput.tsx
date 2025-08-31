@@ -5,6 +5,7 @@ function SearchCountryInput({
   value,
   onChange,
   placeholder = 'Search country',
+  className,
 }: SearchCountryInputProps): JSX.Element {
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     onChange(event.target.value);
@@ -13,6 +14,7 @@ function SearchCountryInput({
   return (
     <input
       type="text"
+      className={className}
       placeholder={placeholder}
       value={value}
       onChange={handleChange}
