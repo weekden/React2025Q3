@@ -6,6 +6,8 @@ export const addonInformValues = [
 ];
 
 export const defaultTableFields = [
+  'ISO',
+  'Country',
   'population',
   'year',
   'co2',

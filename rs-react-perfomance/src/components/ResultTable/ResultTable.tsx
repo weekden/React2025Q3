@@ -1,31 +1,28 @@
-import { useMemo, type JSX } from 'react';
+import { memo, useMemo, type JSX } from 'react';
+import { useAppSelector } from '../../hooks/redux';
 import TableRow from './TableRow';
 import { getDataForYear } from '../../utils/getDataForYear';
-import './tableStyle.scss';
 import type { CountryData } from '../../types/data';
-import { defaultTableFields } from '../../config';
-import { useFilters } from '../../hooks/useFilter';
+import { defaultTableFields } from '../../constants/config';
+import './tableStyle.scss';
 
 type ResultTableProps = {
   dataCountries: CountryData;
 };
 
-export default function ResultTable({
-  dataCountries,
-}: ResultTableProps): JSX.Element {
-  const context = useFilters();
-  const year = context?.year;
-  const country = context?.country;
-  const countryOrder = context?.countryOrder;
-  const populationOrder = context?.populationOrder;
-  const selectedFields = context?.selectedFields;
+function ResultTable({ dataCountries }: ResultTableProps): JSX.Element {
+  const country = useAppSelector((state) => state.country.country);
+  const selectedYear = useAppSelector((state) => state.year.selectedYear);
+  const countryOrder = useAppSelector((state) => state.sort.countryOrder);
+  const populationOrder = useAppSelector((state) => state.sort.populationOrder);
+  const selectedFields = useAppSelector((state) => state.fields.selectedFields);
 
   const countries = useMemo(() => {
     let filteredData = Object.entries(dataCountries);
 
-    if (year) {
+    if (selectedYear) {
       filteredData = filteredData.filter(([, countryInfo]) =>
-        countryInfo.data.some((item) => item.year === year)
+        countryInfo.data.some((item) => item.year === selectedYear)
       );
     }
 
@@ -43,8 +40,8 @@ export default function ResultTable({
       }
 
       if (populationOrder) {
-        const A = getDataForYear(dataA, year).population ?? 0;
-        const B = getDataForYear(dataB, year).population ?? 0;
+        const A = getDataForYear(dataA, selectedYear).population ?? 0;
+        const B = getDataForYear(dataB, selectedYear).population ?? 0;
 
         return populationOrder === 'asc' ? A - B : B - A;
       }
@@ -52,32 +49,38 @@ export default function ResultTable({
       return 0;
     });
     return filteredData;
-  }, [dataCountries, year, country, countryOrder, populationOrder]);
+  }, [dataCountries, selectedYear, country, countryOrder, populationOrder]);
+  const rowsMemo = useMemo(() => {
+    return countries.map(([countryName, countryInfo]) => (
+      <TableRow
+        key={countryName}
+        countryName={countryName}
+        countryInfo={countryInfo}
+        selectedYear={selectedYear}
+        selectedFields={selectedFields}
+      />
+    ));
+  }, [countries, selectedYear, selectedFields]);
 
+  const headerMemo = useMemo(
+    () => (
+      <tr>
+        {defaultTableFields.map((field) => (
+          <th key={field}>{field}</th>
+        ))}
+        {selectedFields.map((field) => (
+          <th key={field}>{field}</th>
+        ))}
+      </tr>
+    ),
+    [selectedFields]
+  );
   return (
     <table>
-      <thead>
-        <tr>
-          <th>ISO</th>
-          <th>Country</th>
-          {defaultTableFields.map((field) => (
-            <th key={field}>{field}</th>
-          ))}
-          {selectedFields &&
-            selectedFields.map((field) => <th key={field}>{field}</th>)}
-        </tr>
-      </thead>
-      <tbody>
-        {countries.map(([countryName, countryInfo]) => (
-          <TableRow
-            key={countryName}
-            countryName={countryName}
-            countryInfo={countryInfo}
-            selectedYear={year || 2023}
-            selectedFields={selectedFields || []}
-          />
-        ))}
-      </tbody>
+      <thead>{headerMemo}</thead>
+      <tbody>{rowsMemo}</tbody>
     </table>
   );
 }
+
+export default memo(ResultTable);

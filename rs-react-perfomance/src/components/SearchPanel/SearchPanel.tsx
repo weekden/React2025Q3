@@ -1,60 +1,104 @@
-import { memo, useState, type JSX } from 'react';
-
-import './searchPanel.scss';
+import {
+  memo,
+  useMemo,
+  useState,
+  useCallback,
+  type JSX,
+  useEffect,
+} from 'react';
+import Select from '../elements/SelectYear';
+import SelectSort from '../elements/SelectSort';
+import { getAllYears } from '../../utils/getAllYears';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { setAllYears, setSelectedYear } from '../../store/slicers/yearSlicer';
+import {
+  setCountryOrder,
+  setPopulationOrder,
+} from '../../store/slicers/sortSlicer';
+import { setSearchCountry } from '../../store/slicers/countrySlicer';
+import {
+  COUNTRY_SORT_OPTIONS,
+  POPULATION_SORT_OPTIONS,
+} from '../../constants/searchPanel';
+import type { CountryData } from '../../types/data';
 import type { SortOrder } from '../../types/table';
 import ModatWidget from '../ModalWidget/ModalWidget';
-import type { CountryData } from '../../types/data';
-import { getAllYears } from '../../utils/getAllYears';
-import { useFilters } from '../../hooks/useFilter';
+import './searchPanel.scss';
+import SearchCountryInput from '../elements/SearchCountryInput';
+
 type SearchPanelProps = {
   dataCountries: CountryData;
 };
+
 function SearchPanel({ dataCountries }: SearchPanelProps): JSX.Element {
-  const context = useFilters();
-  const yearsList = getAllYears(dataCountries);
+  const dispatch = useAppDispatch();
+  const country = useAppSelector((state) => state.country.country);
+  const selectedYear = useAppSelector((state) => state.year.selectedYear);
+  const countryOrder = useAppSelector((state) => state.sort.countryOrder);
+  const populationOrder = useAppSelector((state) => state.sort.populationOrder);
+
+  useEffect(() => {
+    dispatch(setAllYears(getAllYears(dataCountries)));
+  }, [dataCountries, dispatch]);
+
+  const yearsList = useMemo(() => getAllYears(dataCountries), [dataCountries]);
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
+
+  const handleSelectedYear = useCallback(
+    (value: string) => dispatch(setSelectedYear(+value)),
+    [dispatch]
+  );
+
+  const handleSelectedOrderCountry = useCallback(
+    (value: SortOrder) => {
+      dispatch(setCountryOrder(value));
+    },
+    [dispatch]
+  );
+
+  const handleSelectedOrderPopul = useCallback(
+    (value: SortOrder) => {
+      dispatch(setPopulationOrder(value));
+    },
+    [dispatch]
+  );
+
+  const handleSearchCountry = useCallback(
+    (value: string) => dispatch(setSearchCountry(value)),
+    [dispatch]
+  );
 
   return (
     <div className="search-panel">
       <div className="search-wrapper">
-        <input
-          type="text"
+        <SearchCountryInput
+          value={country}
+          onChange={handleSearchCountry}
           placeholder="Search country"
-          onChange={(event) => context?.setCountry(event.target.value)}
         />
-        <select onChange={(event) => context?.setYear(+event.target.value)}>
-          {yearsList.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
+
+        <Select
+          id="select-year"
+          options={yearsList}
+          value={selectedYear}
+          onChange={handleSelectedYear}
+        />
       </div>
       <div className="sort-panel">
         <div className="sort-wrapper">
           <label>Sort by:</label>
-
-          <select
-            onChange={(event) => {
-              context?.setCountryOrder(event.target.value as SortOrder);
-              context?.setPopulationOrder('');
-            }}
-          >
-            <option value={''}>Country Order</option>
-            <option value={'asc'}>Country A-Z</option>
-            <option value={'desc'}>Country Z-A</option>
-          </select>
-
-          <select
-            onChange={(event) => {
-              context?.setPopulationOrder(event.target.value as SortOrder);
-              context?.setCountryOrder('');
-            }}
-          >
-            <option value={''}>Popul Order</option>
-            <option value={'asc'}>Popul ↑</option>
-            <option value={'desc'}>Popul ↓</option>
-          </select>
+          <SelectSort
+            id="country-order"
+            options={COUNTRY_SORT_OPTIONS}
+            value={countryOrder}
+            onChange={handleSelectedOrderCountry}
+          />
+          <SelectSort
+            id="population-order"
+            options={POPULATION_SORT_OPTIONS}
+            value={populationOrder}
+            onChange={handleSelectedOrderPopul}
+          />
         </div>
         <div className="settings-wrapper">
           <button onClick={() => setIsWidgetOpen(true)}>⚙</button>

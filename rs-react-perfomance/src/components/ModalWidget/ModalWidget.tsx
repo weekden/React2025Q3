@@ -1,28 +1,23 @@
-import { useContext, type JSX } from 'react';
-import { addonInformValues } from '../../config';
+import { useCallback, type JSX } from 'react';
+import { addonInformValues } from '../../constants/config';
 import './modalWidget.scss';
-import { FilterContext } from '../../context/filterContext';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { toggleField } from '../../store/slicers/fieldsSlicer';
 
 type ModatWidgetProps = {
   onClose: () => void;
 };
 
 function ModatWidget({ onClose }: ModatWidgetProps): JSX.Element | null {
-  const context = useContext(FilterContext);
-  if (!context) {
-    return null;
-  }
+  const dispatch = useAppDispatch();
+  const selectedFields = useAppSelector((state) => state.fields.selectedFields);
 
-  const selectedFields = context.selectedFields;
-  const setSelectedFields = context.setSelectedFields;
-
-  const toggleCard = (value: string): void => {
-    if (selectedFields.includes(value)) {
-      setSelectedFields(selectedFields.filter((item) => item !== value));
-    } else {
-      setSelectedFields([...selectedFields, value]);
-    }
-  };
+  const toggleCard = useCallback(
+    (value: string): void => {
+      dispatch(toggleField(value));
+    },
+    [dispatch]
+  );
 
   return (
     <div className="widget">

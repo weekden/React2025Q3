@@ -17,5 +17,3 @@ export type CountryInfo = {
 export type CountryData = {
   [country: string]: CountryInfo;
 };
-
-// export type YearlyDataKeyType = keyof YearlyData;
