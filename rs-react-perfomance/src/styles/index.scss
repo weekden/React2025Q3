@@ -1,0 +1,78 @@
+:root {
+  --bg-color: #fff;
+  --search-panel-bg: #bdd9e6;
+  --text-color: #051a24;
+  --table-border: #8b8b8b;
+  --table-header-bg: #bdd9e6;
+  --table-even-row-bg: #f5f5f5;
+  --table-row-hover: #eaf2f5;
+
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  max-width: 128rem;
+  margin: 0 auto;
+  padding: 2rem;
+
+  text-align: center;
+}
+
+h1 {
+  font-size: 3.2rem;
+  line-height: 1.1;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+
+  display: block;
+
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.6rem;
+
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-color);
+
+  background-color: var(--button-bg);
+
+  transition: background-color 0.25s;
+}
+
+button:hover {
+  background-color: var(--button-hover-bg);
+}
+
+button[disabled] {
+  pointer-events: none;
+  opacity: var(--button-disabled-opacity);
+}
